@@ -1,6 +1,7 @@
 import {Bridge} from '#/bridge'
 import {CanReceiver} from '#/receiver/can'
 import {HTTPReceiver} from '#/receiver/http'
+import {HTTPSender} from '#/sender/http'
 import {LogSender} from '#/sender/log'
 import {VCAN, VCANOptions} from '#/vcan'
 import hae from '#utils/hae'
@@ -8,7 +9,13 @@ import {Command} from 'commander'
 
 export const program = new Command()
 
-type BridgeOptions = {receiver: string; receiverPort: string; receiverHost: string; sender: string}
+type BridgeOptions = {
+    receiver: string
+    receiverPort: string
+    receiverHost: string
+    sender: string
+    senderEndpoint: string
+}
 
 const can2x = program.name('can2x')
 
@@ -18,6 +25,7 @@ const bridge = program
     .option('--receiver-port [string]', '', '4269')
     .option('--receiver-host [string]', '', 'localhost')
     .option('--sender [string]', '', 'log')
+    .option('--sender-endpoint [string]', '')
     .action(
         hae.exit(async (options: BridgeOptions) => {
             console.log({options})
@@ -56,6 +64,11 @@ function createReceiver(options: BridgeOptions) {
 
 function createSender(options: BridgeOptions) {
     if (options.sender === 'log') return new LogSender()
+
+    if (options.sender === 'http')
+        return new HTTPSender({
+            endpoint: options.senderEndpoint,
+        })
 
     throw new Error(`Sender of type "${options.sender}" unknown`)
 }

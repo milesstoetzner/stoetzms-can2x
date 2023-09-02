@@ -33,7 +33,7 @@ export class HTTPReceiver extends Receiver {
         resolvers.post(
             '/',
             hae.express(async (req: Request<{}, {}, {id: number; data: number[]}>, res, next) => {
-                if (check.isDefined(this.processor)) await this.processor(req.body)
+                if (check.isDefined(this.processor)) this.processor(req.body)
                 return res.status(200).json({})
             })
         )

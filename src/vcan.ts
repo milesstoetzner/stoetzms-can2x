@@ -1,5 +1,3 @@
-import execa from 'execa'
-
 export type VCANOptions = {
     name?: string
 }
@@ -23,6 +21,6 @@ export class VCAN {
 }
 
 async function shell(command: string) {
-    const result = await execa.$`${command}`
+    const result = await (await import('execa')).$`${command}`
     if (result.failed) throw new Error(`Command "${command}} failed`)
 }
