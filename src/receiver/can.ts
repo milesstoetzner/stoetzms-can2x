@@ -1,8 +1,5 @@
-import {Receiver} from "#/receiver/receiver";
+import {Receiver} from '#/receiver/receiver'
 
+// TODO: https://github.com/sebi2k1/node-can
 
-// TODO: can
-
-export class CanReceiver extends Receiver {
-
-}
+export class CanReceiver extends Receiver {}
