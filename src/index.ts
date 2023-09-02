@@ -2,6 +2,7 @@ import {Bridge} from '#/bridge'
 import {CanReceiver} from '#/receiver/can'
 import {HTTPReceiver} from '#/receiver/http'
 import {LogSender} from '#/sender/log'
+import {VCAN, VCANOptions} from '#/vcan'
 import hae from '#utils/hae'
 import {Command} from 'commander'
 
@@ -26,6 +27,16 @@ const bridge = program
             const bridge = new Bridge(receiver, sender)
 
             await bridge.start()
+        })
+    )
+
+const vcan = program
+    .command('vcan')
+    .option('--name', '', 'vcan0')
+    .action(
+        hae.exit(async (options: VCANOptions) => {
+            const vcan = new VCAN(options)
+            await vcan.create()
         })
     )
 

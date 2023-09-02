@@ -15,7 +15,7 @@ export class Bridge {
         await this.receiver.start()
         await this.sender.start()
 
-        this.receiver.receive(
+        await this.receiver.receive(
             hae.log(async message => {
                 console.debug(message.id, message.data)
                 await this.sender.send(message)
@@ -23,8 +23,8 @@ export class Bridge {
         )
     }
 
-    stop() {
-        this.receiver.stop()
-        this.sender.stop()
+    async stop() {
+        await this.receiver.stop()
+        await this.sender.stop()
     }
 }

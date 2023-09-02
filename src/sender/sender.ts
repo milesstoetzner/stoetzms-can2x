@@ -9,5 +9,5 @@ export abstract class Sender {
         // nil
     }
 
-    abstract send(message: Message): void
+    abstract send(message: Message): Promise<void>
 }
