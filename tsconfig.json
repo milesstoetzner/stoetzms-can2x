@@ -1,0 +1,35 @@
+{
+    "extends": "@tsconfig/node16/tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "#/*": ["src/*"],
+            "#utils/*": ["src/utils/*"],
+            "#config": ["src/cli/config"],
+            "#controller/*": ["src/controller/*"],
+            "#controller": ["src/controller"],
+            "#graph/*": ["src/graph/*"],
+            "#graph": ["src/graph"],
+            "#repository/*": ["src/repository/*"],
+            "#resolver/*": ["src/resolver/*"],
+            "#resolver": ["src/resolver"],
+            "#plugins/*": ["src/plugins/*"],
+            "#plugins": ["src/plugins"],
+            "#spec/*": ["src/specification/*"],
+            "#files": ["src/utils/files"],
+            "#crypto": ["src/utils/crypto"],
+            "#shell": ["src/utils/shell"],
+            "#git": ["src/utils/git"],
+            "#utils": ["src/utils/utils"],
+            "#check": ["src/utils/check"],
+            "#assert": ["src/utils/assert"]
+        },
+        "outDir": "build",
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": false,
+        "useUnknownInCatchVariables": false,
+        "sourceMap": true
+    },
+    "include": ["src", "tests", "docs/cmds"],
+    "exclude": ["node_modules"]
+}

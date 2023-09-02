@@ -1,0 +1,48 @@
+# Allow any assets
+!docs/docs/assets
+
+#
+*.ignored.yaml
+
+# IDE
+.idea
+.code
+
+# env
+.env*
+
+# typescript
+build
+node_modules
+yarn-error.log
+.DS_STORE
+
+build-docs
+dist-docs
+
+# xopera
+*.opera
+
+# docs
+docs/site
+docs/__pycache__
+
+# examples
+*inputs.yaml
+*inputs.yml
+!tests/**/inputs.yaml
+!tests/**/inputs.yml
+!examples/**/tests/**/inputs.yaml
+!examples/**/tests/**/inputs.yml
+
+# python virtual environments
+*.venv
+
+# binaries
+dist
+
+# tests
+!tests/tmp/.gitkeep
+tests/tmp
+.nyc_output
+coverage
