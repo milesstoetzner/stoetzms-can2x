@@ -1,0 +1,1 @@
+yarn cli bridge start --receiver mqtt --receiver-port 3000 --sender file --sender-file out.txt

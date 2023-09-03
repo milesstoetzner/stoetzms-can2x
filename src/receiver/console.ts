@@ -1,5 +1,6 @@
 import {Processor, Receiver} from '#/receiver/receiver'
 import {Message} from '#/types'
+import std from '#std'
 
 export type ConsoleReceiverOptions = Message
 
@@ -12,8 +13,10 @@ export class ConsoleReceiver extends Receiver {
     }
 
     async receive(processor: Processor) {
+        const message = {id: this.options.id, data: this.options.data}
+        std.log('console received', {message})
         this.processor = processor
-        this.processor({id: this.options.id, data: this.options.data})
+        this.processor(message)
     }
 
     continuous = false

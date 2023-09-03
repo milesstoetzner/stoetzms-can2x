@@ -9,11 +9,13 @@ describe('socket-io', () => {
     it('sender-receiver', async () => {
         const message: Message = {id: 69, data: [1, 2, 3]}
         const output = files.temporary()
+        const port = 3001
 
         // Start socket-io receiver with file sender
         // TODO: if an error is thrown then the test does not abort ...
         const receiver = await actions.createBridge({
             receiver: 'socket-io',
+            receiverPort: String(port),
             sender: 'file',
             senderFile: output,
         })
@@ -24,7 +26,7 @@ describe('socket-io', () => {
             receiverId: String(message.id),
             receiverData: message.data.map(String),
             sender: 'socket-io',
-            senderEndpoint: 'http://localhost:3000',
+            senderEndpoint: `http://localhost:${port}`,
         })
 
         std.log('waiting for message being bridged')

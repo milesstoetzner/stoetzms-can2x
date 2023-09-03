@@ -30,7 +30,7 @@ export class SocketIOReceiver extends Receiver {
             std.log(`socket-io client connected`, {id: socket.id})
 
             socket.on(this.options.event, (message: Message) => {
-                std.log('socket-io server message', {message})
+                std.log('socket-io server received', {message})
 
                 if (check.isDefined(this.processor)) {
                     this.processor(message)

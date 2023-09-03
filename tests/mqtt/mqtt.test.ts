@@ -9,10 +9,12 @@ describe('mqtt', () => {
     it('sender-receiver', async () => {
         const message: Message = {id: 69, data: [1, 2, 3]}
         const output = files.temporary()
+        const port = 3000
 
         // Start mqtt receiver with file sender
         const receiver = await actions.createBridge({
             receiver: 'mqtt',
+            receiverPort: String(port),
             sender: 'file',
             senderFile: output,
         })
@@ -23,13 +25,14 @@ describe('mqtt', () => {
             receiverId: String(message.id),
             receiverData: message.data.map(String),
             sender: 'mqtt',
-            senderEndpoint: 'mqtt://localhost:3000',
+            senderEndpoint: `mqtt://localhost:${port}`,
         })
 
         std.log('waiting for message being bridged')
         await utils.sleep(25)
 
         expect(files.loadFile(output).trim()).to.equal(JSON.stringify(message))
+        std.log('its the same')
 
         await files.deleteFile(output)
         await sender.stop()

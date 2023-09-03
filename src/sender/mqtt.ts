@@ -29,37 +29,38 @@ export class MQTTSender extends Sender {
         std.log(`mqtt client subscribed`)
 
         this.client.on('error', error => {
-            std.log(`websocket client errored`, {error})
+            std.log(`mqtt client errored`, {error})
         })
 
         this.client.on('disconnect', () => {
-            std.log(`websocket client disconnected`)
+            std.log(`mqtt client disconnected`)
         })
 
         this.client.on('offline', () => {
-            std.log(`websocket client offline`)
+            std.log(`mqtt client offline`)
         })
 
         this.client.on('close', () => {
-            std.log(`websocket client closed`)
+            std.log(`mqtt client closed`)
         })
 
         this.client.on('end', () => {
-            std.log(`websocket client ended`)
+            std.log(`mqtt client ended`)
         })
 
         this.resolveReady()
     }
 
     async send(message: Message) {
-        assert.isDefined(this.client, 'websocket sender not started')
+        std.log('mqtt client publishing', {message})
+        assert.isDefined(this.client, 'mqtt client not started')
         await this.client.publishAsync(this.options.topic, JSON.stringify(message))
+        std.log('mqtt client published')
     }
 
     async stop() {
-        // TODO: wait for disconnect
         std.log('stopping mqtt client')
-        if (check.isDefined(this.client)) this.client.end()
+        if (check.isDefined(this.client)) await this.client.endAsync()
         std.log('mqtt client stopped')
     }
 }

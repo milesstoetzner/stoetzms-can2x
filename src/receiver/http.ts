@@ -37,7 +37,7 @@ export class HTTPReceiver extends Receiver {
         resolvers.post(
             '/',
             hae.express(async (req: Request<{}, {}, Message>, res, next) => {
-                std.log('http server message', {message: req.body})
+                std.log('http server received', {message: req.body})
                 if (check.isDefined(this.processor)) {
                     this.processor(req.body)
                 } else {

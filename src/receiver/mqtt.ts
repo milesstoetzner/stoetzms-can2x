@@ -12,6 +12,7 @@ export type MQTTReceiverOptions = {
 }
 
 export class MQTTReceiver extends Receiver {
+    aedes?: Aedes
     server?: net.Server
     options: MQTTReceiverOptions
 
@@ -23,31 +24,31 @@ export class MQTTReceiver extends Receiver {
     async start() {
         std.log('starting mqtt server', {options: this.options})
 
-        const aedes = new Aedes()
+        this.aedes = new Aedes()
 
-        this.server = net.createServer(aedes.handle)
+        this.server = net.createServer(this.aedes.handle)
 
-        aedes.on('subscribe', (subscriptions, client) => {
+        this.aedes.on('subscribe', (subscriptions, client) => {
             std.log('mqtt client subscribed', {id: client.id, subscriptions: subscriptions.map(it => it.topic)})
         })
 
-        aedes.on('unsubscribe', (subscriptions, client) => {
+        this.aedes.on('unsubscribe', (subscriptions, client) => {
             std.log('mqtt client unsubscribed', {id: client.id, subscriptions: subscriptions})
         })
 
-        aedes.on('client', client => {
+        this.aedes.on('client', client => {
             std.log('mqtt client connected', {id: client.id})
         })
 
-        aedes.on('clientDisconnect', client => {
+        this.aedes.on('clientDisconnect', client => {
             std.log('mqtt client disconnected', {id: client.id})
         })
 
-        aedes.on('publish', (packet, client) => {
+        this.aedes.on('publish', packet => {
             const topic = packet.topic
             const message = packet.payload.toString()
 
-            std.log('mqtt server message', {message, topic})
+            std.log('mqtt server received', {message, topic})
             if (topic.startsWith('$SYS')) return
             if (topic !== this.options.topic) return std.log('topic unknown', {topic})
 
@@ -69,6 +70,37 @@ export class MQTTReceiver extends Receiver {
     }
 
     async stop() {
-        if (check.isDefined(this.server)) this.server.close()
+        std.log('stopping mqtt server')
+
+        std.log('stopping mqtt http server')
+        await this.stopServer()
+        std.log('mqtt http server stopped')
+
+        std.log('stopping mqtt aedes server')
+        await this.stopAedes()
+        std.log('mqtt aeded server stopped')
+
+        std.log('mqtt server stopped')
+    }
+
+    private async stopServer() {
+        if (check.isUndefined(this.server)) return std.log('mqtt http server not defined')
+        const server = this.server
+        return new Promise<void>((resolve, reject) => {
+            server.close(error => {
+                if (check.isDefined(error)) return reject(error)
+                return resolve()
+            })
+        })
+    }
+
+    private async stopAedes() {
+        if (check.isUndefined(this.aedes)) return std.log('mqtt aedes server not defined')
+        const aedes = this.aedes
+        return new Promise<void>((resolve, reject) => {
+            aedes.close(() => {
+                return resolve()
+            })
+        })
     }
 }

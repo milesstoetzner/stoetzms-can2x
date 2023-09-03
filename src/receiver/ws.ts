@@ -35,7 +35,7 @@ export class WSReceiver extends Receiver {
             })
 
             ws.on('message', (message: string) => {
-                std.log('websocket server message', {message})
+                std.log('websocket server received', {message})
                 if (check.isDefined(this.processor)) {
                     this.processor(JSON.parse(message) as Message)
                 } else {
