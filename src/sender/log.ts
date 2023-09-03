@@ -1,9 +1,9 @@
-import {Message} from "#/types";
-import {Sender} from "#/sender/sender";
+import {Sender} from '#/sender/sender'
+import {Message} from '#/types'
+import std from '#std'
 
 export class LogSender extends Sender {
-
     async send(message: Message) {
-        console.log(message.id, message.data)
+        std.out(message.id, message.data)
     }
 }

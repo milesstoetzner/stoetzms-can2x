@@ -4,6 +4,7 @@ import {HTTPReceiver} from '#/receiver/http'
 import {HTTPSender} from '#/sender/http'
 import {LogSender} from '#/sender/log'
 import {VCAN, VCANOptions} from '#/vcan'
+import std from '#std'
 import hae from '#utils/hae'
 import {Command} from 'commander'
 
@@ -28,7 +29,7 @@ const bridge = program
     .option('--sender-endpoint [string]', '')
     .action(
         hae.exit(async (options: BridgeOptions) => {
-            console.log({options})
+            std.log({options})
 
             const receiver = createReceiver(options)
             const sender = createSender(options)

@@ -1,4 +1,5 @@
 import {Receiver} from '#/receiver/receiver'
+import std from '#std'
 import * as check from '#utils/check'
 import hae from '#utils/hae'
 import bodyParser from 'body-parser'
@@ -47,7 +48,7 @@ export class HTTPReceiver extends Receiver {
         )
 
         const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
-            console.log(error.stack)
+            std.log(error.stack)
             return res.status(error.status || 500).json({error: error.msg || error.message || error})
         }
         expressServer.use(errorHandler)
@@ -55,7 +56,7 @@ export class HTTPReceiver extends Receiver {
         this.server = http.createServer(expressServer)
 
         this.server.listen({port: this.options.port, host: this.options.host}, () => {
-            console.log(`Server is now running on http://${this.options.host}:${this.options.port}`)
+            std.log(`Server is now running on http://${this.options.host}:${this.options.port}`)
         })
     }
 

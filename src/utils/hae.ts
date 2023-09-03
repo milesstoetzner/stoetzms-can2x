@@ -1,4 +1,4 @@
-import console from 'console'
+import std from '#std'
 import Express from 'express'
 
 function express(fn: Express.RequestHandler): Express.RequestHandler {
@@ -12,7 +12,7 @@ function exit<T>(fn: (args: T) => Promise<void>): (args: T) => Promise<void> {
         try {
             await fn(options)
         } catch (e) {
-            console.log(e)
+            std.log(e)
             process.exit(1)
         }
     }
@@ -23,7 +23,7 @@ function log<T>(fn: (args: T) => Promise<void>): (args: T) => Promise<void> {
         try {
             await fn(args)
         } catch (e) {
-            console.log(e)
+            std.log(e)
         }
     }
 }

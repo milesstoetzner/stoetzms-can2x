@@ -22,7 +22,8 @@
             "#git": ["src/utils/git"],
             "#utils": ["src/utils/utils"],
             "#check": ["src/utils/check"],
-            "#assert": ["src/utils/assert"]
+            "#assert": ["src/utils/assert"],
+            "#std": ["src/utils/std"]
         },
         "outDir": "build",
         "allowSyntheticDefaultImports": true,
