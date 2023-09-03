@@ -1,4 +1,4 @@
-import * as actions from '#actions'
+import * as actions from '#core/actions'
 import hae from '#utils/hae'
 import {Command, Option} from 'commander'
 

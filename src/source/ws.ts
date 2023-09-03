@@ -1,4 +1,4 @@
-import {Message} from '#/core/message'
+import {Message} from '#core/message'
 import {Source} from '#/source/source'
 import std from '#std'
 import * as check from '#utils/check'

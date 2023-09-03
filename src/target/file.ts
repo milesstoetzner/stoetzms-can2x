@@ -1,4 +1,4 @@
-import {Message} from '#/core/message'
+import {Message} from '#core/message'
 import {Target} from '#/target/target'
 import * as files from '#files'
 import std from '#std'

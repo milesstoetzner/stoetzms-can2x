@@ -1,4 +1,4 @@
-import {Message} from '#/core/message'
+import {Message} from '#core/message'
 import {Processor, Source} from '#/source/source'
 import std from '#std'
 

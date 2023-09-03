@@ -1,5 +1,5 @@
-import {Bridge} from '#/core/bridge'
-import {VCAN, VCANOptions} from '#/core/vcan'
+import {Bridge} from '#core/bridge'
+import {VCAN, VCANOptions} from '#core/vcan'
 import {CANSource} from '#/source/can'
 import {ConsoleSource} from '#/source/console'
 import {HTTPSource} from '#/source/http'
