@@ -46,3 +46,5 @@ dist
 tests/tmp
 .nyc_output
 coverage
+
+out.txt

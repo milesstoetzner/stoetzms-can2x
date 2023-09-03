@@ -1,9 +1,7 @@
 import {Processor, Receiver} from '#/receiver/receiver'
+import {Message} from '#/types'
 
-export type ConsoleReceiverOptions = {
-    id: number
-    data: number[]
-}
+export type ConsoleReceiverOptions = Message
 
 export class ConsoleReceiver extends Receiver {
     options: ConsoleReceiverOptions

@@ -13,19 +13,31 @@ export class Bridge {
     }
 
     async start() {
+        std.log('starting receiver')
         await this.receiver.start()
+
+        std.log('starting sender')
         await this.sender.start()
 
+        await this.receiver.ready()
+        std.log('receiver ready')
+
+        await this.sender.ready()
+        std.log('sender ready')
+
+        std.log('bridge ready')
         await this.receiver.receive(
             hae.log(async message => {
-                std.log(message.id, message.data)
+                std.log('bridge', {message})
                 await this.sender.send(message)
             })
         )
     }
 
     async stop() {
+        std.log('stopping bridge')
         await this.receiver.stop()
         await this.sender.stop()
+        std.log('bridge stopped')
     }
 }

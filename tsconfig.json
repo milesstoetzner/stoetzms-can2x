@@ -23,7 +23,8 @@
             "#utils": ["src/utils/utils"],
             "#check": ["src/utils/check"],
             "#assert": ["src/utils/assert"],
-            "#std": ["src/utils/std"]
+            "#std": ["src/utils/std"],
+            "#actions": ["src/core/actions"]
         },
         "outDir": "build",
         "allowSyntheticDefaultImports": true,

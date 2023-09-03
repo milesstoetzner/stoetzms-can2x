@@ -1,4 +1,5 @@
 import {Receiver} from '#/receiver/receiver'
+import {Message} from '#/types'
 import std from '#std'
 import * as check from '#utils/check'
 import hae from '#utils/hae'
@@ -33,7 +34,7 @@ export class HTTPReceiver extends Receiver {
         const resolvers = express.Router()
         resolvers.post(
             '/',
-            hae.express(async (req: Request<{}, {}, {id: number; data: number[]}>, res, next) => {
+            hae.express(async (req: Request<{}, {}, Message>, res, next) => {
                 if (check.isDefined(this.processor)) this.processor(req.body)
                 return res.status(200).json({})
             })
@@ -56,7 +57,8 @@ export class HTTPReceiver extends Receiver {
         this.server = http.createServer(expressServer)
 
         this.server.listen({port: this.options.port, host: this.options.host}, () => {
-            std.log(`Server is now running on http://${this.options.host}:${this.options.port}`)
+            std.log(`Server is now running on "http://${this.options.host}:${this.options.port}"`)
+            this.resolveReady()
         })
     }
 
