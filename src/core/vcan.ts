@@ -2,6 +2,8 @@ export type VCANOptions = {
     name?: string
 }
 
+// TODO: what is about sudo
+
 export class VCAN {
     options: Required<VCANOptions>
 
@@ -13,10 +15,15 @@ export class VCAN {
         await shell(`modprobe vcan`)
     }
 
-    async create() {
+    async start() {
         await this.check()
         await shell(`ip link add ${this.options.name} type vcan`)
-        await shell(`ip link set up ${this.options.name}`)
+        await shell(`ip link set ${this.options.name} up`)
+    }
+
+    async stop() {
+        await shell(`ip link set ${this.options.name} down`)
+        await shell(`ip link delete ${this.options.name}`)
     }
 }
 

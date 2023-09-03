@@ -24,7 +24,7 @@ export type BridgeOptions = {
     senderFile?: string
 }
 
-export async function bridge(options: BridgeOptions) {
+export async function createBridge(options: BridgeOptions) {
     std.log('can2x bridge', {options})
 
     const receiver = createReceiver(options)
@@ -36,12 +36,21 @@ export async function bridge(options: BridgeOptions) {
     return bridge
 }
 
-export async function vcan(options: VCANOptions) {
-    std.log('can2x vcan', {options})
+export async function startVCAN(options: VCANOptions) {
+    std.log('can2x vcan create', {options})
 
     std.log('creating vcan')
     const vcan = new VCAN(options)
-    await vcan.create()
+    await vcan.start()
+    return vcan
+}
+
+export async function stopVCAN(options: VCANOptions) {
+    std.log('can2x vcan delete', {options})
+
+    std.log('deleting vcan')
+    const vcan = new VCAN(options)
+    await vcan.stop()
     return vcan
 }
 
