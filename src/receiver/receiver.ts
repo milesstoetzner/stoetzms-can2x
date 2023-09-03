@@ -28,5 +28,5 @@ export abstract class Receiver {
         this.processor = processor
     }
 
-    continuous: boolean = true
+    continuous = true
 }
