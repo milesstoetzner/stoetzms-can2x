@@ -4,10 +4,12 @@ import {CanReceiver} from '#/receiver/can'
 import {ConsoleReceiver} from '#/receiver/console'
 import {HTTPReceiver} from '#/receiver/http'
 import {SocketIOReceiver} from '#/receiver/socket-io'
+import {WSReceiver} from '#/receiver/ws'
 import {ConsoleSender} from '#/sender/console'
 import {FileSender} from '#/sender/file'
 import {HTTPSender} from '#/sender/http'
 import {SocketIOSender} from '#/sender/socket-io'
+import {WSSender} from '#/sender/ws'
 import * as assert from '#assert'
 import std from '#std'
 
@@ -81,6 +83,13 @@ function createReceiver(options: BridgeOptions) {
         })
     }
 
+    if (options.receiver === 'ws') {
+        return new WSReceiver({
+            port: options.receiverPort ? Number(options.receiverPort) : 3000,
+            host: options.receiverHost ?? 'localhost',
+        })
+    }
+
     throw new Error(`Receiver of type "${options.receiver}" unknown`)
 }
 
@@ -107,6 +116,13 @@ function createSender(options: BridgeOptions) {
         return new SocketIOSender({
             endpoint: options.senderEndpoint,
             event: options.senderEvent ?? 'can2x',
+        })
+    }
+
+    if (options.sender === 'ws') {
+        assert.isDefined(options.senderEndpoint, '--sender-endpoint must be defined')
+        return new WSSender({
+            endpoint: options.senderEndpoint,
         })
     }
 

@@ -21,7 +21,7 @@ export class SocketIOReceiver extends Receiver {
     }
 
     async start() {
-        std.log('starting socket-io server')
+        std.log('starting socket-io server', {options: this.options})
 
         this.server = http.createServer()
 
@@ -30,7 +30,13 @@ export class SocketIOReceiver extends Receiver {
             std.log(`socket-io client connected`, {id: socket.id})
 
             socket.on(this.options.event, (message: Message) => {
-                if (check.isDefined(this.processor)) this.processor(message)
+                std.log('socket-io server message', {message})
+
+                if (check.isDefined(this.processor)) {
+                    this.processor(message)
+                } else {
+                    std.log('no processor defined')
+                }
             })
         })
 

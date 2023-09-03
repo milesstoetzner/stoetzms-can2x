@@ -25,6 +25,8 @@ export class HTTPReceiver extends Receiver {
     }
 
     async start() {
+        std.log('starting http server', {options: this.options})
+
         const expressServer = express()
         expressServer.use(cors())
         expressServer.set('json spaces', 2)
@@ -35,7 +37,12 @@ export class HTTPReceiver extends Receiver {
         resolvers.post(
             '/',
             hae.express(async (req: Request<{}, {}, Message>, res, next) => {
-                if (check.isDefined(this.processor)) this.processor(req.body)
+                std.log('http server message', {message: req.body})
+                if (check.isDefined(this.processor)) {
+                    this.processor(req.body)
+                } else {
+                    std.log('no processor defined')
+                }
                 return res.status(200).json({})
             })
         )
@@ -57,7 +64,7 @@ export class HTTPReceiver extends Receiver {
         this.server = http.createServer(expressServer)
 
         this.server.listen({port: this.options.port, host: this.options.host}, () => {
-            std.log(`Server is now running on "http://${this.options.host}:${this.options.port}"`)
+            std.log(`http server is now running on "http://${this.options.host}:${this.options.port}"`)
             this.resolveReady()
         })
     }
