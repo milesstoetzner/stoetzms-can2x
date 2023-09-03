@@ -1,0 +1,1 @@
+yarn cli bridge start --source socketio --target file --target-file out.txt

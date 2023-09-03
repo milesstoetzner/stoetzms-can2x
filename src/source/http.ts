@@ -1,5 +1,5 @@
 import {Message} from '#/core/message'
-import {Receiver} from '#/receiver/receiver'
+import {Source} from '#/source/source'
 import std from '#std'
 import * as check from '#utils/check'
 import hae from '#utils/hae'
@@ -10,22 +10,22 @@ import express, {Request} from 'express'
 import http from 'http'
 import createError from 'http-errors'
 
-export type HTTPReceiverOptions = {
+export type HTTPSourceOptions = {
     port: number
     host: string
 }
 
-export class HTTPReceiver extends Receiver {
-    server?: http.Server
-    options: HTTPReceiverOptions
+export class HTTPSource extends Source {
+    source?: http.Server
+    options: HTTPSourceOptions
 
-    constructor(options: HTTPReceiverOptions) {
+    constructor(options: HTTPSourceOptions) {
         super()
         this.options = options
     }
 
     async start() {
-        std.log('starting http server', {options: this.options})
+        std.log('starting http source', {options: this.options})
 
         const expressServer = express()
         expressServer.use(cors())
@@ -37,7 +37,7 @@ export class HTTPReceiver extends Receiver {
         resolvers.post(
             '/',
             hae.express(async (req: Request<{}, {}, Message>, res, next) => {
-                std.log('http server received', {message: req.body})
+                std.log('http source received', {message: req.body})
 
                 if (check.isDefined(this.processor)) {
                     this.processor(req.body)
@@ -62,25 +62,25 @@ export class HTTPReceiver extends Receiver {
         }
         expressServer.use(errorHandler)
 
-        this.server = http.createServer(expressServer)
+        this.source = http.createServer(expressServer)
 
-        this.server.listen({port: this.options.port, host: this.options.host}, () => {
-            std.log(`http server is now running on "http://${this.options.host}:${this.options.port}"`)
+        this.source.listen({port: this.options.port, host: this.options.host}, () => {
+            std.log(`http source is now running on "http://${this.options.host}:${this.options.port}"`)
             this.resolveReady()
         })
     }
 
     async stop() {
-        std.log('stopping http server')
-        await this.stopServer()
-        std.log('http server stopped')
+        std.log('stopping http source')
+        await this.stopSource()
+        std.log('http source stopped')
     }
 
-    private async stopServer() {
-        if (check.isUndefined(this.server)) return std.log('http server not defined')
-        const server = this.server
+    private async stopSource() {
+        if (check.isUndefined(this.source)) return std.log('http source not defined')
+        const source = this.source
         return new Promise<void>((resolve, reject) => {
-            server.close(error => {
+            source.close(error => {
                 if (check.isDefined(error)) return reject(error)
                 return resolve()
             })

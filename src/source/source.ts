@@ -2,7 +2,7 @@ import {Message} from '#/core/message'
 
 export type Processor = (message: Message) => Promise<void>
 
-export abstract class Receiver {
+export abstract class Source {
     processor?: Processor
     options = {}
 

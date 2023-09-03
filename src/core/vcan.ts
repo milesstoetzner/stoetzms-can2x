@@ -1,10 +1,9 @@
 import std from '#std'
+import * as execa from 'execa'
 
 export type VCANOptions = {
     name?: string
 }
-
-import * as execa from 'execa'
 
 export class VCAN {
     options: Required<VCANOptions>

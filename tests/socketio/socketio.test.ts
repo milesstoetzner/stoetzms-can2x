@@ -4,40 +4,29 @@ import * as files from '#files'
 import std from '#std'
 import * as utils from '#utils'
 import {expect} from 'chai'
-import {afterEach} from 'mocha'
 
-describe('can', () => {
-    const vcan = 'can2x'
-
-    beforeEach(async () => {
-        try {
-            await actions.startVCAN({
-                name: vcan,
-            })
-        } catch (error) {
-            std.log('vcan not created', {error})
-        }
-    })
-
+describe('socketio', () => {
     it('source-target', async () => {
         const message: Message = {id: 69, data: [1, 2, 3]}
         const output = files.temporary()
+        const port = 3001
 
-        // Start can source with file target
+        // Start socketio source with file target
+        // TODO: if an error is thrown then the test does not abort ...
         const source = await actions.startBridge({
-            source: 'can',
-            sourceName: vcan,
+            source: 'socketio',
+            sourcePort: String(port),
             target: 'file',
             targetFile: output,
         })
 
-        // Send message using console source and can target
+        // Send message using console source and socketio target
         const target = await actions.startBridge({
             source: 'console',
             sourceId: String(message.id),
             sourceData: message.data.map(String),
-            target: 'can',
-            targetName: vcan,
+            target: 'socketio',
+            targetEndpoint: `http://localhost:${port}`,
         })
 
         std.log('waiting for message being bridged')
@@ -48,15 +37,5 @@ describe('can', () => {
         await files.deleteFile(output)
         await target.stop()
         await source.stop()
-    })
-
-    afterEach(async () => {
-        try {
-            await actions.stopVCAN({
-                name: vcan,
-            })
-        } catch (error) {
-            std.log('vcan not stopped', {error})
-        }
     })
 })

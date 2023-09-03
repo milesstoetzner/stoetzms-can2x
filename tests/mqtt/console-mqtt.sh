@@ -1,1 +1,1 @@
-yarn cli bridge start --receiver console --receiver-id 0x10 --receiver-data 0x5 5 --sender mqtt --sender-endpoint mqtt://localhost:3000
+yarn cli bridge start --source console --source-id 0x10 --source-data 0x5 5 --target mqtt --target-endpoint mqtt://localhost:3000

@@ -1,1 +1,1 @@
-yarn cli bridge start --receiver console --receiver-id 0x10 --receiver-data 0x5 5 --sender file --sender-file out.txt
+yarn cli bridge start --source console --source-id 0x10 --source-data 0x5 5 --target file --target-file out.txt

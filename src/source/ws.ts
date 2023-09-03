@@ -1,26 +1,26 @@
 import {Message} from '#/core/message'
-import {Receiver} from '#/receiver/receiver'
+import {Source} from '#/source/source'
 import std from '#std'
 import * as check from '#utils/check'
 import http from 'http'
 import * as ws from 'ws'
 
-export type WSReceiverOptions = {
+export type WSSourceOptions = {
     port: number
     host: string
 }
 
-export class WSReceiver extends Receiver {
+export class WSSource extends Source {
     server?: http.Server
-    options: WSReceiverOptions
+    options: WSSourceOptions
 
-    constructor(options: WSReceiverOptions) {
+    constructor(options: WSSourceOptions) {
         super()
         this.options = options
     }
 
     async start() {
-        std.log('starting websocket server', {options: this.options})
+        std.log('starting websocket source', {options: this.options})
         this.server = http.createServer()
 
         const wss = new ws.WebSocketServer({
@@ -28,33 +28,33 @@ export class WSReceiver extends Receiver {
         })
 
         wss.on('connection', ws => {
-            std.log('websocket client connected')
+            std.log('websocket source connected')
 
             ws.on('error', error => {
-                std.log('websocket server error', {error})
+                std.log('websocket source error', {error})
             })
 
             ws.on('message', (message: string) => {
-                std.log('websocket server received', {message})
+                std.log('websocket source received', {message})
                 if (check.isUndefined(this.processor)) return std.log('no processor defined')
                 this.processor(JSON.parse(message) as Message)
             })
         })
 
         this.server.listen({port: this.options.port, host: this.options.host}, () => {
-            std.log(`websocket server is now running on "ws://${this.options.host}:${this.options.port}"`)
+            std.log(`websocket source is now running on "ws://${this.options.host}:${this.options.port}"`)
             this.resolveReady()
         })
 
         this.server.on('error', error => {
-            std.log('websocket server error', {error})
+            std.log('websocket source error', {error})
         })
     }
 
     async stop() {
-        std.log('stopping websocket server')
+        std.log('stopping websocket source')
         await this.stopServer()
-        std.log('socket-io stopped')
+        std.log('websocket source stopped')
     }
 
     private async stopServer() {

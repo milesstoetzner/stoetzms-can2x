@@ -1,18 +1,18 @@
-import {Receiver} from '#/receiver/receiver'
+import {Source} from '#/source/source'
 import * as check from '#check'
 import std from '#std'
 import {Message as CANMessage, RawChannel} from '*can.node'
 import * as can from 'socketcan'
 
-export type CANReceiverOptions = {
+export type CANSourceOptions = {
     name: string
 }
 
-export class CanReceiver extends Receiver {
-    channel?: RawChannel
-    options: CANReceiverOptions
+export class CANSource extends Source {
+    source?: RawChannel
+    options: CANSourceOptions
 
-    constructor(options: CANReceiverOptions) {
+    constructor(options: CANSourceOptions) {
         super()
         this.options = options
     }
@@ -20,10 +20,10 @@ export class CanReceiver extends Receiver {
     async start() {
         std.log('starting can server', {options: this.options})
 
-        this.channel = can.createRawChannel(this.options.name)
-        this.channel.start()
+        this.source = can.createRawChannel(this.options.name)
+        this.source.start()
 
-        this.channel.addListener('onMessage', (message: CANMessage) => {
+        this.source.addListener('onMessage', (message: CANMessage) => {
             std.log('can server received', {message})
             if (check.isUndefined(this.processor)) return std.log('no processor defined')
             this.processor({id: message.id, data: Array.from(message.data)})
@@ -35,8 +35,8 @@ export class CanReceiver extends Receiver {
 
     async stop() {
         std.log('stopping can server')
-        if (check.isUndefined(this.channel)) return std.log('can server not defined')
-        this.channel.stop()
+        if (check.isUndefined(this.source)) return std.log('can server not defined')
+        this.source.stop()
         std.log('can server stopped')
     }
 }

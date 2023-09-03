@@ -1,24 +1,24 @@
 import {Message} from '#/core/message'
-import {Sender} from '#/sender/sender'
+import {Target} from '#/target/target'
 import * as files from '#files'
 import std from '#std'
 
-export type FileSenderOptions = {
+export type FileTargetOptions = {
     file: string
 }
 
-export class FileSender extends Sender {
-    options: FileSenderOptions
+export class FileTargt extends Target {
+    options: FileTargetOptions
 
-    constructor(options: FileSenderOptions) {
+    constructor(options: FileTargetOptions) {
         super()
         this.options = options
     }
 
     async send(message: Message) {
-        std.log('writing to file', {message})
+        std.log('file target sending', {message})
         await files.createFile(this.options.file)
         await files.appendFile(this.options.file, JSON.stringify(message) + '\n')
-        std.log('wrote to file')
+        std.log('file target sent')
     }
 }

@@ -7,7 +7,7 @@ import {expect} from 'chai'
 import {afterEach} from 'mocha'
 
 /**
- * console2can --(can2x1)--> can2socket-io -> socket-io2can --(can2x2)--> can2file
+ * console2can --(can2x1)--> can2socketio -> socketio2can --(can2x2)--> can2file
  */
 describe('complex', () => {
     beforeEach(async () => {
@@ -28,36 +28,36 @@ describe('complex', () => {
         }
     })
 
-    it('sender-receiver', async () => {
+    it('source-target', async () => {
         const message: Message = {id: 69, data: [1, 2, 3]}
         const output = files.temporary()
 
         const can2file = await actions.startBridge({
-            receiver: 'can',
-            receiverName: 'can2x2',
-            sender: 'file',
-            senderFile: output,
+            source: 'can',
+            sourceName: 'can2x2',
+            target: 'file',
+            targetFile: output,
         })
 
         const socketio2can = await actions.startBridge({
-            receiver: 'socket-io',
-            sender: 'can',
-            senderName: 'can2x2',
+            source: 'socketio',
+            target: 'can',
+            targetName: 'can2x2',
         })
 
         const can2socketio = await actions.startBridge({
-            receiver: 'can',
-            receiverName: 'can2x1',
-            sender: 'socket-io',
-            senderEndpoint: 'http://localhost:3000',
+            source: 'can',
+            sourceName: 'can2x1',
+            target: 'socketio',
+            targetEndpoint: 'http://localhost:3000',
         })
 
         const console2can = await actions.startBridge({
-            receiver: 'console',
-            receiverId: String(message.id),
-            receiverData: message.data.map(String),
-            sender: 'can',
-            senderName: 'can2x1',
+            source: 'console',
+            sourceId: String(message.id),
+            sourceData: message.data.map(String),
+            target: 'can',
+            targetName: 'can2x1',
         })
 
         std.log('waiting for message being bridged')

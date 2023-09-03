@@ -1,1 +1,0 @@
-yarn cli bridge start --receiver socket-io --sender file --sender-file out.txt

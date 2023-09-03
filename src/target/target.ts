@@ -1,6 +1,6 @@
 import {Message} from '#/core/message'
 
-export abstract class Sender {
+export abstract class Target {
     async start() {
         this.resolveReady()
     }

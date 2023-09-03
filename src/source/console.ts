@@ -1,13 +1,13 @@
 import {Message} from '#/core/message'
-import {Processor, Receiver} from '#/receiver/receiver'
+import {Processor, Source} from '#/source/source'
 import std from '#std'
 
-export type ConsoleReceiverOptions = Message
+export type ConsoleSourceOptions = Message
 
-export class ConsoleReceiver extends Receiver {
-    options: ConsoleReceiverOptions
+export class ConsoleSource extends Source {
+    options: ConsoleSourceOptions
 
-    constructor(options: ConsoleReceiverOptions) {
+    constructor(options: ConsoleSourceOptions) {
         super()
         this.options = options
     }

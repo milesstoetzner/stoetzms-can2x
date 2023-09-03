@@ -1,22 +1,22 @@
 import {Message} from '#/core/message'
-import {Receiver} from '#/receiver/receiver'
+import {Source} from '#/source/source'
 import std from '#std'
 import * as check from '#utils/check'
 import Aedes from 'aedes'
 import net from 'net'
 
-export type MQTTReceiverOptions = {
+export type MQTTSourceOptions = {
     port: number
     host: string
     topic: string
 }
 
-export class MQTTReceiver extends Receiver {
+export class MQTTSource extends Source {
     aedes?: Aedes
     server?: net.Server
-    options: MQTTReceiverOptions
+    options: MQTTSourceOptions
 
-    constructor(options: MQTTReceiverOptions) {
+    constructor(options: MQTTSourceOptions) {
         super()
         this.options = options
     }
@@ -28,27 +28,27 @@ export class MQTTReceiver extends Receiver {
 
         this.server = net.createServer(this.aedes.handle)
 
-        this.aedes.on('subscribe', (subscriptions, client) => {
-            std.log('mqtt client subscribed', {id: client.id, subscriptions: subscriptions.map(it => it.topic)})
+        this.aedes.on('subscribe', (subscriptions, source) => {
+            std.log('mqtt source subscribed', {id: source.id, subscriptions: subscriptions.map(it => it.topic)})
         })
 
-        this.aedes.on('unsubscribe', (subscriptions, client) => {
-            std.log('mqtt client unsubscribed', {id: client.id, subscriptions: subscriptions})
+        this.aedes.on('unsubscribe', (subscriptions, source) => {
+            std.log('mqtt source unsubscribed', {id: source.id, subscriptions: subscriptions})
         })
 
-        this.aedes.on('client', client => {
-            std.log('mqtt client connected', {id: client.id})
+        this.aedes.on('client', source => {
+            std.log('mqtt source connected', {id: source.id})
         })
 
-        this.aedes.on('clientDisconnect', client => {
-            std.log('mqtt client disconnected', {id: client.id})
+        this.aedes.on('clientDisconnect', source => {
+            std.log('mqtt source disconnected', {id: source.id})
         })
 
         this.aedes.on('publish', packet => {
             const topic = packet.topic
             const message = packet.payload.toString()
 
-            std.log('mqtt server received', {message, topic})
+            std.log('mqtt source received', {message, topic})
             if (topic.startsWith('$SYS')) return
             if (topic !== this.options.topic) return std.log('topic unknown', {topic})
 
@@ -57,17 +57,17 @@ export class MQTTReceiver extends Receiver {
         })
 
         this.server.listen({port: this.options.port, host: this.options.host}, () => {
-            std.log(`mqtt server is now running on "mqtt://${this.options.host}:${this.options.port}"`)
+            std.log(`mqtt source is now running on "mqtt://${this.options.host}:${this.options.port}"`)
             this.resolveReady()
         })
 
         this.server.on('error', error => {
-            std.log('mqtt server error', {error})
+            std.log('mqtt source error', {error})
         })
     }
 
     async stop() {
-        std.log('stopping mqtt server')
+        std.log('stopping mqtt source')
 
         std.log('stopping mqtt aedes server')
         await this.stopAedes()
@@ -77,7 +77,7 @@ export class MQTTReceiver extends Receiver {
         await this.stopServer()
         std.log('mqtt http server stopped')
 
-        std.log('mqtt server stopped')
+        std.log('mqtt source stopped')
     }
 
     private async stopServer() {

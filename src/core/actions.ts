@@ -1,44 +1,44 @@
 import {Bridge} from '#/core/bridge'
 import {VCAN, VCANOptions} from '#/core/vcan'
-import {CanReceiver} from '#/receiver/can'
-import {ConsoleReceiver} from '#/receiver/console'
-import {HTTPReceiver} from '#/receiver/http'
-import {MQTTReceiver} from '#/receiver/mqtt'
-import {SocketIOReceiver} from '#/receiver/socket-io'
-import {WSReceiver} from '#/receiver/ws'
-import {CANSender} from '#/sender/can'
-import {ConsoleSender} from '#/sender/console'
-import {FileSender} from '#/sender/file'
-import {HTTPSender} from '#/sender/http'
-import {MQTTSender} from '#/sender/mqtt'
-import {SocketIOSender} from '#/sender/socket-io'
-import {WSSender} from '#/sender/ws'
+import {CANSource} from '#/source/can'
+import {ConsoleSource} from '#/source/console'
+import {HTTPSource} from '#/source/http'
+import {MQTTSource} from '#/source/mqtt'
+import {SocketIOSource} from '#/source/socketio'
+import {WSSource} from '#/source/ws'
+import {CANTarget} from '#/target/can'
+import {ConsoleTarget} from '#/target/console'
+import {FileTargt} from '#/target/file'
+import {HTTPTarget} from '#/target/http'
+import {MQTTTarget} from '#/target/mqtt'
+import {SocketIOTarget} from '#/target/socketio'
+import {WSTarget} from '#/target/ws'
 import * as assert from '#assert'
 import std from '#std'
 
 export type BridgeOptions = {
-    receiver?: string
-    receiverPort?: string
-    receiverHost?: string
-    receiverEvent?: string
-    receiverTopic?: string
-    receiverName?: string
-    receiverId?: string
-    receiverData?: string[]
-    sender?: string
-    senderEndpoint?: string
-    senderEvent?: string
-    senderTopic?: string
-    senderName?: string
-    senderFile?: string
+    source?: string
+    sourcePort?: string
+    sourceHost?: string
+    sourceEvent?: string
+    sourceTopic?: string
+    sourceName?: string
+    sourceId?: string
+    sourceData?: string[]
+    target?: string
+    targetEndpoint?: string
+    targetEvent?: string
+    targetTopic?: string
+    targetName?: string
+    targetFile?: string
 }
 
 export async function startBridge(options: BridgeOptions) {
     std.log('can2x bridge', {options})
 
-    const receiver = createReceiver(options)
-    const sender = createSender(options)
-    const bridge = new Bridge(receiver, sender)
+    const source = createSource(options)
+    const target = createTarget(options)
+    const bridge = new Bridge(source, target)
 
     std.log('starting bridge')
     await bridge.start()
@@ -63,92 +63,92 @@ export async function stopVCAN(options: VCANOptions) {
     return vcan
 }
 
-function createReceiver(options: BridgeOptions) {
-    if (options.receiver === 'can') return new CanReceiver({name: options.receiverName ?? 'can2x'})
+function createSource(options: BridgeOptions) {
+    if (options.source === 'can') return new CANSource({name: options.sourceName ?? 'can2x'})
 
-    if (options.receiver === 'console') {
-        assert.isDefined(options.receiverId, '--receiver-id undefined')
-        assert.isDefined(options.receiverData, '--receiver-data undefined')
-        assert.isArray(options.receiverData, '--receiver-data must be an array')
-        return new ConsoleReceiver({
-            id: Number(options.receiverId),
-            data: options.receiverData.map(Number),
+    if (options.source === 'console') {
+        assert.isDefined(options.sourceId, '--source-id undefined')
+        assert.isDefined(options.sourceData, '--source-data undefined')
+        assert.isArray(options.sourceData, '--source-data must be an array')
+        return new ConsoleSource({
+            id: Number(options.sourceId),
+            data: options.sourceData.map(Number),
         })
     }
 
-    if (options.receiver === 'http')
-        return new HTTPReceiver({
-            port: options.receiverPort ? Number(options.receiverPort) : 3000,
-            host: options.receiverHost ?? 'localhost',
+    if (options.source === 'http')
+        return new HTTPSource({
+            port: options.sourcePort ? Number(options.sourcePort) : 3000,
+            host: options.sourceHost ?? 'localhost',
         })
 
-    if (options.receiver === 'mqtt')
-        return new MQTTReceiver({
-            port: options.receiverPort ? Number(options.receiverPort) : 3000,
-            host: options.receiverHost ?? 'localhost',
-            topic: options.receiverTopic ?? 'can2x',
+    if (options.source === 'mqtt')
+        return new MQTTSource({
+            port: options.sourcePort ? Number(options.sourcePort) : 3000,
+            host: options.sourceHost ?? 'localhost',
+            topic: options.sourceTopic ?? 'can2x',
         })
 
-    if (options.receiver === 'socket-io')
-        return new SocketIOReceiver({
-            port: options.receiverPort ? Number(options.receiverPort) : 3000,
-            host: options.receiverHost ?? 'localhost',
-            event: options.receiverEvent ?? 'can2x',
+    if (options.source === 'socketio')
+        return new SocketIOSource({
+            port: options.sourcePort ? Number(options.sourcePort) : 3000,
+            host: options.sourceHost ?? 'localhost',
+            event: options.sourceEvent ?? 'can2x',
         })
 
-    if (options.receiver === 'ws')
-        return new WSReceiver({
-            port: options.receiverPort ? Number(options.receiverPort) : 3000,
-            host: options.receiverHost ?? 'localhost',
+    if (options.source === 'ws')
+        return new WSSource({
+            port: options.sourcePort ? Number(options.sourcePort) : 3000,
+            host: options.sourceHost ?? 'localhost',
         })
 
-    throw new Error(`Receiver of type "${options.receiver}" unknown`)
+    throw new Error(`Source of type "${options.source}" unknown`)
 }
 
-function createSender(options: BridgeOptions) {
-    if (options.sender === 'can')
-        return new CANSender({
-            name: options.senderName ?? 'can2x',
+function createTarget(options: BridgeOptions) {
+    if (options.target === 'can')
+        return new CANTarget({
+            name: options.targetName ?? 'can2x',
         })
 
-    if (options.sender === 'console') return new ConsoleSender()
+    if (options.target === 'console') return new ConsoleTarget()
 
-    if (options.sender === 'file') {
-        assert.isString(options.senderFile)
-        return new FileSender({
-            file: options.senderFile,
-        })
-    }
-
-    if (options.sender === 'http') {
-        assert.isString(options.senderEndpoint)
-        return new HTTPSender({
-            endpoint: options.senderEndpoint,
+    if (options.target === 'file') {
+        assert.isString(options.targetFile)
+        return new FileTargt({
+            file: options.targetFile,
         })
     }
 
-    if (options.sender === 'mqtt') {
-        assert.isString(options.senderEndpoint)
-        return new MQTTSender({
-            endpoint: options.senderEndpoint,
-            topic: options.senderTopic ?? 'can2x',
+    if (options.target === 'http') {
+        assert.isString(options.targetEndpoint)
+        return new HTTPTarget({
+            endpoint: options.targetEndpoint,
         })
     }
 
-    if (options.sender === 'socket-io') {
-        assert.isDefined(options.senderEndpoint, '--sender-endpoint must be defined')
-        return new SocketIOSender({
-            endpoint: options.senderEndpoint,
-            event: options.senderEvent ?? 'can2x',
+    if (options.target === 'mqtt') {
+        assert.isString(options.targetEndpoint)
+        return new MQTTTarget({
+            endpoint: options.targetEndpoint,
+            topic: options.targetTopic ?? 'can2x',
         })
     }
 
-    if (options.sender === 'ws') {
-        assert.isDefined(options.senderEndpoint, '--sender-endpoint must be defined')
-        return new WSSender({
-            endpoint: options.senderEndpoint,
+    if (options.target === 'socketio') {
+        assert.isDefined(options.targetEndpoint, '--target-endpoint must be defined')
+        return new SocketIOTarget({
+            endpoint: options.targetEndpoint,
+            event: options.targetEvent ?? 'can2x',
         })
     }
 
-    throw new Error(`Sender of type "${options.sender}" unknown`)
+    if (options.target === 'ws') {
+        assert.isDefined(options.targetEndpoint, '--target-endpoint must be defined')
+        return new WSTarget({
+            endpoint: options.targetEndpoint,
+        })
+    }
+
+    throw new Error(`Target of type "${options.target}" unknown`)
 }
