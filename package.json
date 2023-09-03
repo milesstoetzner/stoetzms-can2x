@@ -6,6 +6,7 @@
     "author": "Miles Stötzner <miles@stoetzner.de>",
     "license": "Apache-2.0",
     "dependencies": {
+        "aedes": "^0.50.0",
         "commander": "^10.0.1",
         "cors": "^2.8.5",
         "cross-fetch": "^4.0.0",
@@ -14,6 +15,7 @@
         "http-errors": "^2.0.0",
         "js-yaml": "^4.1.0",
         "lodash": "^4.17.21",
+        "mqtt": "^5.0.4",
         "node-cron": "^3.0.2",
         "socket.io": "^4.7.2",
         "socket.io-client": "^4.7.2",

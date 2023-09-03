@@ -44,6 +44,10 @@ export class SocketIOReceiver extends Receiver {
             std.log(`socket-io server running on "http://${this.options.host}:${this.options.port}"`)
             this.resolveReady()
         })
+
+        this.server.on('error', error => {
+            std.log('socket-io server error', {error})
+        })
     }
 
     async stop() {

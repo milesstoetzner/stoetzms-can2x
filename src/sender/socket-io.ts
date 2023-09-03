@@ -30,11 +30,11 @@ export class SocketIOSender extends Sender {
         })
 
         this.client.on('connect_error', error => {
-            std.log(`socket-io client connection error`, {error})
+            std.log(`socket-io client errored`, {error})
         })
 
         this.client.on('close', reason => {
-            std.log(`socket-io client connection closed`, {reason})
+            std.log(`socket-io client closed`, {reason})
         })
 
         this.client.on('disconnect', reason => {
@@ -49,6 +49,8 @@ export class SocketIOSender extends Sender {
 
     async stop() {
         // TODO: wait for disconnect
+        std.log('stopping socket-io client')
         if (check.isDefined(this.client)) this.client.disconnect()
+        std.log('stopped socket-io client')
     }
 }

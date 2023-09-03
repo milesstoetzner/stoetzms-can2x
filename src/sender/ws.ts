@@ -29,11 +29,11 @@ export class WSSender extends Sender {
         })
 
         this.client.on('error', error => {
-            std.log(`websocket client error`, {error})
+            std.log(`websocket client errored`, {error})
         })
 
         this.client.on('close', reason => {
-            std.log(`websocket client connection closed`, {reason})
+            std.log(`websocket client closed`, {reason})
         })
     }
 
@@ -44,6 +44,8 @@ export class WSSender extends Sender {
 
     async stop() {
         // TODO: wait for disconnect
+        std.log('stopping websocket client')
         if (check.isDefined(this.client)) this.client.close()
+        std.log('stopped websocket client')
     }
 }

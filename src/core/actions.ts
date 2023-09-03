@@ -3,11 +3,13 @@ import {VCAN, VCANOptions} from '#/core/vcan'
 import {CanReceiver} from '#/receiver/can'
 import {ConsoleReceiver} from '#/receiver/console'
 import {HTTPReceiver} from '#/receiver/http'
+import {MQTTReceiver} from '#/receiver/mqtt'
 import {SocketIOReceiver} from '#/receiver/socket-io'
 import {WSReceiver} from '#/receiver/ws'
 import {ConsoleSender} from '#/sender/console'
 import {FileSender} from '#/sender/file'
 import {HTTPSender} from '#/sender/http'
+import {MQTTSender} from '#/sender/mqtt'
 import {SocketIOSender} from '#/sender/socket-io'
 import {WSSender} from '#/sender/ws'
 import * as assert from '#assert'
@@ -18,11 +20,13 @@ export type BridgeOptions = {
     receiverPort?: string
     receiverHost?: string
     receiverEvent?: string
+    receiverTopic?: string
     receiverId?: string
     receiverData?: string[]
     sender?: string
     senderEndpoint?: string
     senderEvent?: string
+    senderTopic?: string
     senderFile?: string
 }
 
@@ -69,11 +73,20 @@ function createReceiver(options: BridgeOptions) {
         })
     }
 
-    if (options.receiver === 'http')
+    if (options.receiver === 'http') {
         return new HTTPReceiver({
             port: options.receiverPort ? Number(options.receiverPort) : 3000,
             host: options.receiverHost ?? 'localhost',
         })
+    }
+
+    if (options.receiver === 'mqtt') {
+        return new MQTTReceiver({
+            port: options.receiverPort ? Number(options.receiverPort) : 3000,
+            host: options.receiverHost ?? 'localhost',
+            topic: options.receiverTopic ?? 'can2x',
+        })
+    }
 
     if (options.receiver === 'socket-io') {
         return new SocketIOReceiver({
@@ -96,6 +109,13 @@ function createReceiver(options: BridgeOptions) {
 function createSender(options: BridgeOptions) {
     if (options.sender === 'console') return new ConsoleSender()
 
+    if (options.sender === 'file') {
+        assert.isString(options.senderFile)
+        return new FileSender({
+            file: options.senderFile,
+        })
+    }
+
     if (options.sender === 'http') {
         assert.isString(options.senderEndpoint)
         return new HTTPSender({
@@ -103,10 +123,12 @@ function createSender(options: BridgeOptions) {
         })
     }
 
-    if (options.sender === 'file') {
-        assert.isString(options.senderFile)
-        return new FileSender({
-            file: options.senderFile,
+    if (options.sender === 'mqtt') {
+        assert.isString(options.senderEndpoint)
+
+        return new MQTTSender({
+            endpoint: options.senderEndpoint,
+            topic: options.senderTopic ?? 'can2x',
         })
     }
 

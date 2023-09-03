@@ -48,6 +48,10 @@ export class WSReceiver extends Receiver {
             std.log(`websocket server is now running on "ws://${this.options.host}:${this.options.port}"`)
             this.resolveReady()
         })
+
+        this.server.on('error', error => {
+            std.log('websocket server error', {error})
+        })
     }
 
     async stop() {

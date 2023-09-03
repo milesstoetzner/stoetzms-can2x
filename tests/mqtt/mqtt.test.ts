@@ -5,25 +5,25 @@ import std from '#std'
 import * as utils from '#utils'
 import {expect} from 'chai'
 
-describe('websocket', () => {
+describe('mqtt', () => {
     it('sender-receiver', async () => {
         const message: Message = {id: 69, data: [1, 2, 3]}
         const output = files.temporary()
 
-        // Start websocket receiver with file sender
+        // Start mqtt receiver with file sender
         const receiver = await actions.createBridge({
-            receiver: 'ws',
+            receiver: 'mqtt',
             sender: 'file',
             senderFile: output,
         })
 
-        // Send message using console receiver and websocket sender
+        // Send message using console receiver and mqtt sender
         const sender = await actions.createBridge({
             receiver: 'console',
             receiverId: String(message.id),
             receiverData: message.data.map(String),
-            sender: 'ws',
-            senderEndpoint: 'ws://localhost:3000',
+            sender: 'mqtt',
+            senderEndpoint: 'mqtt://localhost:3000',
         })
 
         std.log('waiting for message being bridged')
