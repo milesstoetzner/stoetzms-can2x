@@ -13,7 +13,7 @@ describe('socket-io', () => {
 
         // Start socket-io receiver with file sender
         // TODO: if an error is thrown then the test does not abort ...
-        const receiver = await actions.createBridge({
+        const receiver = await actions.startBridge({
             receiver: 'socket-io',
             receiverPort: String(port),
             sender: 'file',
@@ -21,7 +21,7 @@ describe('socket-io', () => {
         })
 
         // Send message using console receiver and socket-io sender
-        const sender = await actions.createBridge({
+        const sender = await actions.startBridge({
             receiver: 'console',
             receiverId: String(message.id),
             receiverData: message.data.map(String),

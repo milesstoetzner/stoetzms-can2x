@@ -12,7 +12,7 @@ describe('mqtt', () => {
         const port = 3000
 
         // Start mqtt receiver with file sender
-        const receiver = await actions.createBridge({
+        const receiver = await actions.startBridge({
             receiver: 'mqtt',
             receiverPort: String(port),
             sender: 'file',
@@ -20,7 +20,7 @@ describe('mqtt', () => {
         })
 
         // Send message using console receiver and mqtt sender
-        const sender = await actions.createBridge({
+        const sender = await actions.startBridge({
             receiver: 'console',
             receiverId: String(message.id),
             receiverData: message.data.map(String),
@@ -32,7 +32,6 @@ describe('mqtt', () => {
         await utils.sleep(25)
 
         expect(files.loadFile(output).trim()).to.equal(JSON.stringify(message))
-        std.log('its the same')
 
         await files.deleteFile(output)
         await sender.stop()

@@ -4,28 +4,43 @@ import * as files from '#files'
 import std from '#std'
 import * as utils from '#utils'
 import {expect} from 'chai'
+import hae from '#utils/hae'
+import {VCAN} from '#/core/vcan'
+import {afterEach} from 'mocha'
 
-describe('websocket', () => {
+describe('can', () => {
+
+    const vcan = 'can2x'
+
+    beforeEach(async () => {
+        try {
+            await actions.startVCAN({
+                name: vcan,
+            })
+        } catch (error) {
+            std.log('vcan not created', {error})
+        }
+    })
+
     it('sender-receiver', async () => {
         const message: Message = {id: 69, data: [1, 2, 3]}
         const output = files.temporary()
-        const port = 3002
 
-        // Start websocket receiver with file sender
+        // Start can receiver with file sender
         const receiver = await actions.startBridge({
-            receiver: 'ws',
-            receiverPort: String(port),
+            receiver: 'can',
+            receiverName: vcan,
             sender: 'file',
             senderFile: output,
         })
 
-        // Send message using console receiver and websocket sender
+        // Send message using console receiver and can sender
         const sender = await actions.startBridge({
             receiver: 'console',
             receiverId: String(message.id),
             receiverData: message.data.map(String),
-            sender: 'ws',
-            senderEndpoint: `ws://localhost:${port}`,
+            sender: 'can',
+            senderName: vcan,
         })
 
         std.log('waiting for message being bridged')
@@ -36,5 +51,15 @@ describe('websocket', () => {
         await files.deleteFile(output)
         await sender.stop()
         await receiver.stop()
+    })
+
+    afterEach(async () => {
+        try {
+            await actions.stopVCAN({
+                name: vcan,
+            })
+        } catch (error) {
+            std.log('vcan not stopped', {error})
+        }
     })
 })

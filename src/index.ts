@@ -20,7 +20,7 @@ bridge
     .option('--receiver-host [string]', '', 'localhost')
     .option('--receiver-event [string]', '', 'can2x')
     .option('--receiver-topic [string]', '', 'can2x')
-    .option('--receiver-name [string]', '', 'vcan0')
+    .option('--receiver-name [string]', '', 'can2x')
     .option('--receiver-id [number]', '')
     .option('--receiver-data [numbers...]', '')
     .addOption(
@@ -31,19 +31,19 @@ bridge
     .option('--sender-endpoint [string]', '')
     .option('--sender-event [string]', '', 'can2x')
     .option('--sender-topic [string]', '', 'can2x')
-    .option('--sender-name [string]', '', 'vcan0')
+    .option('--sender-name [string]', '', 'can2x')
     .option('--sender-file [string]', '')
     .action(
         hae.exit(async options => {
-            await actions.createBridge(options)
+            await actions.startBridge(options)
         })
     )
 
-const vcan = program.command('vcan').description('manages vcan')
+const vcan = program.command('vcan').description('manages a vcan')
 
 vcan.command('start')
     .description('starts a vcan')
-    .option('--name', '', 'vcan0')
+    .option('--name', '', 'can2x')
     .action(
         hae.exit(async options => {
             await actions.startVCAN(options)
@@ -52,7 +52,7 @@ vcan.command('start')
 
 vcan.command('stop')
     .description('stops a vcan')
-    .option('--name', '', 'vcan0')
+    .option('--name', '', 'can2x')
     .action(
         hae.exit(async options => {
             await actions.stopVCAN(options)

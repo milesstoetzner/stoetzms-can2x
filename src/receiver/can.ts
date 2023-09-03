@@ -2,7 +2,7 @@ import {Receiver} from '#/receiver/receiver'
 import * as check from '#check'
 import std from '#std'
 import {Message as CANMessage, RawChannel} from '*can.node'
-import can from 'socketcan'
+import * as can from 'socketcan'
 
 export type CANReceiverOptions = {
     name: string
@@ -28,14 +28,15 @@ export class CanReceiver extends Receiver {
             if (check.isUndefined(this.processor)) return std.log('no processor defined')
             this.processor({id: message.id, data: Array.from(message.data)})
         })
+
+        this.resolveReady()
+        std.log('can server started')
     }
 
     async stop() {
         std.log('stopping can server')
-
         if (check.isUndefined(this.channel)) return std.log('can server not defined')
         this.channel.stop()
-
         std.log('can server stopped')
     }
 }

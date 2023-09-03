@@ -10,7 +10,11 @@ export class VCAN {
     options: Required<VCANOptions>
 
     constructor(options?: VCANOptions) {
-        this.options = {name: options?.name ?? 'vcan0'}
+        this.options = {name: options?.name ?? 'can2x'}
+    }
+
+    get name() {
+        return this.options.name
     }
 
     async check() {

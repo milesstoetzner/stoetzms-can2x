@@ -1,9 +1,10 @@
 import {Message} from '#/core/message'
 import {Sender} from '#/sender/sender'
 import * as assert from '#assert'
+import * as check from '#check'
 import std from '#std'
 import {RawChannel} from '*can.node'
-import can from 'socketcan'
+import * as can from 'socketcan'
 
 export type CANSenderOptions = {
     name: string
@@ -31,5 +32,17 @@ export class CANSender extends Sender {
         assert.isDefined(this.channel, 'can client not started')
         this.channel.send({ext: false, rtr: false, id: message.id, data: Buffer.from(message.data)})
         std.log('can client sent')
+    }
+
+    async stop() {
+        std.log('stopping can client')
+        if (check.isUndefined(this.channel)) return std.log('can client undefined')
+        try {
+            this.channel.stop()
+            std.log('can client stopped')
+        } catch (error) {
+            // TODO: why doesnt this throw the same error when stopping the can server
+            std.log('stopping can client failed', {error: error})
+        }
     }
 }

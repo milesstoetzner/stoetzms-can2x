@@ -5,14 +5,14 @@ import std from '#std'
 import * as utils from '#utils'
 import {expect} from 'chai'
 
-describe('mqtt', () => {
+describe('http', () => {
     it('sender-receiver', async () => {
         const message: Message = {id: 69, data: [1, 2, 3]}
         const output = files.temporary()
         const port = 2999
 
         // Start http receiver with file sender
-        const receiver = await actions.createBridge({
+        const receiver = await actions.startBridge({
             receiver: 'http',
             receiverPort: String(port),
             sender: 'file',
@@ -20,7 +20,7 @@ describe('mqtt', () => {
         })
 
         // Send message using console receiver and http sender
-        const sender = await actions.createBridge({
+        const sender = await actions.startBridge({
             receiver: 'console',
             receiverId: String(message.id),
             receiverData: message.data.map(String),
@@ -32,7 +32,6 @@ describe('mqtt', () => {
         await utils.sleep(25)
 
         expect(files.loadFile(output).trim()).to.equal(JSON.stringify(message))
-        std.log('its the same')
 
         await files.deleteFile(output)
         await sender.stop()

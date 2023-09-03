@@ -33,7 +33,7 @@ export type BridgeOptions = {
     senderFile?: string
 }
 
-export async function createBridge(options: BridgeOptions) {
+export async function startBridge(options: BridgeOptions) {
     std.log('can2x bridge', {options})
 
     const receiver = createReceiver(options)
@@ -64,7 +64,7 @@ export async function stopVCAN(options: VCANOptions) {
 }
 
 function createReceiver(options: BridgeOptions) {
-    if (options.receiver === 'can') return new CanReceiver({name: options.receiverName ?? 'vcan0'})
+    if (options.receiver === 'can') return new CanReceiver({name: options.receiverName ?? 'can2x'})
 
     if (options.receiver === 'console') {
         assert.isDefined(options.receiverId, '--receiver-id undefined')
@@ -108,7 +108,7 @@ function createReceiver(options: BridgeOptions) {
 function createSender(options: BridgeOptions) {
     if (options.sender === 'can')
         return new CANSender({
-            name: options.senderName ?? 'vcan0',
+            name: options.senderName ?? 'can2x',
         })
 
     if (options.sender === 'console') return new ConsoleSender()
