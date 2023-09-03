@@ -1,4 +1,4 @@
-import {Message} from '#/types'
+import {Message} from '#/core/message'
 
 export type Processor = (message: Message) => Promise<void>
 

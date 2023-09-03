@@ -1,5 +1,5 @@
+import {Message} from '#/core/message'
 import {Processor, Receiver} from '#/receiver/receiver'
-import {Message} from '#/types'
 import std from '#std'
 
 export type ConsoleReceiverOptions = Message

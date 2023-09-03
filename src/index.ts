@@ -20,16 +20,18 @@ bridge
     .option('--receiver-host [string]', '', 'localhost')
     .option('--receiver-event [string]', '', 'can2x')
     .option('--receiver-topic [string]', '', 'can2x')
+    .option('--receiver-name [string]', '', 'vcan0')
     .option('--receiver-id [number]', '')
     .option('--receiver-data [numbers...]', '')
     .addOption(
         new Option('--sender [string]', '')
             .default('console')
-            .choices(['console', 'file', 'http', 'mqtt', 'socket-io', 'ws'])
+            .choices(['can', 'console', 'file', 'http', 'mqtt', 'socket-io', 'ws'])
     )
     .option('--sender-endpoint [string]', '')
     .option('--sender-event [string]', '', 'can2x')
     .option('--sender-topic [string]', '', 'can2x')
+    .option('--sender-name [string]', '', 'vcan0')
     .option('--sender-file [string]', '')
     .action(
         hae.exit(async options => {

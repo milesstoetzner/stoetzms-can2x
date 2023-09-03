@@ -1,4 +1,4 @@
-import {Message} from '#/types'
+import {Message} from '#/core/message'
 
 export abstract class Sender {
     async start() {

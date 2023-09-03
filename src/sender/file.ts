@@ -1,5 +1,5 @@
+import {Message} from '#/core/message'
 import {Sender} from '#/sender/sender'
-import {Message} from '#/types'
 import * as files from '#files'
 import std from '#std'
 export type FileSenderOptions = {

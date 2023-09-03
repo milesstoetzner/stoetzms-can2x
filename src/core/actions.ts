@@ -6,6 +6,7 @@ import {HTTPReceiver} from '#/receiver/http'
 import {MQTTReceiver} from '#/receiver/mqtt'
 import {SocketIOReceiver} from '#/receiver/socket-io'
 import {WSReceiver} from '#/receiver/ws'
+import {CANSender} from '#/sender/can'
 import {ConsoleSender} from '#/sender/console'
 import {FileSender} from '#/sender/file'
 import {HTTPSender} from '#/sender/http'
@@ -21,12 +22,14 @@ export type BridgeOptions = {
     receiverHost?: string
     receiverEvent?: string
     receiverTopic?: string
+    receiverName?: string
     receiverId?: string
     receiverData?: string[]
     sender?: string
     senderEndpoint?: string
     senderEvent?: string
     senderTopic?: string
+    senderName?: string
     senderFile?: string
 }
 
@@ -61,7 +64,7 @@ export async function stopVCAN(options: VCANOptions) {
 }
 
 function createReceiver(options: BridgeOptions) {
-    if (options.receiver === 'can') return new CanReceiver()
+    if (options.receiver === 'can') return new CanReceiver({name: options.receiverName ?? 'vcan0'})
 
     if (options.receiver === 'console') {
         assert.isDefined(options.receiverId, '--receiver-id undefined')
@@ -73,40 +76,41 @@ function createReceiver(options: BridgeOptions) {
         })
     }
 
-    if (options.receiver === 'http') {
+    if (options.receiver === 'http')
         return new HTTPReceiver({
             port: options.receiverPort ? Number(options.receiverPort) : 3000,
             host: options.receiverHost ?? 'localhost',
         })
-    }
 
-    if (options.receiver === 'mqtt') {
+    if (options.receiver === 'mqtt')
         return new MQTTReceiver({
             port: options.receiverPort ? Number(options.receiverPort) : 3000,
             host: options.receiverHost ?? 'localhost',
             topic: options.receiverTopic ?? 'can2x',
         })
-    }
 
-    if (options.receiver === 'socket-io') {
+    if (options.receiver === 'socket-io')
         return new SocketIOReceiver({
             port: options.receiverPort ? Number(options.receiverPort) : 3000,
             host: options.receiverHost ?? 'localhost',
             event: options.receiverEvent ?? 'can2x',
         })
-    }
 
-    if (options.receiver === 'ws') {
+    if (options.receiver === 'ws')
         return new WSReceiver({
             port: options.receiverPort ? Number(options.receiverPort) : 3000,
             host: options.receiverHost ?? 'localhost',
         })
-    }
 
     throw new Error(`Receiver of type "${options.receiver}" unknown`)
 }
 
 function createSender(options: BridgeOptions) {
+    if (options.sender === 'can')
+        return new CANSender({
+            name: options.senderName ?? 'vcan0',
+        })
+
     if (options.sender === 'console') return new ConsoleSender()
 
     if (options.sender === 'file') {
@@ -125,7 +129,6 @@ function createSender(options: BridgeOptions) {
 
     if (options.sender === 'mqtt') {
         assert.isString(options.senderEndpoint)
-
         return new MQTTSender({
             endpoint: options.senderEndpoint,
             topic: options.senderTopic ?? 'can2x',
@@ -134,7 +137,6 @@ function createSender(options: BridgeOptions) {
 
     if (options.sender === 'socket-io') {
         assert.isDefined(options.senderEndpoint, '--sender-endpoint must be defined')
-
         return new SocketIOSender({
             endpoint: options.senderEndpoint,
             event: options.senderEvent ?? 'can2x',

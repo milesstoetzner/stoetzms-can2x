@@ -1,5 +1,5 @@
+import {Message} from '#/core/message'
 import {Sender} from '#/sender/sender'
-import {Message} from '#/types'
 import * as assert from '#assert'
 import * as check from '#check'
 import std from '#std'
@@ -49,6 +49,7 @@ export class MQTTSender extends Sender {
         })
 
         this.resolveReady()
+        std.log('mqtt client started')
     }
 
     async send(message: Message) {

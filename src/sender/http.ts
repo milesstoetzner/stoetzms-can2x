@@ -1,5 +1,5 @@
+import {Message} from '#/core/message'
 import {Sender} from '#/sender/sender'
-import {Message} from '#/types'
 import std from '#std'
 import fetch from 'cross-fetch'
 

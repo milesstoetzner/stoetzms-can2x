@@ -1,5 +1,5 @@
+import {Message} from '#/core/message'
 import {Receiver} from '#/receiver/receiver'
-import {Message} from '#/types'
 import std from '#std'
 import * as check from '#utils/check'
 import Aedes from 'aedes'
@@ -52,11 +52,8 @@ export class MQTTReceiver extends Receiver {
             if (topic.startsWith('$SYS')) return
             if (topic !== this.options.topic) return std.log('topic unknown', {topic})
 
-            if (check.isDefined(this.processor)) {
-                this.processor(JSON.parse(message) as Message)
-            } else {
-                std.log('no processor defined')
-            }
+            if (check.isUndefined(this.processor)) return std.log('no processor defined')
+            this.processor(JSON.parse(message) as Message)
         })
 
         this.server.listen({port: this.options.port, host: this.options.host}, () => {

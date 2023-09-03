@@ -1,5 +1,5 @@
+import {Message} from '#/core/message'
 import {Receiver} from '#/receiver/receiver'
-import {Message} from '#/types'
 import std from '#std'
 import * as check from '#utils/check'
 import http from 'http'
@@ -32,12 +32,8 @@ export class SocketIOReceiver extends Receiver {
 
             socket.on(this.options.event, (message: Message) => {
                 std.log('socket-io server received', {message})
-
-                if (check.isDefined(this.processor)) {
-                    this.processor(message)
-                } else {
-                    std.log('no processor defined')
-                }
+                if (check.isUndefined(this.processor)) return std.log('no processor defined')
+                this.processor(message)
             })
         })
 

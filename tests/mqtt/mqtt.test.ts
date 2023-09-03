@@ -1,4 +1,4 @@
-import {Message} from '#/types'
+import {Message} from '#/core/message'
 import * as actions from '#actions'
 import * as files from '#files'
 import std from '#std'

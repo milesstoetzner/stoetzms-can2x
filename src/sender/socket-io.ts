@@ -1,5 +1,5 @@
+import {Message} from '#/core/message'
 import {Sender} from '#/sender/sender'
-import {Message} from '#/types'
 import * as assert from '#assert'
 import * as check from '#check'
 import std from '#std'
@@ -27,6 +27,7 @@ export class SocketIOSender extends Sender {
         this.client.on('connect', () => {
             std.log(`socket-io client connected`, {id: this.client!.id})
             this.resolveReady()
+            std.log('websocket client started')
         })
 
         this.client.on('connect_error', error => {

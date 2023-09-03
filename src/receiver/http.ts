@@ -1,5 +1,5 @@
+import {Message} from '#/core/message'
 import {Receiver} from '#/receiver/receiver'
-import {Message} from '#/types'
 import std from '#std'
 import * as check from '#utils/check'
 import hae from '#utils/hae'
@@ -38,6 +38,7 @@ export class HTTPReceiver extends Receiver {
             '/',
             hae.express(async (req: Request<{}, {}, Message>, res, next) => {
                 std.log('http server received', {message: req.body})
+
                 if (check.isDefined(this.processor)) {
                     this.processor(req.body)
                 } else {
