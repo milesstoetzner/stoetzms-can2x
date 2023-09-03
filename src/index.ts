@@ -4,7 +4,7 @@ import {Command, Option} from 'commander'
 
 export const program = new Command()
 
-const can2x = program.name('can2x')
+const can2x = program.name('can2x').description('can2x is a simple utility for connecting a can bus unidirectional with another can bus over the network using common web protocols, such as HTTP, MQTT, Socket.IO, and WebSockets.')
 
 const bridge = can2x.command('bridge').description('manages a can2x bridge')
 
