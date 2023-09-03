@@ -10,7 +10,6 @@ export abstract class Receiver {
         this.resolveReady()
     }
 
-    // TODO: call resolve everywhere
     protected readyPromise = new Promise<void>((resolve, reject) => {
         this.resolveReady = resolve
         this.rejectReady = reject

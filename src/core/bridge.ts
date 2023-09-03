@@ -25,7 +25,7 @@ export class Bridge {
         await this.sender.ready()
         std.log('sender ready')
 
-        std.log('bridge ready')
+        std.log('bridge started')
         await this.receiver.receive(
             hae.log(async message => {
                 std.log('bridge', {message})

@@ -5,7 +5,6 @@ export abstract class Sender {
         this.resolveReady()
     }
 
-    // TODO: call resolve everywhere
     protected readyPromise = new Promise<void>((resolve, reject) => {
         this.resolveReady = resolve
         this.rejectReady = reject

@@ -31,12 +31,14 @@ export async function bridge(options: BridgeOptions) {
     const sender = createSender(options)
     const bridge = new Bridge(receiver, sender)
 
+    std.log('starting bridge')
     await bridge.start()
 }
 
 export async function vcan(options: VCANOptions) {
     std.log('can2x vcan', {options})
 
+    std.log('creating vcan')
     const vcan = new VCAN(options)
     await vcan.create()
 }
@@ -61,12 +63,10 @@ function createReceiver(options: BridgeOptions) {
         })
 
     if (options.receiver === 'socket-io') {
-        assert.isDefined(options.receiverEvent, '--receiver-event undefined')
-
         return new SocketIOReceiver({
             port: options.receiverPort ? Number(options.receiverPort) : 4269,
             host: options.receiverHost ?? 'localhost',
-            event: options.receiverEvent,
+            event: options.receiverEvent ?? 'can2x',
         })
     }
 
@@ -92,11 +92,10 @@ function createSender(options: BridgeOptions) {
 
     if (options.sender === 'socket-io') {
         assert.isDefined(options.senderEndpoint, '--sender-endpoint must be defined')
-        assert.isDefined(options.senderEvent, '--sender-event must be defined')
 
         return new SocketIOSender({
             endpoint: options.senderEndpoint,
-            event: options.senderEvent,
+            event: options.senderEvent ?? 'can2x',
         })
     }
 

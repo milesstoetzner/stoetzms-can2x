@@ -43,7 +43,6 @@ export class SocketIOSender extends Sender {
 
     async send(message: Message) {
         assert.isDefined(this.client, 'SocketIO sender not started')
-        // TODO: maybe Buffer.from? but must be consistent when bridging
         this.client.emit(this.options.event, message)
     }
 }
