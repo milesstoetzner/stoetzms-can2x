@@ -1,8 +1,10 @@
+import std from '#std'
+
 export type VCANOptions = {
     name?: string
 }
 
-// TODO: what is about sudo
+import * as execa from 'execa'
 
 export class VCAN {
     options: Required<VCANOptions>
@@ -12,22 +14,21 @@ export class VCAN {
     }
 
     async check() {
-        await shell(`modprobe vcan`)
+        await execa.command(`modprobe vcan`)
     }
 
     async start() {
+        std.log('starting vcan', {options: this.options})
         await this.check()
-        await shell(`ip link add ${this.options.name} type vcan`)
-        await shell(`ip link set ${this.options.name} up`)
+        await execa.command(`ip link add ${this.options.name} type vcan`)
+        await execa.command(`ip link set ${this.options.name} up`)
+        std.log('vcan started')
     }
 
     async stop() {
-        await shell(`ip link set ${this.options.name} down`)
-        await shell(`ip link delete ${this.options.name}`)
+        std.log('stopping vcan')
+        await execa.command(`ip link set ${this.options.name} down`)
+        await execa.command(`ip link delete ${this.options.name}`)
+        std.log('vcan stopped')
     }
-}
-
-async function shell(command: string) {
-    const result = await (await import('execa')).$`${command}`
-    if (result.failed) throw new Error(`Command "${command}} failed`)
 }

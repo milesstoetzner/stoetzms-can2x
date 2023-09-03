@@ -41,7 +41,7 @@ bridge
 
 const vcan = program.command('vcan').description('manages vcan')
 
-vcan.command('vcan')
+vcan.command('start')
     .description('starts a vcan')
     .option('--name', '', 'vcan0')
     .action(
@@ -50,7 +50,7 @@ vcan.command('vcan')
         })
     )
 
-vcan.command('vcan')
+vcan.command('stop')
     .description('stops a vcan')
     .option('--name', '', 'vcan0')
     .action(
