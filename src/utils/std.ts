@@ -1,4 +1,6 @@
 export default {
     out: console.log,
-    log: console.error,
+    log: (...data: any[]) => {
+        console.error('DEBUG', ...data)
+    },
 }

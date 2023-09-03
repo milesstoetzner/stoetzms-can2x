@@ -27,4 +27,6 @@ export abstract class Receiver {
     async receive(processor: Processor) {
         this.processor = processor
     }
+
+    continuous: boolean = true
 }

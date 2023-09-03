@@ -15,4 +15,6 @@ export class ConsoleReceiver extends Receiver {
         this.processor = processor
         this.processor({id: this.options.id, data: this.options.data})
     }
+
+    continuous = false
 }

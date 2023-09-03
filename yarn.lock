@@ -468,6 +468,14 @@
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
 
+"@types/kill-port@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/kill-port/-/kill-port-2.0.0.tgz#ba28034ace13a1444e7a3428c0a487b4e09322f2"
+  integrity sha512-AegaqABFauES4++49NeNX7TyZJ7t48t10+qJn4QGVGQqDogEk89M0iI4W0HXS+TEUk/hYAtEsgJ+6nyuSyYxlw==
+  dependencies:
+    "@types/node" "*"
+    shell-exec "^1"
+
 "@types/lodash@^4.14.194":
   version "4.14.197"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.197.tgz#e95c5ddcc814ec3e84c891910a01e0c8a378c54b"
@@ -3943,6 +3951,11 @@ shebang-regex@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-3.0.0.tgz#ae16f1644d873ecad843b0307b143362d4c42172"
   integrity sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
+
+shell-exec@^1:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/shell-exec/-/shell-exec-1.1.2.tgz#d4056f96638d8406c8ab498f9f8b28938eba2dd0"
+  integrity sha512-v2NWVDP0ws+S7miKy2oSpJ/OuL6NKuMosPNUZLDWFBlMnBtuoZxZOwxpQJwhsFZgMb+r7frpDTT8p4OSnhkpsg==
 
 side-channel@^1.0.4:
   version "1.0.4"

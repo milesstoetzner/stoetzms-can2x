@@ -27,7 +27,7 @@ export class SocketIOReceiver extends Receiver {
 
         const io = new SocketIO.Server(this.server)
         io.on('connection', socket => {
-            std.log(`socket-io client "${socket.id}" connected`)
+            std.log(`socket-io client connected`, {id: socket.id})
 
             socket.on(this.options.event, (message: Message) => {
                 if (check.isDefined(this.processor)) this.processor(message)

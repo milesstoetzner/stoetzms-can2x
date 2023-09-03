@@ -1,6 +1,7 @@
 import {Sender} from '#/sender/sender'
 import {Message} from '#/types'
 import * as assert from '#assert'
+import * as check from '#check'
 import std from '#std'
 import SocketIOClient, {Socket} from 'socket.io-client'
 
@@ -44,5 +45,10 @@ export class SocketIOSender extends Sender {
     async send(message: Message) {
         assert.isDefined(this.client, 'SocketIO sender not started')
         this.client.emit(this.options.event, message)
+    }
+
+    async stop() {
+        // TODO: wait for disconnect
+        if (check.isDefined(this.client)) this.client.disconnect()
     }
 }

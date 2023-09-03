@@ -33,6 +33,7 @@ export async function bridge(options: BridgeOptions) {
 
     std.log('starting bridge')
     await bridge.start()
+    return bridge
 }
 
 export async function vcan(options: VCANOptions) {
@@ -41,6 +42,7 @@ export async function vcan(options: VCANOptions) {
     std.log('creating vcan')
     const vcan = new VCAN(options)
     await vcan.create()
+    return vcan
 }
 
 function createReceiver(options: BridgeOptions) {
