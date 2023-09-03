@@ -4,15 +4,12 @@ import * as files from '#files'
 import std from '#std'
 import * as utils from '#utils'
 import {expect} from 'chai'
-import hae from '#utils/hae'
-import {VCAN} from '#/core/vcan'
 import {afterEach} from 'mocha'
 
 /**
  * console2can --(can2x1)--> can2socket-io -> socket-io2can --(can2x2)--> can2file
  */
 describe('complex', () => {
-
     beforeEach(async () => {
         try {
             await actions.startVCAN({
@@ -92,5 +89,4 @@ describe('complex', () => {
             std.log('vcan "can2x" not stopped', {error})
         }
     })
-
 })

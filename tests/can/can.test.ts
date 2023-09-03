@@ -4,12 +4,9 @@ import * as files from '#files'
 import std from '#std'
 import * as utils from '#utils'
 import {expect} from 'chai'
-import hae from '#utils/hae'
-import {VCAN} from '#/core/vcan'
 import {afterEach} from 'mocha'
 
 describe('can', () => {
-
     const vcan = 'can2x'
 
     beforeEach(async () => {

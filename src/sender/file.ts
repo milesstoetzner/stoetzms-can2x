@@ -2,6 +2,7 @@ import {Message} from '#/core/message'
 import {Sender} from '#/sender/sender'
 import * as files from '#files'
 import std from '#std'
+
 export type FileSenderOptions = {
     file: string
 }
