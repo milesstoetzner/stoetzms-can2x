@@ -43,7 +43,7 @@ const vcan = program.command('vcan').description('manages a vcan')
 
 vcan.command('start')
     .description('starts a vcan')
-    .option('--name', '', 'can2x')
+    .option('--name [string]', '', 'can2x')
     .action(
         hae.exit(async options => {
             await actions.startVCAN(options)
@@ -52,7 +52,7 @@ vcan.command('start')
 
 vcan.command('stop')
     .description('stops a vcan')
-    .option('--name', '', 'can2x')
+    .option('--name [string]', '', 'can2x')
     .action(
         hae.exit(async options => {
             await actions.stopVCAN(options)

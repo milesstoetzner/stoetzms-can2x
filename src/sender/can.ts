@@ -22,6 +22,7 @@ export class CANSender extends Sender {
     async start() {
         std.log('starting can client', {options: this.options})
         this.channel = can.createRawChannel(this.options.name)
+        // TODO: does this have a site-effect on the os?
         this.channel.start()
         this.resolveReady()
         std.log('can client started')
