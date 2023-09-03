@@ -1,6 +1,5 @@
 import {Sender} from '#/sender/sender'
 import {Message} from '#/types'
-import * as assert from '#assert'
 import fetch from 'cross-fetch'
 
 export type HTTPSenderOptions = {
@@ -9,10 +8,9 @@ export type HTTPSenderOptions = {
 
 export class HTTPSender extends Sender {
     options: HTTPSenderOptions
+
     constructor(options: HTTPSenderOptions) {
         super()
-
-        assert.isString(options.endpoint)
         this.options = options
     }
 

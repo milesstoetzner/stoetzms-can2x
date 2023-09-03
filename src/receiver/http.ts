@@ -10,17 +10,17 @@ import http from 'http'
 import createError from 'http-errors'
 
 export type HTTPReceiverOptions = {
-    port?: number
-    host?: string
+    port: number
+    host: string
 }
 
 export class HTTPReceiver extends Receiver {
     server?: http.Server
-    options: Required<HTTPReceiverOptions>
+    options: HTTPReceiverOptions
 
-    constructor(options?: HTTPReceiverOptions) {
+    constructor(options: HTTPReceiverOptions) {
         super()
-        this.options = {port: options?.port ?? 4269, host: options?.host ?? 'localhost'}
+        this.options = options
     }
 
     async start() {

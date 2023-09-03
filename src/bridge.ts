@@ -1,5 +1,6 @@
 import {Receiver} from '#/receiver/receiver'
 import {Sender} from '#/sender/sender'
+import std from '#std'
 import hae from '#utils/hae'
 
 export class Bridge {
@@ -17,7 +18,7 @@ export class Bridge {
 
         await this.receiver.receive(
             hae.log(async message => {
-                console.debug(message.id, message.data)
+                std.log(message.id, message.data)
                 await this.sender.send(message)
             })
         )
