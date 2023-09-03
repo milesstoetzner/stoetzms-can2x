@@ -1,5 +1,6 @@
 import {Receiver} from '#/receiver/receiver'
 import {Sender} from '#/sender/sender'
+import * as assert from '#assert'
 import std from '#std'
 import hae from '#utils/hae'
 
@@ -29,6 +30,11 @@ export class Bridge {
         await this.receiver.receive(
             hae.log(async message => {
                 std.log('bridging', {message})
+
+                assert.isNumber(message.id)
+                assert.isArray(message.data)
+                message.data.forEach(assert.isNumber)
+
                 await this.sender.send(message)
                 if (!this.receiver.continuous) await this.stop()
             })
