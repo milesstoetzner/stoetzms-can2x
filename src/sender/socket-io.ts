@@ -43,8 +43,10 @@ export class SocketIOSender extends Sender {
     }
 
     async send(message: Message) {
-        assert.isDefined(this.client, 'SocketIO sender not started')
+        std.log('socket-io client sending', {message})
+        assert.isDefined(this.client, 'socket-io client not started')
         this.client.emit(this.options.event, message)
+        std.log('socket-io client sent')
     }
 
     async stop() {

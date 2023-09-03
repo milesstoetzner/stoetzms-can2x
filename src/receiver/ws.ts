@@ -55,6 +55,19 @@ export class WSReceiver extends Receiver {
     }
 
     async stop() {
-        if (check.isDefined(this.server)) this.server.close()
+        std.log('stopping websocket server')
+        await this.stopServer()
+        std.log('socket-io stopped')
+    }
+
+    private async stopServer() {
+        if (check.isUndefined(this.server)) return std.log('websocket http server not defined')
+        const server = this.server
+        return new Promise<void>((resolve, reject) => {
+            server.close(error => {
+                if (check.isDefined(error)) return reject(error)
+                return resolve()
+            })
+        })
     }
 }

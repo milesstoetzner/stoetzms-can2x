@@ -72,13 +72,13 @@ export class MQTTReceiver extends Receiver {
     async stop() {
         std.log('stopping mqtt server')
 
-        std.log('stopping mqtt http server')
-        await this.stopServer()
-        std.log('mqtt http server stopped')
-
         std.log('stopping mqtt aedes server')
         await this.stopAedes()
         std.log('mqtt aeded server stopped')
+
+        std.log('stopping mqtt http server')
+        await this.stopServer()
+        std.log('mqtt http server stopped')
 
         std.log('mqtt server stopped')
     }

@@ -12,6 +12,7 @@ export type SocketIOReceiverOptions = {
 }
 
 export class SocketIOReceiver extends Receiver {
+    io?: SocketIO.Server
     server?: http.Server
     options: SocketIOReceiverOptions
 
@@ -25,8 +26,8 @@ export class SocketIOReceiver extends Receiver {
 
         this.server = http.createServer()
 
-        const io = new SocketIO.Server(this.server)
-        io.on('connection', socket => {
+        this.io = new SocketIO.Server(this.server)
+        this.io.on('connection', socket => {
             std.log(`socket-io client connected`, {id: socket.id})
 
             socket.on(this.options.event, (message: Message) => {
@@ -51,6 +52,19 @@ export class SocketIOReceiver extends Receiver {
     }
 
     async stop() {
-        if (check.isDefined(this.server)) this.server.close()
+        std.log('stopping socket-io server')
+        await this.stopServer()
+        std.log('socket-io stopped')
+    }
+
+    private async stopServer() {
+        if (check.isUndefined(this.server)) return std.log('socket-io http server not defined')
+        const server = this.server
+        return new Promise<void>((resolve, reject) => {
+            server.close(error => {
+                if (check.isDefined(error)) return reject(error)
+                return resolve()
+            })
+        })
     }
 }

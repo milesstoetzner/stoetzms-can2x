@@ -38,8 +38,10 @@ export class WSSender extends Sender {
     }
 
     async send(message: Message) {
+        std.log('websocket client sending', {message})
         assert.isDefined(this.client, 'websocket sender not started')
         this.client.send(JSON.stringify(message))
+        std.log('websocket client sent')
     }
 
     async stop() {
