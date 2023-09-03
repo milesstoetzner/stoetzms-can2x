@@ -3,6 +3,7 @@ import {CanReceiver} from '#/receiver/can'
 import {ConsoleReceiver} from '#/receiver/console'
 import {HTTPReceiver} from '#/receiver/http'
 import {ConsoleSender} from '#/sender/console'
+import {FileSender} from '#/sender/file'
 import {HTTPSender} from '#/sender/http'
 import {VCAN, VCANOptions} from '#/vcan'
 import * as assert from '#assert'
@@ -20,6 +21,7 @@ type BridgeOptions = {
     receiverData?: string[]
     sender: string
     senderEndpoint?: string
+    senderFile?: string
 }
 
 const can2x = program.name('can2x')
@@ -33,6 +35,7 @@ const bridge = program
     .option('--receiver-data [numbers...]', '')
     .option('--sender [string]', '', 'console')
     .option('--sender-endpoint [string]', '')
+    .option('--sender-file [string]', '')
     .action(
         hae.exit(async (options: BridgeOptions) => {
             std.log('can2x bridge', {options})
@@ -88,6 +91,13 @@ function createSender(options: BridgeOptions) {
         assert.isString(options.senderEndpoint)
         return new HTTPSender({
             endpoint: options.senderEndpoint,
+        })
+    }
+
+    if (options.sender === 'file') {
+        assert.isString(options.senderFile)
+        return new FileSender({
+            file: options.senderFile,
         })
     }
 
