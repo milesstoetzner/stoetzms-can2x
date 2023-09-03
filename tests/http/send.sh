@@ -1,1 +1,1 @@
-curl -X POST -H "Content-Type: application/json" localhost:4269 --data '{"id": 1, "data": [1, 2, 3]}'
+curl -X POST -H "Content-Type: application/json" localhost:3000 --data '{"id": 1, "data": [1, 2, 3]}'

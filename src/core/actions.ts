@@ -58,13 +58,13 @@ function createReceiver(options: BridgeOptions) {
 
     if (options.receiver === 'http')
         return new HTTPReceiver({
-            port: options.receiverPort ? Number(options.receiverPort) : 4269,
+            port: options.receiverPort ? Number(options.receiverPort) : 3000,
             host: options.receiverHost ?? 'localhost',
         })
 
     if (options.receiver === 'socket-io') {
         return new SocketIOReceiver({
-            port: options.receiverPort ? Number(options.receiverPort) : 4269,
+            port: options.receiverPort ? Number(options.receiverPort) : 3000,
             host: options.receiverHost ?? 'localhost',
             event: options.receiverEvent ?? 'can2x',
         })

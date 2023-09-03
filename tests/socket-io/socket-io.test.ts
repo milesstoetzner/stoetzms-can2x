@@ -29,7 +29,7 @@ describe('socket-io', () => {
             receiverId: String(message.id),
             receiverData: message.data.map(String),
             sender: 'socket-io',
-            senderEndpoint: 'http://localhost:4269',
+            senderEndpoint: 'http://localhost:3000',
         })
 
         std.log('waiting for message being bridged')
@@ -37,5 +37,5 @@ describe('socket-io', () => {
 
         expect(files.loadFile(output).trim()).to.equal(JSON.stringify(message))
         await files.deleteFile(output)
-    }).timeout(10 * 1000)
+    })
 })

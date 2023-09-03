@@ -10,7 +10,7 @@ const bridge = program
     .command('bridge')
     .description('starts a can2x bridge')
     .addOption(new Option('--receiver [string]', '').default('can').choices(['can', 'console', 'http', 'socket-io']))
-    .option('--receiver-port [string]', '', '4269')
+    .option('--receiver-port [string]', '', '3000')
     .option('--receiver-host [string]', '', 'localhost')
     .option('--receiver-event [string]', '', 'can2x')
     .option('--receiver-id [number]', '')
