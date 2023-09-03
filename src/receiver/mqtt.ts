@@ -69,6 +69,14 @@ export class MQTTReceiver extends Receiver {
     }
 
     async stop() {
-        if (check.isDefined(this.server)) this.server.close()
+        std.log('stopping mqtt server')
+        if (check.isUndefined(this.server)) return std.log('mqtt server not defined')
+
+        const server = this.server
+        return new Promise<void>((resolve, reject) => {
+            server.close(error => {
+                std.log('mqtt server stopped')
+            })
+        })
     }
 }

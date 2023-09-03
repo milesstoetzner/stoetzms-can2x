@@ -9,10 +9,12 @@ describe('websocket', () => {
     it('sender-receiver', async () => {
         const message: Message = {id: 69, data: [1, 2, 3]}
         const output = files.temporary()
+        const port = 3002
 
         // Start websocket receiver with file sender
         const receiver = await actions.createBridge({
             receiver: 'ws',
+            receiverPort: String(port),
             sender: 'file',
             senderFile: output,
         })
@@ -23,7 +25,7 @@ describe('websocket', () => {
             receiverId: String(message.id),
             receiverData: message.data.map(String),
             sender: 'ws',
-            senderEndpoint: 'ws://localhost:3000',
+            senderEndpoint: `ws://localhost:${port}`,
         })
 
         std.log('waiting for message being bridged')

@@ -9,10 +9,12 @@ describe('mqtt', () => {
     it('sender-receiver', async () => {
         const message: Message = {id: 69, data: [1, 2, 3]}
         const output = files.temporary()
+        const port = 3000
 
         // Start mqtt receiver with file sender
         const receiver = await actions.createBridge({
             receiver: 'mqtt',
+            receiverPort: String(port),
             sender: 'file',
             senderFile: output,
         })
@@ -23,7 +25,7 @@ describe('mqtt', () => {
             receiverId: String(message.id),
             receiverData: message.data.map(String),
             sender: 'mqtt',
-            senderEndpoint: 'mqtt://localhost:3000',
+            senderEndpoint: `mqtt://localhost:${port}`,
         })
 
         std.log('waiting for message being bridged')
@@ -34,5 +36,10 @@ describe('mqtt', () => {
         await files.deleteFile(output)
         await sender.stop()
         await receiver.stop()
+
+        await utils.sleep(1000)
     })
 })
+
+// TODO: does not work anymore
+// TODO: something at mqtt is not correctly stopped (or acked?) when using "yarn test"
