@@ -38,6 +38,8 @@ jobs:
             # Test
             #
             ###################################################
+            - name: (TEST) Check Dependencies
+              run: yarn dependencies:check
 
             - name: (TEST) Check ESLint
               run: yarn lint:check

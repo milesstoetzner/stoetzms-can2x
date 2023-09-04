@@ -19,7 +19,9 @@ bridge
     .command('start')
     .description('starts a can2x bridge')
     .addOption(
-        new Option('--source [string]', '').default('can').choices(['can', 'console', 'http', 'mqtt', 'socketio', 'ws'])
+        new Option('--source [string]', '')
+            .default('can')
+            .choices(['can', 'console', 'file', 'http', 'mqtt', 'socketio', 'ws'])
     )
     .option('--source-port [number]', '', '3000')
     .option('--source-host [string]', '', 'localhost')

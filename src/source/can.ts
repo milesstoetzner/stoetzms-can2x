@@ -18,25 +18,25 @@ export class CANSource extends Source {
     }
 
     async start() {
-        std.log('starting can server', {options: this.options})
+        std.log('starting can source', {options: this.options})
 
         this.source = can.createRawChannel(this.options.name)
         this.source.start()
 
         this.source.addListener('onMessage', (message: CANMessage) => {
-            std.log('can server received', {message})
+            std.log('can source received', {message})
             if (check.isUndefined(this.processor)) return std.log('no processor defined')
             this.processor({id: message.id, data: Array.from(message.data)})
         })
 
         this.readyPromise.resolve()
-        std.log('can server started')
+        std.log('can source started')
     }
 
     async stop() {
-        std.log('stopping can server')
-        if (check.isUndefined(this.source)) return std.log('can server not defined')
+        std.log('stopping can source')
+        if (check.isUndefined(this.source)) return std.log('can source not defined')
         this.source.stop()
-        std.log('can server stopped')
+        std.log('can source stopped')
     }
 }

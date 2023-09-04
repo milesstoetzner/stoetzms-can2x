@@ -1,5 +1,6 @@
 import {CANSource} from '#/source/can'
 import {ConsoleSource} from '#/source/console'
+import {FileSource} from '#/source/file'
 import {HTTPSource} from '#/source/http'
 import {MQTTSource} from '#/source/mqtt'
 import {SocketIOSource} from '#/source/socketio'
@@ -25,6 +26,7 @@ export type BridgeOptions = {
     sourceName?: string
     sourceId?: string
     sourceData?: string[]
+    sourceFile?: string
     target?: string
     targetEndpoint?: string
     targetEvent?: string
@@ -73,6 +75,13 @@ function createSource(options: BridgeOptions) {
         return new ConsoleSource({
             id: Number(options.sourceId),
             data: options.sourceData.map(Number),
+        })
+    }
+
+    if (options.source === 'file') {
+        assert.isDefined(options.sourceFile, '--source-file undefined')
+        return new FileSource({
+            file: options.sourceFile,
         })
     }
 

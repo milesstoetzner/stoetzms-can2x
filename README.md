@@ -108,6 +108,7 @@ The following options are supported.
 | `--source-name`     | string                                                     | `can2x`     | false    |             |
 | `--source-id`       | number                                                     | none        | false    |             |
 | `--source-data`     | number[]                                                   | none        | false    |             |
+| `--source-file`     | string                                                     | none        | false    |             |
 | `--target`          | `can`, `console`, `file`, `http`, `mqtt`, `socketio`, `ws` | `console`   | false    |             |
 | `--target-endpoint` | string                                                     | none        | false    |             |
 | `--target-event`    | string                                                     | `can2x`     | false    |             |
@@ -175,6 +176,14 @@ The following options are supported.
 | `--source-id`       | number                                                     | none        | true     |             |
 | `--source-data`     | number[]                                                   | none        | true     |             |
 
+### File
+
+`can2x` supports a `file2x` bridge, i.e., `--source file`.
+The following options are supported.
+
+| Option          | Type                                                       | Default     | Required | Description | 
+|-----------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--source-file` | string                                                     | none        | true     |             |
 
 ### HTTP
 
@@ -301,12 +310,12 @@ It is worth to checkout the following projects.
 
 ## Dependencies
 
-The licenses of our prod dependencies are as follows.
+The licenses of the dependencies that `can2x` uses in production are as follows.
 
 ```
 license-checker --production --summary --onlyAllow "MIT;Apache-2.0;Python-2.0;BSD-2-Clause;BSD-3-Clause;ISC;CC-BY-3.0;CC0-1.0;PSF;0BSD;BlueOak-1.0.0"
-├─ MIT: 192
-├─ ISC: 59
+├─ MIT: 193
+├─ ISC: 58
 ├─ Apache-2.0: 3
 ├─ BSD-2-Clause: 2
 ├─ BSD-3-Clause: 2

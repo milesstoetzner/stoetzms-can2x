@@ -52,6 +52,7 @@
         "socket.io": "^4.7.2",
         "socket.io-client": "^4.7.2",
         "socketcan": "^4.0.3",
+        "tail": "^2.2.6",
         "uuid": "^9.0.0",
         "ws": "^8.13.0"
     },
@@ -66,6 +67,7 @@
         "@types/lodash": "^4.14.194",
         "@types/mocha": "^10.0.1",
         "@types/node": "^18.15.11",
+        "@types/tail": "^2.2.1",
         "@types/uuid": "^9.0.1",
         "@types/ws": "^8.5.5",
         "@typescript-eslint/eslint-plugin": "^5.58.0",
