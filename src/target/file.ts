@@ -7,7 +7,7 @@ export type FileTargetOptions = {
     file: string
 }
 
-export class FileTargt extends Target {
+export class FileTarget extends Target {
     options: FileTargetOptions
 
     constructor(options: FileTargetOptions) {

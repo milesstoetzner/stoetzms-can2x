@@ -58,7 +58,7 @@ export class MQTTSource extends Source {
 
         this.server.listen({port: this.options.port, host: this.options.host}, () => {
             std.log(`mqtt source is now running on "mqtt://${this.options.host}:${this.options.port}"`)
-            this.resolveReady()
+            this.readyPromise.resolve()
         })
 
         this.server.on('error', error => {

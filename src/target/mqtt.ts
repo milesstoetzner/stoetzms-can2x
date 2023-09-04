@@ -48,7 +48,7 @@ export class MQTTTarget extends Target {
             std.log(`mqtt target ended`)
         })
 
-        this.resolveReady()
+        this.readyPromise.resolve()
         std.log('mqtt target started')
     }
 

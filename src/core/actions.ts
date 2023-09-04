@@ -6,7 +6,7 @@ import {SocketIOSource} from '#/source/socketio'
 import {WSSource} from '#/source/ws'
 import {CANTarget} from '#/target/can'
 import {ConsoleTarget} from '#/target/console'
-import {FileTargt} from '#/target/file'
+import {FileTarget} from '#/target/file'
 import {HTTPTarget} from '#/target/http'
 import {MQTTTarget} from '#/target/mqtt'
 import {SocketIOTarget} from '#/target/socketio'
@@ -115,7 +115,7 @@ function createTarget(options: BridgeOptions) {
 
     if (options.target === 'file') {
         assert.isString(options.targetFile)
-        return new FileTargt({
+        return new FileTarget({
             file: options.targetFile,
         })
     }

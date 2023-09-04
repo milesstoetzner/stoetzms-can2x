@@ -1,4 +1,5 @@
 import {Message} from '#core/message'
+import * as utils from '#utils'
 
 export type Processor = (message: Message) => Promise<void>
 
@@ -6,18 +7,18 @@ export abstract class Source {
     processor?: Processor
     options = {}
 
-    async start() {
-        this.resolveReady()
+    protected readyPromise
+
+    protected constructor() {
+        this.readyPromise = utils.createOutsidePromise()
     }
 
-    protected readyPromise = new Promise<void>((resolve, reject) => {
-        this.resolveReady = resolve
-        this.rejectReady = reject
-    })
-    protected resolveReady!: (value: void | PromiseLike<void>) => void
-    protected rejectReady!: (reason?: any) => void
+    async start() {
+        this.readyPromise.resolve()
+    }
+
     async ready() {
-        return this.readyPromise
+        return this.readyPromise.promise
     }
 
     async stop() {

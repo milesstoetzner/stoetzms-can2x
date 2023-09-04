@@ -39,7 +39,7 @@ export class SocketIOSource extends Source {
 
         this.server.listen({port: this.options.port, host: this.options.host}, () => {
             std.log(`socketio source running on "http://${this.options.host}:${this.options.port}"`)
-            this.resolveReady()
+            this.readyPromise.resolve()
         })
 
         this.server.on('error', error => {

@@ -24,7 +24,7 @@ export class CANTarget extends Target {
         this.target = can.createRawChannel(this.options.name)
         // TODO: does this have a site-effect on the os?
         this.target.start()
-        this.resolveReady()
+        this.readyPromise.resolve()
         std.log('can target started')
     }
 

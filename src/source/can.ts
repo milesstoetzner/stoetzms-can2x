@@ -29,7 +29,7 @@ export class CANSource extends Source {
             this.processor({id: message.id, data: Array.from(message.data)})
         })
 
-        this.resolveReady()
+        this.readyPromise.resolve()
         std.log('can server started')
     }
 
