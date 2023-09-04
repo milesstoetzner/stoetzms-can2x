@@ -1,5 +1,5 @@
-import {Message} from '#core/message'
 import {Target} from '#/target/target'
+import {Message} from '#core/message'
 import std from '#std'
 import fetch from 'cross-fetch'
 

@@ -1,5 +1,5 @@
-import {Message} from '#core/message'
 import {Target} from '#/target/target'
+import {Message} from '#core/message'
 import * as files from '#files'
 import std from '#std'
 

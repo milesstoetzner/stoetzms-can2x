@@ -1,5 +1,5 @@
-import {Message} from '#core/message'
 import * as actions from '#core/actions'
+import {Message} from '#core/message'
 import * as files from '#files'
 import std from '#std'
 import * as utils from '#utils'

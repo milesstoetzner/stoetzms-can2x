@@ -1,5 +1,5 @@
-import {Message} from '#core/message'
 import {Source} from '#/source/source'
+import {Message} from '#core/message'
 import std from '#std'
 import * as check from '#utils/check'
 import Aedes from 'aedes'
