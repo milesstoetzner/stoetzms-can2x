@@ -10,7 +10,7 @@ export abstract class Source {
     protected readyPromise
 
     protected constructor() {
-        this.readyPromise = utils.createOutsidePromise()
+        this.readyPromise = utils.createDecomposedPromise()
     }
 
     async start() {

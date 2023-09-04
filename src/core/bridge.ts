@@ -32,8 +32,7 @@ export class Bridge {
                 std.log('bridging', {message})
 
                 assert.isNumber(message.id)
-                assert.isArray(message.data)
-                message.data.forEach(assert.isNumber)
+                assert.isNumbers(message.data)
 
                 await this.target.send(message)
                 if (!this.source.continuous) await this.stop()

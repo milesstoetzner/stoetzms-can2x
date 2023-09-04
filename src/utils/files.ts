@@ -1,10 +1,10 @@
 import * as check from '#check'
-import * as crypto from '#crypto'
 import * as fs from 'fs'
 import * as yaml from 'js-yaml'
 import _ from 'lodash'
 import os from 'os'
 import * as path from 'path'
+import {v4 as uuid4} from 'uuid'
 import * as utils from './utils'
 
 export const TMP_PREFIX = 'stoetzms-can2x-'
@@ -167,7 +167,7 @@ export function getName(file: string) {
 }
 
 export function temporary(name?: string) {
-    return path.join(os.tmpdir(), TMP_PREFIX + (name || crypto.generateNonce()))
+    return path.join(os.tmpdir(), TMP_PREFIX + (name || uuid4()))
 }
 
 export function stat(file: string) {

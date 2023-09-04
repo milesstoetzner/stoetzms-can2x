@@ -6,7 +6,6 @@
             "#/*": ["src/*"],
             "#utils/*": ["src/utils/*"],
             "#files": ["src/utils/files"],
-            "#crypto": ["src/utils/crypto"],
             "#utils": ["src/utils/utils"],
             "#check": ["src/utils/check"],
             "#assert": ["src/utils/assert"],

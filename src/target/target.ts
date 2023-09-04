@@ -4,7 +4,7 @@ import * as utils from '#utils'
 export abstract class Target {
     protected readyPromise
     protected constructor() {
-        this.readyPromise = utils.createOutsidePromise()
+        this.readyPromise = utils.createDecomposedPromise()
     }
 
     async start() {
