@@ -11,6 +11,28 @@ A source, such as a CAN bus in a first computing environment, forwards the CAN m
 This target then acts as a source and forwards the CAN message to another target, such as a CAN bus connected to the second computing environment.
 It is also possible to have a arbitrary long chains of different of such bridges.
 
+## Installation
+
+Install `can2x` system-wide using `npm`.
+
+```
+npm install --global can2x
+```
+
+Install `can2x` system-wide using `yarn`.
+
+```
+yarn add --global can2x
+```
+
+## Requirements
+
+`can2x` has the following requirements.
+
+- Linux
+- SocketCAN, thus, Git Bash and WSL are not supported
+
+
 ## Example
 
 The following command starts a socketio2can bridge.
@@ -24,13 +46,6 @@ The following command starts a can2socketio bridge.
 ```
 can2x bridge start --source can --source-name canIN --target socketio --target-endpoint http://localhost:3000
 ```
-
-## Requirements
-
-`can2x` has the following requirements.
-
-- Linux
-- SocketCAN, thus, Git Bash and WSL are NOT supported
 
 
 ## Commands
@@ -246,6 +261,22 @@ It is worth to checkout the following projects.
 - [`can2udp`](https://opensource.lely.com/canopen/docs/can2udp)
 - [`can2mqtt`](https://github.com/c3re/can2mqtt)
 - [`cannelloni`](https://github.com/mguentner/cannelloni)
+
+
+## Dependencies
+
+The licenses of our are as follows.
+
+```
+license-checker --production --summary --onlyAllow "MIT;Apache-2.0;Python-2.0;BSD-2-Clause;BSD-3-Clause;ISC;CC-BY-3.0;CC0-1.0;PSF;0BSD;BlueOak-1.0.0"
+├─ MIT: 192
+├─ ISC: 59
+├─ Apache-2.0: 3
+├─ BSD-2-Clause: 2
+├─ BSD-3-Clause: 2
+├─ BlueOak-1.0.0: 2
+└─ Python-2.0: 1
+```
 
 ## Acknowledgements
 

@@ -1,5 +1,3 @@
-import {Bridge} from '#core/bridge'
-import {VCAN, VCANOptions} from '#core/vcan'
 import {CANSource} from '#/source/can'
 import {ConsoleSource} from '#/source/console'
 import {HTTPSource} from '#/source/http'
@@ -14,6 +12,8 @@ import {MQTTTarget} from '#/target/mqtt'
 import {SocketIOTarget} from '#/target/socketio'
 import {WSTarget} from '#/target/ws'
 import * as assert from '#assert'
+import {Bridge} from '#core/bridge'
+import {VCAN, VCANOptions} from '#core/vcan'
 import std from '#std'
 
 export type BridgeOptions = {

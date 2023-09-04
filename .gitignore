@@ -13,6 +13,7 @@
 
 # typescript
 build
+dist
 node_modules
 yarn-error.log
 .DS_STORE

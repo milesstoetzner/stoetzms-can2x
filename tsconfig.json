@@ -1,5 +1,5 @@
 {
-    "extends": "@tsconfig/node16/tsconfig.json",
+    "extends": "@tsconfig/node18/tsconfig.json",
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
@@ -13,12 +13,15 @@
             "#std": ["src/utils/std"],
             "#core/*": ["src/core/*"]
         },
-        "outDir": "build",
+        "outDir": "dist",
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": false,
         "useUnknownInCatchVariables": false,
-        "sourceMap": true
+        "sourceMap": true,
+        "module": "CommonJS",
+        "moduleResolution": "node",
+        "declaration": true
     },
-    "include": ["src", "tests", "docs/cmds"],
+    "include": ["src", "tests"],
     "exclude": ["node_modules"]
 }
