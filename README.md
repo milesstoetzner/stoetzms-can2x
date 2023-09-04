@@ -6,10 +6,10 @@
 
 ## Overview
 
-`can2x` supports various sources and targets for CAN messages. 
-A source, such as a CAN bus, forwards the CAN message to the target, such as a Socket.IO server running on a second computing environment.
+`can2x` supports various sources and targets when bridging CAN messages. 
+A source, such as a CAN bus in a first computing environment, forwards the CAN message to the target, such as a Socket.IO server running on a second computing environment.
 This target then acts as a source and forwards the CAN message to another target, such as a CAN bus connected to the second computing environment.
-It is also possible to have a arbitrary long chain of different of such bridges.
+It is also possible to have a arbitrary long chains of different of such bridges.
 
 ## Example
 
