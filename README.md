@@ -6,20 +6,20 @@
 
 ## Overview
 
-We support various sources and targets for CAN messages. 
+`can2x` supports various sources and targets for CAN messages. 
 A source, such as a CAN bus, forwards the CAN message to the target, such as a Socket.IO server running on a second computing environment.
 This target then acts as a source and forwards the CAN message to another target, such as a CAN bus connected to the second computing environment.
 It is also possible to have a arbitrary long chain of different of such bridges.
 
 ## Example
 
-The following commands starts a socketio2can bridge.
+The following command starts a socketio2can bridge.
 
 ```
 can2x bridge start --source socketio --target can --target-name canOUT
 ```
 
-The following commands starts a can2socketio bridge.
+The following command starts a can2socketio bridge.
 
 ```
 can2x bridge start --source can --source-name canIN --target socketio --target-endpoint http://localhost:3000
@@ -27,7 +27,7 @@ can2x bridge start --source can --source-name canIN --target socketio --target-e
 
 ## Requirements
 
-We have the following requirements.
+`can2x` has the following requirements.
 
 - Linux
 - SocketCAN, thus, Git Bash and WSL are NOT supported
@@ -35,7 +35,7 @@ We have the following requirements.
 
 ## Commands
 
-We support the following commands.
+`can2x` supports the following commands.
 
 ### Bridge Start
 
@@ -55,8 +55,8 @@ The following options are supported.
 | `--source-event`    | string                                                     | `can2x`     | false    |             |
 | `--source-topic`    | string                                                     | `can2x`     | false    |             |
 | `--source-name`     | string                                                     | `can2x`     | false    |             |
-| `--source-id`       | string                                                     | none        | false    |             |
-| `--source-data`     | string[]                                                   | none        | false    |             |
+| `--source-id`       | number                                                     | none        | false    |             |
+| `--source-data`     | number[]                                                   | none        | false    |             |
 | `--target`          | `can`, `console`, `file`, `http`, `mqtt`, `socketio`, `ws` | `console`   | false    |             |
 | `--target-endpoint` | string                                                     | none        | false    |             |
 | `--target-event`    | string                                                     | `can2x`     | false    |             |
@@ -94,7 +94,7 @@ The following options are supported.
 
 ## Sources
 
-We support the following sources.
+`can2x` supports the following sources.
 
 ### CAN Bus
 
@@ -122,7 +122,7 @@ We support the following sources.
 
 ## Targets
 
-We support the following targets.
+`can2x` supports the following targets.
 
 ### CAN Bus
 
@@ -151,3 +151,20 @@ We support the following targets.
 ### Websocket
 
 > TODO: describe
+
+## Limitations
+
+- `can2x` currently only supports `id` and `data` of a CAN message.
+- bridges are unidirectional
+
+## Similar Projects
+
+It is worth to checkout the following projects.
+
+- [`can2udp`](https://opensource.lely.com/canopen/docs/can2udp)
+- [`can2mqtt`](https://github.com/c3re/can2mqtt)
+- [`cannelloni`](https://github.com/mguentner/cannelloni)
+
+## Acknowledgements
+
+This project is s partially funded by the [German Federal Ministry for Economic Affairs and Climate Action (BMWK)](https://www.bmwk.de/Navigation/EN/Home/home.html) as part of the [Software-Defined Car (SofDCar)](https://sofdcar.de) project (19S21002).
