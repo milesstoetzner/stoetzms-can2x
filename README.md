@@ -92,33 +92,92 @@ The following options are supported.
 |-----------|-----------|------------|----------|------------------------|
 | `--name`  | string    | `can2x`    | false    | The name of the vCAN.  |
 
+## CAN Message
+
+A CAN message is internally represented as follows.
+
+| Option | Type     | Description                             | 
+|--------|----------|-----------------------------------------|
+| `id`   | number   | The decimal id of the can message.      |
+| `data` | number[] | The decimal payload of the can message. |
+
 ## Sources
 
 `can2x` supports the following sources.
 
 ### CAN Bus
 
-> TODO: describe
+> TODO: describe mapping
+
+`can2x` supports a `can2x` bridge, i.e., `--source can`.
+The following options are supported.
+
+| Option              | Type                                                       | Default     | Required | Description | 
+|---------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--source-name`     | string                                                     | `can2x`     | false    |             |
 
 ### Console
 
-> TODO: describe
+> TODO: describe mapping
+
+`can2x` supports a `console2x` bridge, i.e., `--source console`.
+The following options are supported.
+
+| Option              | Type                                                       | Default     | Required | Description | 
+|---------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--source-id`       | number                                                     | none        | true     |             |
+| `--source-data`     | number[]                                                   | none        | true     |             |
+
 
 ### HTTP
 
-> TODO: describe
+> TODO: describe mapping
+
+`can2x` supports a `http2x` bridge, i.e., `--source http`.
+The following options are supported.
+
+| Option              | Type                                                       | Default     | Required | Description | 
+|---------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--source-port`     | number                                                     | `3000`      | false    |             |
+| `--source-host`     | string                                                     | `localhost` | false    |             |
 
 ### MQTT
 
-> TODO: describe
+> TODO: describe mapping
+
+`can2x` supports a `mqtt2x` bridge, i.e., `--source mqtt`.
+The following options are supported.
+
+| Option              | Type                                                       | Default     | Required | Description | 
+|---------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--source-port`     | number                                                     | `3000`      | false    |             |
+| `--source-host`     | string                                                     | `localhost` | false    |             |
+| `--source-topic`    | string                                                     | `can2x`     | false    |             |
 
 ### Socket.IO
 
-> TODO: describe
+> TODO: describe mapping
+
+`can2x` supports a `socketio2x` bridge, i.e., `--source socketio`.
+The following options are supported.
+
+| Option              | Type                                                       | Default     | Required | Description | 
+|---------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--source-port`     | number                                                     | `3000`      | false    |             |
+| `--source-host`     | string                                                     | `localhost` | false    |             |
+| `--source-event`    | string                                                     | `can2x`     | false    |             |
 
 ### WebSocket
 
-> TODO: describe
+> TODO: describe mapping
+
+`can2x` supports a `ws2x` bridge, i.e., `--source ws`.
+The following options are supported.
+
+| Option              | Type                                                       | Default     | Required | Description | 
+|---------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--source-port`     | number                                                     | `3000`      | false    |             |
+| `--source-host`     | string                                                     | `localhost` | false    |             |
 
 ## Targets
 
@@ -126,36 +185,85 @@ The following options are supported.
 
 ### CAN Bus
 
-> TODO: describe
+> TODO: describe mapping
+
+`can2x` supports a `x2can` bridge, i.e., `--target can`.
+The following options are supported.
+
+| Option          | Type                                                       | Default     | Required | Description | 
+|-----------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--target-name` | string                                                     | `can2x`     | false    |             |
 
 ### Console
 
-> TODO: describe
+> TODO: describe mapping
+
+`can2x` supports a `x2console` bridge, i.e., `--target console`.
+No options are supported.
 
 ### File
 
-> TODO: describe
+> TODO: describe mapping
+
+`can2x` supports a `x2file` bridge, i.e., `--target file`.
+The following options are supported.
+
+| Option              | Type                                                       | Default     | Required | Description | 
+|---------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--target-file`     | string                                                     | none        | true     |             |
 
 ### HTTP
 
-> TODO: describe
+> TODO: describe mapping
+
+`can2x` supports a `x2http` bridge, i.e., `--target http`.
+The following options are supported.
+
+| Option              | Type                                                       | Default     | Required | Description | 
+|---------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--target-endpoint` | string                                                     | none        | true     |             |
 
 ### MQTT
 
-> TODO: describe
+> TODO: describe mapping
+
+`can2x` supports a `x2mqtt` bridge, i.e., `--target mqtt`.
+The following options are supported.
+
+| Option              | Type                                                       | Default     | Required | Description | 
+|---------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--target-endpoint` | string                                                     | none        | true     |             |
+| `--target-topic`    | string                                                     | `can2x`     | false    |             |
 
 ### Socket.IO
 
-> TODO: describe
+> TODO: describe mapping
+
+`can2x` supports a `x2socketio` bridge, i.e., `--target socketio`.
+The following options are supported.
+
+| Option              | Type                                                       | Default     | Required | Description | 
+|---------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--target-endpoint` | string                                                     | none        | true     |             |
+| `--target-event`    | string                                                     | `can2x`     | false    |             |
 
 ### Websocket
 
-> TODO: describe
+> TODO: describe mapping
+
+`can2x` supports a `x2ws` bridge, i.e., `--target ws`.
+The following options are supported.
+
+| Option              | Type                                                       | Default     | Required | Description | 
+|---------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--target-endpoint` | string                                                     | none        | true     |             |
 
 ## Limitations
 
 - `can2x` currently only supports `id` and `data` of a CAN message.
 - bridges are unidirectional
+- security aspects, such as encryption, authentication, and authorization, are not supported
+- messages are not guaranteed to be delivered
 
 ## Similar Projects
 
