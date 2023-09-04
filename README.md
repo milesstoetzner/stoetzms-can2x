@@ -31,14 +31,14 @@ Install `can2x` system-wide using `yarn`.
 yarn global add can2x
 ```
 
-Ensure, that `yarn global bin` is in your `PATH`.
+Ensure, that `yarn global bin` is in your `$PATH`.
 This can be done by adding the following line to `~/.bashrc`.
 
 ```
 export PATH="$PATH:$(yarn global bin)"
 ```
 
-And then source the `~/.bashrc`.
+And then source `~/.bashrc`.
 
 ```
 source ~/.bashrc
