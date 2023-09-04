@@ -18,6 +18,7 @@ It is also possible to have a arbitrary long chains of different of such bridges
 ### NPM
 
 Install `can2x` system-wide using `npm`.
+Ensure, that `npm bin -g` is in your `$PATH`.
 
 ```
 npm install --global can2x
@@ -26,22 +27,10 @@ npm install --global can2x
 ### Yarn 
 
 Install `can2x` system-wide using `yarn`.
+Ensure, that `yarn global bin` is in your `$PATH`.
 
 ```
 yarn global add can2x
-```
-
-Ensure, that `yarn global bin` is in your `$PATH`.
-This can be done by adding the following line to `~/.bashrc`.
-
-```
-export PATH="$PATH:$(yarn global bin)"
-```
-
-And then source `~/.bashrc`.
-
-```
-source ~/.bashrc
 ```
 
 
@@ -55,16 +44,43 @@ source ~/.bashrc
 
 ## Example
 
-The following command starts a socketio2can bridge.
+In the following example, we connect a vCAN on the source host to a vCAN on the target host using Socket.IO.
+
+On the target host, start the vCAN and the Socket.IO server.
 
 ```
-can2x bridge start --source socketio --target can --target-name canOUT
+sudo can2x vcan start
+can2x bridge start --source socketio --source-host 0.0.0.0 --target can
 ```
 
-The following command starts a can2socketio bridge.
+Then, on the target host, listen to the vCAN.
 
 ```
-can2x bridge start --source can --source-name canIN --target socketio --target-endpoint http://localhost:3000
+sudo apt-get update -y
+sudo apt-get install can-utils -y
+candump can2x
+```
+
+On the source host, start the vCAN and the Socket.IO client.
+You need to replace the `<TARGET HOST IP>` with the actual IP of your target host.
+
+```
+sudo can2x vcan start
+can2x bridge start --source can --target socketio --target-endpoint http://<TARGET HOST IP>:3000
+```
+
+Then, on the source host, send a message to the vCAN.
+
+``` 
+sudo apt-get update -y
+sudo apt-get install can-utils -y
+cansend can2x 01a#11223344AABBCCDD
+```
+
+On the target host, we can observe the CAN message.
+
+```
+can2x  01A   [8]  11 22 33 44 AA BB CC DD
 ```
 
 
@@ -133,8 +149,8 @@ A CAN message is internally represented as follows.
 
 | Option | Type     | Description                             | 
 |--------|----------|-----------------------------------------|
-| `id`   | number   | The decimal id of the can message.      |
-| `data` | number[] | The decimal payload of the can message. |
+| `id`   | number   | The decimal id of the CAN message.      |
+| `data` | number[] | The decimal payload of the CAN message. |
 
 ## Sources
 
