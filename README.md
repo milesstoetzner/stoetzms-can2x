@@ -107,8 +107,6 @@ A CAN message is internally represented as follows.
 
 ### CAN Bus
 
-> TODO: describe mapping
-
 `can2x` supports a `can2x` bridge, i.e., `--source can`.
 The following options are supported.
 
@@ -117,8 +115,6 @@ The following options are supported.
 | `--source-name`     | string                                                     | `can2x`     | false    |             |
 
 ### Console
-
-> TODO: describe mapping
 
 `can2x` supports a `console2x` bridge, i.e., `--source console`.
 The following options are supported.
@@ -131,8 +127,6 @@ The following options are supported.
 
 ### HTTP
 
-> TODO: describe mapping
-
 `can2x` supports a `http2x` bridge, i.e., `--source http`.
 The following options are supported.
 
@@ -142,8 +136,6 @@ The following options are supported.
 | `--source-host`     | string                                                     | `localhost` | false    |             |
 
 ### MQTT
-
-> TODO: describe mapping
 
 `can2x` supports a `mqtt2x` bridge, i.e., `--source mqtt`.
 The following options are supported.
@@ -156,8 +148,6 @@ The following options are supported.
 
 ### Socket.IO
 
-> TODO: describe mapping
-
 `can2x` supports a `socketio2x` bridge, i.e., `--source socketio`.
 The following options are supported.
 
@@ -168,8 +158,6 @@ The following options are supported.
 | `--source-event`    | string                                                     | `can2x`     | false    |             |
 
 ### WebSocket
-
-> TODO: describe mapping
 
 `can2x` supports a `ws2x` bridge, i.e., `--source ws`.
 The following options are supported.
@@ -185,8 +173,6 @@ The following options are supported.
 
 ### CAN Bus
 
-> TODO: describe mapping
-
 `can2x` supports a `x2can` bridge, i.e., `--target can`.
 The following options are supported.
 
@@ -196,14 +182,10 @@ The following options are supported.
 
 ### Console
 
-> TODO: describe mapping
-
 `can2x` supports a `x2console` bridge, i.e., `--target console`.
 No options are supported.
 
 ### File
-
-> TODO: describe mapping
 
 `can2x` supports a `x2file` bridge, i.e., `--target file`.
 The following options are supported.
@@ -214,8 +196,6 @@ The following options are supported.
 
 ### HTTP
 
-> TODO: describe mapping
-
 `can2x` supports a `x2http` bridge, i.e., `--target http`.
 The following options are supported.
 
@@ -224,8 +204,6 @@ The following options are supported.
 | `--target-endpoint` | string                                                     | none        | true     |             |
 
 ### MQTT
-
-> TODO: describe mapping
 
 `can2x` supports a `x2mqtt` bridge, i.e., `--target mqtt`.
 The following options are supported.
@@ -237,8 +215,6 @@ The following options are supported.
 
 ### Socket.IO
 
-> TODO: describe mapping
-
 `can2x` supports a `x2socketio` bridge, i.e., `--target socketio`.
 The following options are supported.
 
@@ -248,8 +224,6 @@ The following options are supported.
 | `--target-event`    | string                                                     | `can2x`     | false    |             |
 
 ### Websocket
-
-> TODO: describe mapping
 
 `can2x` supports a `x2ws` bridge, i.e., `--target ws`.
 The following options are supported.
