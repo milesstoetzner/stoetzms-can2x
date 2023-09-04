@@ -13,17 +13,37 @@ It is also possible to have a arbitrary long chains of different of such bridges
 
 ## Installation
 
+`can2x` can be installed using `npm` or `yarn`.
+
+### NPM
+
 Install `can2x` system-wide using `npm`.
 
 ```
 npm install --global can2x
 ```
 
+### Yarn 
+
 Install `can2x` system-wide using `yarn`.
 
 ```
-yarn add --global can2x
+yarn global add can2x
 ```
+
+Ensure, that `yarn global bin` is in your `PATH`.
+This can be done by adding the following line to `~/.bashrc`.
+
+```
+export PATH="$PATH:$(yarn global bin)"
+```
+
+And then source the `~/.bashrc`.
+
+```
+source ~/.bashrc
+```
+
 
 ## Requirements
 

@@ -1,8 +1,8 @@
 {
     "name": "can2x",
-    "version": "0.1.0",
+    "version": "0.1.4",
     "description": "can2x is a simple utility for connecting a CAN bus unidirectional with another CAN bus over the network using common web protocols, such as HTTP, MQTT, Socket.IO, and WebSockets.",
-    "repository": "git@github.com:milesstoetzner/can2x",
+    "repository": "https://github.com/milesstoetzner/can2x",
     "homepage": "https://can2x.stoetz.ms",
     "author": {
         "name": "Miles Stötzner",
@@ -28,7 +28,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "bin": {
-        "can2x": "dist/index.js"
+        "can2x": "./dist/index.js"
     },
     "files": [
         "dist",
@@ -86,7 +86,6 @@
         "nodemon": "^2.0.22",
         "nyc": "^15.1.0",
         "open-cli": "^7.2.0",
-        "patch-package": "^6.5.1",
         "pkg": "^5.8.1",
         "postinstall-postinstall": "^2.1.0",
         "prettier": "^2.8.7",
@@ -98,7 +97,7 @@
         "typescript": "^5.0.4"
     },
     "scripts": {
-        "postinstall": "patch-package",
+        "prepack": "yarn build",
         "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
         "package": "pkg --config .pkgrc.json build/index.js",
         "lint:check": "eslint .",
