@@ -16,7 +16,7 @@ bridge
             .default('can')
             .choices(['can', 'console', 'http', 'mqtt', 'socketio', 'ws'])
     )
-    .option('--source-port [string]', '', '3000')
+    .option('--source-port [number]', '', '3000')
     .option('--source-host [string]', '', 'localhost')
     .option('--source-event [string]', '', 'can2x')
     .option('--source-topic [string]', '', 'can2x')
@@ -52,7 +52,7 @@ vcan.command('start')
 
 vcan.command('stop')
     .description('stops a vcan')
-    .option('--name [string]', '', 'can2x')
+    .option('--name [string]', 'the name of the vcan', 'can2x')
     .action(
         hae.exit(async options => {
             await actions.stopVCAN(options)
