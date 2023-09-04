@@ -100,7 +100,7 @@ The following options are supported.
 
 | Option              | Type                                                       | Default     | Required | Description | 
 |---------------------|------------------------------------------------------------|-------------|----------|-------------|
-| `--source`          | `can`, `console`, `http`, `mqtt`, `socketio`, `ws`         | `can`       | false    |             |
+| `--source`          | `can`, `console`, `file`, `http`, `mqtt`, `socketio`, `ws` | `can`       | false    |             |
 | `--source-port`     | number                                                     | `3000`      | false    |             |
 | `--source-host`     | string                                                     | `localhost` | false    |             |
 | `--source-event`    | string                                                     | `can2x`     | false    |             |
