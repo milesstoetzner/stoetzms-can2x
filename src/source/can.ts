@@ -1,6 +1,6 @@
-import {Source} from '#/source/source'
+import Source from '#/source/source'
 import * as check from '#check'
-import {Message, fromCAN, toCAN} from '#core/message'
+import Message from '#core/message'
 import std from '#std'
 import {Message as CANMessage, RawChannel} from '*can.node'
 import * as can from 'socketcan'
@@ -29,7 +29,7 @@ export class CANSource extends Source {
         this.source.addListener('onMessage', (message: CANMessage) => {
             std.log('can source received', {message})
             if (check.isUndefined(this.processor)) return std.log('no processor defined')
-            this.processor(fromCAN(message))
+            this.processor(Message.fromCAN(message))
         })
 
         this.readyPromise.resolve()
@@ -48,7 +48,7 @@ export class CANSource extends Source {
         if (!this.options.bidirectional) return std.log('can source not bidirectional')
 
         if (check.isUndefined(this.source)) return std.log('can source not defined')
-        this.source.send(toCAN(message))
+        this.source.send(message.toCAN())
 
         std.log('can source sent')
     }

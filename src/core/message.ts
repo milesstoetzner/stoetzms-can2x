@@ -1,51 +1,53 @@
 import * as assert from '#assert'
 import {Message as CANMessage} from '*can.node'
 
-export type Message = {
+export default class Message {
     id: number
     data: number[]
-}
 
-export function fromJSON(message: Message) {
-    // TODO
-    return message
-}
+    // TODO: ext
+    // TODO: rtr
 
-export function toJSON(message: Message) {
-    // TODO
-    return message
-}
+    private constructor(id: number, data: number[]) {
+        assert.isNumber(id)
+        assert.isNumbers(data)
 
-export function fromString(message: string): Message {
-    assert.isString(message)
-    return JSON.parse(message)
-}
+        this.id = id
+        this.data = data
+    }
 
-export function toString(message: Message) {
-    return JSON.stringify(message)
-}
+    static fromJSON(message: {id: number; data: number[]}) {
+        return new Message(message.id, message.data)
+    }
 
-export function fromCAN(message: CANMessage): Message {
-    return {id: message.id, data: Array.from(message.data)}
-}
+    toJSON() {
+        return {id: this.id, data: this.id}
+    }
 
-export function toCAN(message: Message): CANMessage {
-    return {id: message.id, data: Buffer.from(message.data), ext: false, rtr: false}
-}
+    static fromString(message: string) {
+        assert.isString(message)
+        return this.fromJSON(JSON.parse(message))
+    }
 
-export function validateMessage(message: Message) {
-    assert.isNumber(message.id)
-    assert.isNumbers(message.data)
-}
+    toString() {
+        return JSON.stringify(this.toJSON())
+    }
 
-export function fromArrayBuffer(message: ArrayBuffer | ArrayBuffer[]) {
-    assert.isBuffer(message)
-    return fromString(new TextDecoder().decode(message))
-}
+    static fromCAN(message: CANMessage): Message {
+        return this.fromJSON({id: message.id, data: Array.from(message.data)})
+    }
 
-export function fromBuffer(message: Buffer) {
-    assert.isBuffer(message)
-    return fromString(message.toString('utf-8'))
-}
+    toCAN(): CANMessage {
+        return {id: this.id, data: Buffer.from(this.data), ext: false, rtr: false}
+    }
 
-// TODO: class Message
+    static fromArrayBuffer(message: ArrayBuffer | ArrayBuffer[]) {
+        assert.isBuffer(message)
+        return this.fromString(new TextDecoder().decode(message))
+    }
+
+    static fromBuffer(message: Buffer) {
+        assert.isBuffer(message)
+        return this.fromString(message.toString('utf-8'))
+    }
+}

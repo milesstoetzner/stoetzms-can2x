@@ -1,5 +1,5 @@
 import * as actions from '#core/actions'
-import {Message} from '#core/message'
+import Message from '#core/message'
 import * as files from '#files'
 import std from '#std'
 import * as utils from '#utils'
@@ -29,7 +29,7 @@ describe.skip('complex', () => {
     })
 
     it('source-target', async () => {
-        const message: Message = {id: 69, data: [1, 2, 3]}
+        const message = Message.fromJSON({id: 69, data: [1, 2, 3]})
         const output = files.temporary()
 
         const can2file = await actions.startBridge({
@@ -63,7 +63,7 @@ describe.skip('complex', () => {
         std.log('waiting for message being bridged')
         await utils.sleep(50)
 
-        expect(files.loadFile(output).trim()).to.equal(JSON.stringify(message))
+        expect(files.loadFile(output).trim()).to.equal(message.toString())
 
         await files.deleteFile(output)
         await console2can.stop()

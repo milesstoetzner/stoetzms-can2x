@@ -1,5 +1,5 @@
 import * as actions from '#core/actions'
-import {Message} from '#core/message'
+import Message from '#core/message'
 import * as files from '#files'
 import std from '#std'
 import * as utils from '#utils'
@@ -7,7 +7,7 @@ import {expect} from 'chai'
 
 describe('file', () => {
     it('file2file', async () => {
-        const message: Message = {id: 69, data: [1, 2, 3]}
+        const message = Message.fromJSON({id: 69, data: [1, 2, 3]})
 
         const input = files.temporary()
         await files.createFile(input)
@@ -41,10 +41,7 @@ describe('file', () => {
         std.log('waiting for message being bridged')
         await utils.sleep(25)
 
-        expect(files.loadFile(output).trim().split('\n')).to.deep.equal([
-            JSON.stringify(message),
-            JSON.stringify(message),
-        ])
+        expect(files.loadFile(output).trim().split('\n')).to.deep.equal([message.toString(), message.toString()])
 
         await second.stop()
         await first.stop()

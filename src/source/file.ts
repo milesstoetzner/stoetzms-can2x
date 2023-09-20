@@ -1,5 +1,5 @@
-import {Source} from '#/source/source'
-import {Message} from '#core/message'
+import Source from '#/source/source'
+import Message from '#core/message'
 import std from '#std'
 import * as check from '#utils/check'
 import {Tail} from 'tail'
@@ -22,10 +22,10 @@ export class FileSource extends Source {
 
         this.source = new Tail(this.options.file)
 
-        this.source.on('line', message => {
+        this.source.on('line', (message: string) => {
             std.log('file source received', {message})
             if (check.isUndefined(this.processor)) return std.log('no processor defined')
-            this.processor(JSON.parse(message) as Message)
+            this.processor(Message.fromString(message))
         })
 
         this.source.on('error', error => {

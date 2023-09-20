@@ -1,5 +1,5 @@
-import {Source} from '#/source/source'
-import {fromString, Message, toString} from '#core/message'
+import Source from '#/source/source'
+import Message from '#core/message'
 import std from '#std'
 import * as check from '#utils/check'
 import Aedes from 'aedes'
@@ -54,7 +54,7 @@ export class MQTTSource extends Source {
             if (topic !== this.options.topic) return std.log('topic unknown', {topic})
 
             if (check.isUndefined(this.processor)) return std.log('no processor defined')
-            this.processor(fromString(message))
+            this.processor(Message.fromString(message))
         })
 
         this.server.listen({port: this.options.port, host: this.options.host}, () => {
@@ -78,7 +78,7 @@ export class MQTTSource extends Source {
                     qos: 0,
                     cmd: 'publish',
                     dup: false,
-                    payload: toString(message),
+                    payload: message.toString(),
                     retain: false,
                     topic: this.options.topic,
                 },

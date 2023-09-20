@@ -1,7 +1,7 @@
-import {Target} from '#/target/target'
+import Target from '#/target/target'
 import * as assert from '#assert'
 import * as check from '#check'
-import {fromCAN, Message, toCAN} from '#core/message'
+import Message from '#core/message'
 import std from '#std'
 import {Message as CANMessage, RawChannel} from '*can.node'
 import * as can from 'socketcan'
@@ -30,7 +30,7 @@ export class CANTarget extends Target {
             this.target.addListener('onMessage', (message: CANMessage) => {
                 std.log('can source received', {message})
                 if (check.isUndefined(this.processor)) return std.log('no processor defined')
-                this.processor(fromCAN(message))
+                this.processor(Message.fromCAN(message))
             })
         }
 
@@ -41,7 +41,7 @@ export class CANTarget extends Target {
     async send(message: Message) {
         std.log('can target sending', {message})
         assert.isDefined(this.target, 'can target not started')
-        this.target.send(toCAN(message))
+        this.target.send(message.toCAN())
         std.log('can target sent')
     }
 

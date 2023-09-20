@@ -1,5 +1,5 @@
-import {Source} from '#/source/source'
-import {Message, toString} from '#core/message'
+import Source from '#/source/source'
+import Message from '#core/message'
 import std from '#std'
 import * as check from '#utils/check'
 import http from 'http'
@@ -41,7 +41,7 @@ export class WSSource extends Source {
             this.ws.on('message', (message: string) => {
                 std.log('websocket source received', {message})
                 if (check.isUndefined(this.processor)) return std.log('no processor defined')
-                this.processor(JSON.parse(message) as Message)
+                this.processor(Message.fromString(message))
             })
         })
 
@@ -66,7 +66,7 @@ export class WSSource extends Source {
         if (!this.options.bidirectional) return std.log('websocket source not bidirectional')
 
         if (check.isUndefined(this.ws)) return std.log('websocket source not defined')
-        this.ws.send(toString(message))
+        this.ws.send(message.toString())
 
         std.log('can source sent')
     }

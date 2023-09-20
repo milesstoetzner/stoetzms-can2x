@@ -1,8 +1,8 @@
-import {Message} from '#core/message'
+import Message from '#core/message'
 import {Processor} from '#core/types'
 import * as utils from '#utils'
 
-export abstract class Source {
+export default abstract class Source {
     processor?: Processor
     // TODO: remove this?
     options = {}
