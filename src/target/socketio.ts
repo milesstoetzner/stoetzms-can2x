@@ -8,6 +8,7 @@ import SocketIOClient, {Socket} from 'socket.io-client'
 export type SocketIOTargetOptions = {
     endpoint: string
     event: string
+    bidirectional: boolean
 }
 
 export class SocketIOTarget extends Target {
@@ -27,7 +28,7 @@ export class SocketIOTarget extends Target {
         this.target.on('connect', () => {
             std.log(`socketio target connected`, {id: this.target!.id})
             this.readyPromise.resolve()
-            std.log('websocket target started')
+            std.log('socketio target started')
         })
 
         this.target.on('connect_error', error => {
@@ -41,6 +42,14 @@ export class SocketIOTarget extends Target {
         this.target.on('disconnect', reason => {
             std.log(`socketio target disconnected`, {reason})
         })
+
+        if (this.options.bidirectional) {
+            this.target.on(this.options.event, (message: Message) => {
+                std.log('socketio target received')
+                if (check.isUndefined(this.processor)) return std.log('no processor defined')
+                this.processor(message)
+            })
+        }
     }
 
     async send(message: Message) {

@@ -1,10 +1,10 @@
 import {Message} from '#core/message'
+import {Processor} from '#core/types'
 import * as utils from '#utils'
-
-export type Processor = (message: Message) => Promise<void>
 
 export abstract class Source {
     processor?: Processor
+    // TODO: remove this?
     options = {}
 
     protected readyPromise
@@ -27,6 +27,10 @@ export abstract class Source {
 
     async receive(processor: Processor) {
         this.processor = processor
+    }
+
+    async send(message: Message): Promise<void> {
+        throw new Error(`Not Implemented`)
     }
 
     continuous = true

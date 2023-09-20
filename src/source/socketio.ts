@@ -9,12 +9,14 @@ export type SocketIOSourceOptions = {
     port: number
     host: string
     event: string
+    bidirectional: boolean
 }
 
 export class SocketIOSource extends Source {
     io?: SocketIO.Server
     server?: http.Server
     options: SocketIOSourceOptions
+    socket?: SocketIO.Socket
 
     constructor(options: SocketIOSourceOptions) {
         super()
@@ -30,7 +32,8 @@ export class SocketIOSource extends Source {
         this.io.on('connection', socket => {
             std.log(`socketio source connected`, {id: socket.id})
 
-            socket.on(this.options.event, (message: Message) => {
+            this.socket = socket
+            this.socket.on(this.options.event, (message: Message) => {
                 std.log('socketio source received', {message})
                 if (check.isUndefined(this.processor)) return std.log('no processor defined')
                 this.processor(message)
@@ -45,6 +48,17 @@ export class SocketIOSource extends Source {
         this.server.on('error', error => {
             std.log('socketio source error', {error})
         })
+    }
+
+    async send(message: Message) {
+        std.log('sending socketio source')
+        if (!this.options.bidirectional) return std.log('socketio source not bidirectional')
+
+        // TODO: broadcast?
+        if (check.isUndefined(this.socket)) return std.log('socketio socket not defined')
+        this.socket.emit(this.options.event, message)
+
+        std.log('socketio source sent')
     }
 
     async stop() {

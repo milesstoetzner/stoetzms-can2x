@@ -1,6 +1,7 @@
 import {Source} from '#/source/source'
 import {Target} from '#/target/target'
 import * as assert from '#assert'
+import {validateMessage} from '#core/message'
 import std from '#std'
 import hae from '#utils/hae'
 
@@ -29,13 +30,21 @@ export class Bridge {
         std.log('bridge started')
         await this.source.receive(
             hae.log(async message => {
-                std.log('bridging', {message})
+                std.log('bridging forward', {message})
 
                 assert.isNumber(message.id)
                 assert.isNumbers(message.data)
 
                 await this.target.send(message)
                 if (!this.source.continuous) await this.stop()
+            })
+        )
+
+        await this.target.receive(
+            hae.log(async message => {
+                std.log('bridging backward', {message})
+                validateMessage(message)
+                await this.source.send(message)
             })
         )
     }

@@ -66,7 +66,11 @@ export async function stopVCAN(options: VCANOptions) {
 }
 
 function createSource(options: BridgeOptions) {
-    if (options.source === 'can') return new CANSource({name: options.sourceName ?? 'can2x'})
+    if (options.source === 'can')
+        return new CANSource({
+            name: options.sourceName ?? 'can2x',
+            bidirectional: true, // TODO: implement, docs
+        })
 
     if (options.source === 'console') {
         assert.isDefined(options.sourceId, '--source-id undefined')
@@ -103,6 +107,7 @@ function createSource(options: BridgeOptions) {
             port: options.sourcePort ? Number(options.sourcePort) : 3000,
             host: options.sourceHost ?? 'localhost',
             event: options.sourceEvent ?? 'can2x',
+            bidirectional: true, // TODO: implement, docs
         })
 
     if (options.source === 'ws')
@@ -118,6 +123,7 @@ function createTarget(options: BridgeOptions) {
     if (options.target === 'can')
         return new CANTarget({
             name: options.targetName ?? 'can2x',
+            bidirectional: true, // TODO: implement, docs
         })
 
     if (options.target === 'console') return new ConsoleTarget()
@@ -149,6 +155,7 @@ function createTarget(options: BridgeOptions) {
         return new SocketIOTarget({
             endpoint: options.targetEndpoint,
             event: options.targetEvent ?? 'can2x',
+            bidirectional: true, // TODO: implement, docs
         })
     }
 

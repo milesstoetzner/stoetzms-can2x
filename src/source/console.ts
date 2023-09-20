@@ -1,5 +1,6 @@
-import {Processor, Source} from '#/source/source'
+import {Source} from '#/source/source'
 import {Message} from '#core/message'
+import {Processor} from '#core/types'
 import std from '#std'
 
 export type ConsoleSourceOptions = Message
