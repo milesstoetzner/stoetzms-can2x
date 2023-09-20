@@ -30,6 +30,7 @@ bridge
     .option('--source-name [string]', '', 'can2x')
     .option('--source-id [number]', '')
     .option('--source-data [numbers...]', '')
+    .option('--source-bidirectional [boolean]', '', true)
     .addOption(
         new Option('--target [string]', '')
             .default('console')
@@ -40,6 +41,7 @@ bridge
     .option('--target-topic [string]', '', 'can2x')
     .option('--target-name [string]', '', 'can2x')
     .option('--target-file [string]', '')
+    .option('--target-bidirectional [boolean]', '', true)
     .action(
         hae.exit(async options => {
             await actions.startBridge(options)

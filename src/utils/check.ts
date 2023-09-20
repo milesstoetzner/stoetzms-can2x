@@ -37,3 +37,7 @@ export function isObject(element: unknown): element is object {
 export function isName(name: string) {
     return name.match(/^[a-z-0-9.]+$/)
 }
+
+export function isBuffer(element: unknown): element is Buffer {
+    return Buffer.isBuffer(element)
+}

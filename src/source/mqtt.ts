@@ -1,5 +1,5 @@
 import {Source} from '#/source/source'
-import {Message} from '#core/message'
+import {fromString} from '#core/message'
 import std from '#std'
 import * as check from '#utils/check'
 import Aedes from 'aedes'
@@ -9,6 +9,7 @@ export type MQTTSourceOptions = {
     port: number
     host: string
     topic: string
+    bidirectional: boolean // TODO
 }
 
 export class MQTTSource extends Source {
@@ -53,7 +54,7 @@ export class MQTTSource extends Source {
             if (topic !== this.options.topic) return std.log('topic unknown', {topic})
 
             if (check.isUndefined(this.processor)) return std.log('no processor defined')
-            this.processor(JSON.parse(message) as Message)
+            this.processor(fromString(message))
         })
 
         this.server.listen({port: this.options.port, host: this.options.host}, () => {
@@ -65,6 +66,12 @@ export class MQTTSource extends Source {
             std.log('mqtt source error', {error})
         })
     }
+
+    // TODO: send
+    /**
+    async send(message: Message) {
+    }
+        **/
 
     async stop() {
         std.log('stopping mqtt source')

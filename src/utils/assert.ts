@@ -47,3 +47,7 @@ export function isName(name: string) {
     if (!check.isName(name))
         throw new Error(`Name "${name}" not allowed. Only small characters, numbers, hyphens, and dots are allowed.`)
 }
+
+export function isBuffer(element: unknown): asserts element is Buffer {
+    if (!check.isBuffer(element)) throw new Error(`Element "${element} is not a buffer`)
+}

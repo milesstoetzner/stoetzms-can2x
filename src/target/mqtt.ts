@@ -1,13 +1,14 @@
 import {Target} from '#/target/target'
 import * as assert from '#assert'
 import * as check from '#check'
-import {Message} from '#core/message'
+import {fromString, Message} from '#core/message'
 import std from '#std'
 import * as mqtt from 'mqtt'
 
 export type MQTTTargetOptions = {
     endpoint: string
     topic: string
+    bidirectional: boolean
 }
 
 export class MQTTTarget extends Target {
@@ -47,6 +48,14 @@ export class MQTTTarget extends Target {
         this.target.on('end', () => {
             std.log(`mqtt target ended`)
         })
+
+        if (this.options.bidirectional) {
+            this.target.on('message', (message: string) => {
+                std.log('mqtt target received', {message})
+                if (check.isUndefined(this.processor)) return std.log('no processor defined')
+                this.processor(fromString(message))
+            })
+        }
 
         this.readyPromise.resolve()
         std.log('mqtt target started')

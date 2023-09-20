@@ -1,18 +1,20 @@
 import {Source} from '#/source/source'
-import {Message} from '#core/message'
+import {Message, toString} from '#core/message'
 import std from '#std'
 import * as check from '#utils/check'
 import http from 'http'
-import * as ws from 'ws'
+import WebSocket, * as ws from 'ws'
 
 export type WSSourceOptions = {
     port: number
     host: string
+    bidirectional: boolean
 }
 
 export class WSSource extends Source {
     server?: http.Server
     options: WSSourceOptions
+    ws?: WebSocket
 
     constructor(options: WSSourceOptions) {
         super()
@@ -30,11 +32,13 @@ export class WSSource extends Source {
         wss.on('connection', ws => {
             std.log('websocket source connected')
 
-            ws.on('error', error => {
+            this.ws = ws
+
+            this.ws.on('error', error => {
                 std.log('websocket source error', {error})
             })
 
-            ws.on('message', (message: string) => {
+            this.ws.on('message', (message: string) => {
                 std.log('websocket source received', {message})
                 if (check.isUndefined(this.processor)) return std.log('no processor defined')
                 this.processor(JSON.parse(message) as Message)
@@ -55,6 +59,16 @@ export class WSSource extends Source {
         std.log('stopping websocket source')
         await this.stopServer()
         std.log('websocket source stopped')
+    }
+
+    async send(message: Message) {
+        std.log('sending can source')
+        if (!this.options.bidirectional) return std.log('websocket source not bidirectional')
+
+        if (check.isUndefined(this.ws)) return std.log('websocket source not defined')
+        this.ws.send(toString(message))
+
+        std.log('can source sent')
     }
 
     private async stopServer() {

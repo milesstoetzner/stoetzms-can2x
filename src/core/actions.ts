@@ -27,12 +27,14 @@ export type BridgeOptions = {
     sourceId?: string
     sourceData?: string[]
     sourceFile?: string
+    sourceBidirectional?: boolean
     target?: string
     targetEndpoint?: string
     targetEvent?: string
     targetTopic?: string
     targetName?: string
     targetFile?: string
+    targetBidirectional?: boolean
 }
 
 export async function startBridge(options: BridgeOptions) {
@@ -69,7 +71,7 @@ function createSource(options: BridgeOptions) {
     if (options.source === 'can')
         return new CANSource({
             name: options.sourceName ?? 'can2x',
-            bidirectional: true, // TODO: implement, docs
+            bidirectional: options.sourceBidirectional ?? true, // TODO: docs
         })
 
     if (options.source === 'console') {
@@ -100,6 +102,7 @@ function createSource(options: BridgeOptions) {
             port: options.sourcePort ? Number(options.sourcePort) : 3000,
             host: options.sourceHost ?? 'localhost',
             topic: options.sourceTopic ?? 'can2x',
+            bidirectional: options.sourceBidirectional ?? true, // TODO: docs
         })
 
     if (options.source === 'socketio')
@@ -107,13 +110,14 @@ function createSource(options: BridgeOptions) {
             port: options.sourcePort ? Number(options.sourcePort) : 3000,
             host: options.sourceHost ?? 'localhost',
             event: options.sourceEvent ?? 'can2x',
-            bidirectional: true, // TODO: implement, docs
+            bidirectional: options.sourceBidirectional ?? true, // TODO: docs
         })
 
     if (options.source === 'ws')
         return new WSSource({
             port: options.sourcePort ? Number(options.sourcePort) : 3000,
             host: options.sourceHost ?? 'localhost',
+            bidirectional: options.sourceBidirectional ?? true, // TODO: docs
         })
 
     throw new Error(`Source of type "${options.source}" unknown`)
@@ -123,7 +127,7 @@ function createTarget(options: BridgeOptions) {
     if (options.target === 'can')
         return new CANTarget({
             name: options.targetName ?? 'can2x',
-            bidirectional: true, // TODO: implement, docs
+            bidirectional: options.targetBidirectional ?? true, // TODO: docs
         })
 
     if (options.target === 'console') return new ConsoleTarget()
@@ -147,6 +151,7 @@ function createTarget(options: BridgeOptions) {
         return new MQTTTarget({
             endpoint: options.targetEndpoint,
             topic: options.targetTopic ?? 'can2x',
+            bidirectional: options.targetBidirectional ?? true, // TODO: docs
         })
     }
 
@@ -155,7 +160,7 @@ function createTarget(options: BridgeOptions) {
         return new SocketIOTarget({
             endpoint: options.targetEndpoint,
             event: options.targetEvent ?? 'can2x',
-            bidirectional: true, // TODO: implement, docs
+            bidirectional: options.targetBidirectional ?? true, // TODO: docs
         })
     }
 
@@ -163,6 +168,7 @@ function createTarget(options: BridgeOptions) {
         assert.isDefined(options.targetEndpoint, '--target-endpoint must be defined')
         return new WSTarget({
             endpoint: options.targetEndpoint,
+            bidirectional: options.targetBidirectional ?? true, // TODO: docs
         })
     }
 

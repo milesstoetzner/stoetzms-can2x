@@ -1,12 +1,13 @@
 import {Target} from '#/target/target'
 import * as assert from '#assert'
 import * as check from '#check'
-import {Message} from '#core/message'
+import {fromBuffer, Message, toString} from '#core/message'
 import std from '#std'
 import WebSocket from 'ws'
 
 export type WSTargetOptions = {
     endpoint: string
+    bidirectional: boolean
 }
 
 export class WSTarget extends Target {
@@ -36,12 +37,20 @@ export class WSTarget extends Target {
         this.target.on('close', reason => {
             std.log(`websocket target closed`, {reason})
         })
+
+        if (this.options.bidirectional) {
+            this.target.on('message', message => {
+                std.log('websocket target received', {message})
+                if (check.isUndefined(this.processor)) return std.log('no processor defined')
+                this.processor(fromBuffer(message))
+            })
+        }
     }
 
     async send(message: Message) {
         std.log('websocket target sending', {message})
         assert.isDefined(this.target, 'websocket target not started')
-        this.target.send(JSON.stringify(message))
+        this.target.send(toString(message))
         std.log('websocket target sent')
     }
 
