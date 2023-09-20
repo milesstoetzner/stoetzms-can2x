@@ -17,8 +17,8 @@ export default class Message {
         this.rtr = rtr
     }
 
-    static fromJSON(message: {id: number; data: number[]; ext: boolean; rtr: boolean}) {
-        return new Message(message.id, message.data, message.ext, message.rtr)
+    static fromJSON(message: {id: number; data: number[]; ext?: boolean; rtr?: boolean}) {
+        return new Message(message.id, message.data, message.ext ?? false, message.rtr ?? false)
     }
 
     toJSON() {
