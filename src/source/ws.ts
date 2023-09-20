@@ -38,10 +38,10 @@ export class WSSource extends Source {
                 std.log('websocket source error', {error})
             })
 
-            this.ws.on('message', (message: string) => {
+            this.ws.on('message', (message: Buffer) => {
                 std.log('websocket source received', {message})
                 if (check.isUndefined(this.processor)) return std.log('no processor defined')
-                this.processor(Message.fromString(message))
+                this.processor(Message.fromBuffer(message))
             })
         })
 

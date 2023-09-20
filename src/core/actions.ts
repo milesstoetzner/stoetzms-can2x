@@ -26,6 +26,8 @@ export type BridgeOptions = {
     sourceName?: string
     sourceId?: string
     sourceData?: string[]
+    sourceExt?: boolean
+    sourceRtr?: boolean
     sourceFile?: string
     sourceBidirectional?: boolean
     target?: string
@@ -81,6 +83,8 @@ function createSource(options: BridgeOptions) {
         return new ConsoleSource({
             id: Number(options.sourceId),
             data: options.sourceData.map(Number),
+            ext: options.sourceExt ?? false,
+            rtr: options.sourceRtr ?? false,
         })
     }
 

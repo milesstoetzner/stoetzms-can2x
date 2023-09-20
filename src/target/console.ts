@@ -9,7 +9,7 @@ export class ConsoleTarget extends Target {
 
     async send(message: Message) {
         std.log('console target sending', {message})
-        std.out(message.id, message.data)
+        std.out(message.toString())
         std.log('console target sent')
     }
 }

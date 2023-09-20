@@ -4,24 +4,25 @@ import {Message as CANMessage} from '*can.node'
 export default class Message {
     id: number
     data: number[]
+    ext: boolean
+    rtr: boolean
 
-    // TODO: ext
-    // TODO: rtr
-
-    private constructor(id: number, data: number[]) {
+    private constructor(id: number, data: number[], ext: boolean, rtr: boolean) {
         assert.isNumber(id)
         assert.isNumbers(data)
 
         this.id = id
         this.data = data
+        this.ext = ext
+        this.rtr = rtr
     }
 
-    static fromJSON(message: {id: number; data: number[]}) {
-        return new Message(message.id, message.data)
+    static fromJSON(message: {id: number; data: number[]; ext: boolean; rtr: boolean}) {
+        return new Message(message.id, message.data, message.ext, message.rtr)
     }
 
     toJSON() {
-        return {id: this.id, data: this.id}
+        return {id: this.id, data: this.data}
     }
 
     static fromString(message: string) {
@@ -34,11 +35,11 @@ export default class Message {
     }
 
     static fromCAN(message: CANMessage): Message {
-        return this.fromJSON({id: message.id, data: Array.from(message.data)})
+        return this.fromJSON({id: message.id, data: Array.from(message.data), ext: message.ext, rtr: message.rtr})
     }
 
     toCAN(): CANMessage {
-        return {id: this.id, data: Buffer.from(this.data), ext: false, rtr: false}
+        return {id: this.id, data: Buffer.from(this.data), ext: this.ext, rtr: this.rtr}
     }
 
     static fromArrayBuffer(message: ArrayBuffer | ArrayBuffer[]) {

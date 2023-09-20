@@ -1,4 +1,5 @@
 import * as check from '#check'
+import Message from '#core/message'
 import * as utils from '#utils'
 
 export function isDefined<T>(element: T | undefined | null, msg: string): asserts element is T {
@@ -50,4 +51,8 @@ export function isName(name: string) {
 
 export function isBuffer(element: unknown): asserts element is Buffer {
     if (!check.isBuffer(element)) throw new Error(`Element "${element} is not a buffer`)
+}
+
+export function isMessage(element: any): asserts element is Message {
+    if (!(element instanceof Message)) throw new Error(`Object "${element}" is not a message"`)
 }
