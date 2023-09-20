@@ -1,5 +1,5 @@
 import {Source} from '#/source/source'
-import {fromString} from '#core/message'
+import {fromString, Message, toString} from '#core/message'
 import std from '#std'
 import * as check from '#utils/check'
 import Aedes from 'aedes'
@@ -9,7 +9,7 @@ export type MQTTSourceOptions = {
     port: number
     host: string
     topic: string
-    bidirectional: boolean // TODO
+    bidirectional: boolean
 }
 
 export class MQTTSource extends Source {
@@ -67,11 +67,29 @@ export class MQTTSource extends Source {
         })
     }
 
-    // TODO: send
-    /**
     async send(message: Message) {
+        std.log('sending mqtt source')
+        if (!this.options.bidirectional) return std.log('mqtt source not bidirectional')
+
+        return new Promise<void>((resolve, reject) => {
+            if (check.isUndefined(this.aedes)) return std.log('mqtt source not defined')
+            this.aedes.publish(
+                {
+                    qos: 0,
+                    cmd: 'publish',
+                    dup: false,
+                    payload: toString(message),
+                    retain: false,
+                    topic: this.options.topic,
+                },
+                error => {
+                    if (check.isDefined(error)) return reject(error)
+                    std.log('mqtt source sent')
+                    return resolve()
+                }
+            )
+        })
     }
-        **/
 
     async stop() {
         std.log('stopping mqtt source')

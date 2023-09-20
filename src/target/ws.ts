@@ -1,7 +1,7 @@
 import {Target} from '#/target/target'
 import * as assert from '#assert'
 import * as check from '#check'
-import {fromBuffer, Message, toString} from '#core/message'
+import {fromArrayBuffer, Message, toString} from '#core/message'
 import std from '#std'
 import WebSocket from 'ws'
 
@@ -42,7 +42,7 @@ export class WSTarget extends Target {
             this.target.on('message', message => {
                 std.log('websocket target received', {message})
                 if (check.isUndefined(this.processor)) return std.log('no processor defined')
-                this.processor(fromBuffer(message))
+                this.processor(fromArrayBuffer(message))
             })
         }
     }

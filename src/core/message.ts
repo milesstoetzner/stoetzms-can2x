@@ -38,9 +38,14 @@ export function validateMessage(message: Message) {
     assert.isNumbers(message.data)
 }
 
-export function fromBuffer(message: ArrayBuffer | ArrayBuffer[]) {
+export function fromArrayBuffer(message: ArrayBuffer | ArrayBuffer[]) {
     assert.isBuffer(message)
     return fromString(new TextDecoder().decode(message))
+}
+
+export function fromBuffer(message: Buffer) {
+    assert.isBuffer(message)
+    return fromString(message.toString('utf-8'))
 }
 
 // TODO: class Message

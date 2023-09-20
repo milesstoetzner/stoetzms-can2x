@@ -1,7 +1,7 @@
 import {Target} from '#/target/target'
 import * as assert from '#assert'
 import * as check from '#check'
-import {fromString, Message} from '#core/message'
+import {fromBuffer, Message, toString} from '#core/message'
 import std from '#std'
 import * as mqtt from 'mqtt'
 
@@ -50,10 +50,13 @@ export class MQTTTarget extends Target {
         })
 
         if (this.options.bidirectional) {
-            this.target.on('message', (message: string) => {
-                std.log('mqtt target received', {message})
+            this.target.on('message', (topic, message) => {
+                std.log('mqtt target received', {message, topic})
+                if (topic.startsWith('$SYS')) return
+                if (topic !== this.options.topic) return std.log('topic unknown', {topic})
+
                 if (check.isUndefined(this.processor)) return std.log('no processor defined')
-                this.processor(fromString(message))
+                this.processor(fromBuffer(message))
             })
         }
 
@@ -64,7 +67,7 @@ export class MQTTTarget extends Target {
     async send(message: Message) {
         std.log('mqtt target publishing', {message})
         assert.isDefined(this.target, 'mqtt target not started')
-        await this.target.publishAsync(this.options.topic, JSON.stringify(message))
+        await this.target.publishAsync(this.options.topic, toString(message))
         std.log('mqtt target published')
     }
 
