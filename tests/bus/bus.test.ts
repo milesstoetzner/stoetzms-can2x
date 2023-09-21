@@ -4,9 +4,8 @@ import * as files from '#files'
 import std from '#std'
 import * as utils from '#utils'
 import {expect} from 'chai'
-import {afterEach} from 'mocha'
 
-describe.only('bus', () => {
+describe('bus', () => {
     const can2x1 = 'can2x1'
     const can2x2 = 'can2x2'
     const can2x3 = 'can2x3'
@@ -29,14 +28,14 @@ describe.only('bus', () => {
 
     it('bus', async () => {
         const target = 'socketio'
-        const targetEndpoint = 'http://localhost:3000'
+        const targetEndpoint = 'http://localhost:3333'
         const message = Message.fromJSON({id: 69, data: [1, 2, 3], ext: false, rtr: false})
 
         // Bus
         const bus = await actions.startBus({
             bus: 'socketio',
+            port: 3333,
         })
-        await bus.start()
 
         // Client 1
         const file1 = files.temporary()
@@ -115,8 +114,6 @@ describe.only('bus', () => {
 
         await sender.stop()
         await bus.stop()
-
-        // TODO: something is still running?!
     })
 
     afterEach(async () => {

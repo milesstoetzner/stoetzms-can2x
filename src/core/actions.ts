@@ -59,6 +59,9 @@ export type BusOptions = {
     event?: string
 }
 
+// TODO: actions folder with one action per file
+// TODO: cli
+// TODO: docs
 export async function startBus(options: BusOptions) {
     std.log('can2x bus', {options})
 
@@ -66,6 +69,7 @@ export async function startBus(options: BusOptions) {
 
     std.log('starting bus')
     await bus.start()
+    await bus.ready()
     return bus
 }
 
