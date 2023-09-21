@@ -11,6 +11,7 @@
 [![Platforms](https://img.shields.io/badge/Platforms-Linux-blue.svg)](https://vintner.opentosca.org)
 [![npm](https://img.shields.io/badge/npm-can2x-blue)](https://www.npmjs.com/package/can2x)
 
+
 `can2x` is a simple utility for connecting a CAN bus bidirectional with one or multiple CAN busses over the network using common web protocols, such as HTTP, MQTT, Socket.IO, and WebSockets.
 
 ## Overview
@@ -20,38 +21,7 @@ A source, such as a CAN bus in a first computing environment, forwards the CAN m
 This target then acts as a source and forwards the CAN message to another target, such as a CAN bus connected to the second computing environment.
 It is also possible to have a arbitrary long chains of different of such bridges.
 Also, most bridges are bidirectional, thus, CAN message are also bridged backward.
-In addition, `can2x bus` is able to connect multiple `can2x bridges`.
-
-## Installation
-
-`can2x` can be installed using `npm` or `yarn`.
-
-### NPM
-
-Install `can2x` system-wide using `npm`.
-Ensure, that `npm bin -g` is in your `$PATH`.
-
-```shell
-npm install --global can2x
-```
-
-### Yarn 
-
-Install `can2x` system-wide using `yarn`.
-Ensure, that `yarn global bin` is in your `$PATH`.
-
-```shell
-yarn global add can2x
-```
-
-
-## Requirements
-
-`can2x` has the following requirements.
-
-- Linux
-- SocketCAN, thus, Git Bash and WSL are not supported
-
+In addition, a can2x bus is able to connect multiple can2x bridges.
 
 ## Example
 
@@ -95,11 +65,36 @@ can2x  01A   [8]  11 22 33 44 AA BB CC DD
 ```
 
 
+## Installation
+
+Install `can2x` system-wide using `npm`.
+Ensure, that `npm bin -g` is in your `$PATH`.
+
+```shell
+npm install --global can2x
+```
+
+Alternatively, install `can2x` system-wide using `yarn` (classic).
+Ensure, that `yarn global bin` is in your `$PATH`.
+
+```shell
+yarn global add can2x
+```
+
+
+## Requirements
+
+`can2x` has the following requirements.
+
+- Linux
+- SocketCAN, thus, Git Bash and WSL are not supported
+
+
 ## Commands
 
 `can2x` supports the following commands.
 
-### Bridge Start
+### Command `bridge start`
 
 The following command starts a can2x bridge.
 
@@ -131,7 +126,157 @@ The following options are supported.
 | `--target-file`            | string                                                     | none        | false    |             |
 | `--target-bidirectional`   | boolean                                                    | `true`      | false    |             |
 
-### Bus Start
+
+### Sources
+
+`can2x` supports the following sources.
+
+#### CAN Bus
+
+`can2x` supports a `can2x` bridge, i.e., `--source can`.
+The following options are supported.
+
+| Option                   | Type                                                       | Default     | Required | Description | 
+|--------------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--source-name`          | string                                                     | `can2x`     | false    |             |
+| `--source-bidirectional` | boolean                                                    | `true`      | false    |             |
+
+#### Console
+
+`can2x` supports a `console2x` bridge, i.e., `--source console`.
+The following options are supported.
+
+| Option                     | Type                                                       | Default     | Required | Description | 
+|----------------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--source-id`              | number                                                     | none        | true     |             |
+| `--source-data`            | number[]                                                   | none        | true     |             |
+
+#### File
+
+`can2x` supports a `file2x` bridge, i.e., `--source file`.
+The following options are supported.
+
+| Option          | Type                                                       | Default     | Required | Description | 
+|-----------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--source-file` | string                                                     | none        | true     |             |
+
+#### HTTP
+
+`can2x` supports a `http2x` bridge, i.e., `--source http`.
+The following options are supported.
+
+| Option              | Type                                                       | Default     | Required | Description | 
+|---------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--source-port`     | number                                                     | `3000`      | false    |             |
+| `--source-host`     | string                                                     | `localhost` | false    |             |
+
+#### MQTT
+
+`can2x` supports a `mqtt2x` bridge, i.e., `--source mqtt`.
+The following options are supported.
+
+| Option                     | Type                                                       | Default     | Required | Description | 
+|----------------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--source-port`            | number                                                     | `3000`      | false    |             |
+| `--source-host`            | string                                                     | `localhost` | false    |             |
+| `--source-topic`           | string                                                     | `can2x`     | false    |             |
+| `--source-bidirectional`   | boolean                                                    | `true`      | false    |             |
+
+#### Socket.IO
+
+`can2x` supports a `socketio2x` bridge, i.e., `--source socketio`.
+The following options are supported.
+
+| Option                     | Type                                                       | Default     | Required | Description | 
+|----------------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--source-port`            | number                                                     | `3000`      | false    |             |
+| `--source-host`            | string                                                     | `localhost` | false    |             |
+| `--source-event`           | string                                                     | `can2x`     | false    |             |
+| `--source-bidirectional`   | boolean                                                    | `true`      | false    |             |
+
+#### WebSocket
+
+`can2x` supports a `ws2x` bridge, i.e., `--source ws`.
+The following options are supported.
+
+| Option                      | Type                                                       | Default     | Required | Description | 
+|-----------------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--source-port`             | number                                                     | `3000`      | false    |             |
+| `--source-host`             | string                                                     | `localhost` | false    |             |
+| `--source-bidirectional`    | boolean                                                    | `true`      | false    |             |
+
+### Targets
+
+`can2x` supports the following targets.
+
+#### CAN Bus
+
+`can2x` supports a `x2can` bridge, i.e., `--target can`.
+The following options are supported.
+
+| Option                   | Type                                                       | Default     | Required | Description | 
+|--------------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--target-name`          | string                                                     | `can2x`     | false    |             |
+| `--target-bidirectional` | boolean                                                    | `true`      | false    |             |
+
+#### Console
+
+`can2x` supports a `x2console` bridge, i.e., `--target console`.
+No options are supported.
+
+#### File
+
+`can2x` supports a `x2file` bridge, i.e., `--target file`.
+The following options are supported.
+
+| Option              | Type                                                       | Default     | Required | Description | 
+|---------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--target-file`     | string                                                     | none        | true     |             |
+
+#### HTTP
+
+`can2x` supports a `x2http` bridge, i.e., `--target http`.
+The following options are supported.
+
+| Option              | Type                                                       | Default     | Required | Description | 
+|---------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--target-endpoint` | string                                                     | none        | true     |             |
+
+#### MQTT
+
+`can2x` supports a `x2mqtt` bridge, i.e., `--target mqtt`.
+The following options are supported.
+
+| Option                   | Type                                                       | Default     | Required | Description | 
+|--------------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--target-endpoint`      | string                                                     | none        | true     |             |
+| `--target-topic`         | string                                                     | `can2x`     | false    |             |
+| `--target-bidirectional` | boolean                                                    | `true`      | false    |             |
+
+#### Socket.IO
+
+`can2x` supports a `x2socketio` bridge, i.e., `--target socketio`.
+The following options are supported.
+
+| Option                     | Type                                                       | Default     | Required | Description | 
+|----------------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--target-endpoint`        | string                                                     | none        | true     |             |
+| `--target-event`           | string                                                     | `can2x`     | false    |             |
+| `--target-bidirectional`   | boolean                                                    | `true`      | false    |             |
+
+#### Websocket
+
+`can2x` supports a `x2ws` bridge, i.e., `--target ws`.
+The following options are supported.
+
+| Option                     | Type                                                       | Default     | Required | Description | 
+|----------------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--target-endpoint`        | string                                                     | none        | true     |             |
+| `--target-bidirectional`   | boolean                                                    | `true`      | false    |             |
+
+
+
+### Command `bus start`
 
 The following command starts a can2x bus.
 
@@ -149,7 +294,31 @@ The following options are supported.
 | `--event` | string       | `can2x`      | false    |             |
 
 
-### vCAN Start
+`can2x` supports the following busses.
+
+#### Socket.IO
+
+`can2x` supports a `socketio` bus, i.e., `--bus socketio`.
+The following options are supported.
+
+| Option    | Type         | Default      | Required | Description | 
+|-----------|--------------|--------------|----------|-------------|
+| `--port`  | number       | `3000`       | false    |             |
+| `--host`  | string       | `localhost`  | false    |             |
+| `--event` | string       | `can2x`      | false    |             |
+
+
+### Command `vcan check`
+
+The following command check if required module exist.
+
+```shell
+can2x vcan check
+```
+
+No options are supported.
+
+### Command `vcan start`
 
 The following command starts a vCAN using SocketCAN.
 
@@ -163,7 +332,7 @@ The following options are supported.
 |-----------|-----------|------------|----------|------------------------|
 | `--name`  | string    | `can2x`    | false    | The name of the vCAN.  |
 
-### vCAN Stop
+### Command `vcan stop`
 
 The following command stops a vCAN using SocketCAN.
 
@@ -177,6 +346,7 @@ The following options are supported.
 |-----------|-----------|------------|----------|------------------------|
 | `--name`  | string    | `can2x`    | false    | The name of the vCAN.  |
 
+
 ## CAN Message
 
 A CAN message is internally represented as follows.
@@ -187,169 +357,6 @@ A CAN message is internally represented as follows.
 | `data` | number[] | The decimal payload of the CAN message. |
 | `ext`  | boolean  |                                         |
 | `rtr`  | boolean  |                                         |
-
-## Sources
-
-`can2x` supports the following sources.
-
-### CAN Bus
-
-`can2x` supports a `can2x` bridge, i.e., `--source can`.
-The following options are supported.
-
-| Option                   | Type                                                       | Default     | Required | Description | 
-|--------------------------|------------------------------------------------------------|-------------|----------|-------------|
-| `--source-name`          | string                                                     | `can2x`     | false    |             |
-| `--source-bidirectional` | boolean                                                    | `true`      | false    |             |
-
-### Console
-
-`can2x` supports a `console2x` bridge, i.e., `--source console`.
-The following options are supported.
-
-| Option                     | Type                                                       | Default     | Required | Description | 
-|----------------------------|------------------------------------------------------------|-------------|----------|-------------|
-| `--source-id`              | number                                                     | none        | true     |             |
-| `--source-data`            | number[]                                                   | none        | true     |             |
-
-### File
-
-`can2x` supports a `file2x` bridge, i.e., `--source file`.
-The following options are supported.
-
-| Option          | Type                                                       | Default     | Required | Description | 
-|-----------------|------------------------------------------------------------|-------------|----------|-------------|
-| `--source-file` | string                                                     | none        | true     |             |
-
-### HTTP
-
-`can2x` supports a `http2x` bridge, i.e., `--source http`.
-The following options are supported.
-
-| Option              | Type                                                       | Default     | Required | Description | 
-|---------------------|------------------------------------------------------------|-------------|----------|-------------|
-| `--source-port`     | number                                                     | `3000`      | false    |             |
-| `--source-host`     | string                                                     | `localhost` | false    |             |
-
-### MQTT
-
-`can2x` supports a `mqtt2x` bridge, i.e., `--source mqtt`.
-The following options are supported.
-
-| Option                     | Type                                                       | Default     | Required | Description | 
-|----------------------------|------------------------------------------------------------|-------------|----------|-------------|
-| `--source-port`            | number                                                     | `3000`      | false    |             |
-| `--source-host`            | string                                                     | `localhost` | false    |             |
-| `--source-topic`           | string                                                     | `can2x`     | false    |             |
-| `--source-bidirectional`   | boolean                                                    | `true`      | false    |             |
-
-### Socket.IO
-
-`can2x` supports a `socketio2x` bridge, i.e., `--source socketio`.
-The following options are supported.
-
-| Option                     | Type                                                       | Default     | Required | Description | 
-|----------------------------|------------------------------------------------------------|-------------|----------|-------------|
-| `--source-port`            | number                                                     | `3000`      | false    |             |
-| `--source-host`            | string                                                     | `localhost` | false    |             |
-| `--source-event`           | string                                                     | `can2x`     | false    |             |
-| `--source-bidirectional`   | boolean                                                    | `true`      | false    |             |
-
-### WebSocket
-
-`can2x` supports a `ws2x` bridge, i.e., `--source ws`.
-The following options are supported.
-
-| Option                      | Type                                                       | Default     | Required | Description | 
-|-----------------------------|------------------------------------------------------------|-------------|----------|-------------|
-| `--source-port`             | number                                                     | `3000`      | false    |             |
-| `--source-host`             | string                                                     | `localhost` | false    |             |
-| `--source-bidirectional`    | boolean                                                    | `true`      | false    |             |
-
-## Targets
-
-`can2x` supports the following targets.
-
-### CAN Bus
-
-`can2x` supports a `x2can` bridge, i.e., `--target can`.
-The following options are supported.
-
-| Option                   | Type                                                       | Default     | Required | Description | 
-|--------------------------|------------------------------------------------------------|-------------|----------|-------------|
-| `--target-name`          | string                                                     | `can2x`     | false    |             |
-| `--target-bidirectional` | boolean                                                    | `true`      | false    |             |
-
-### Console
-
-`can2x` supports a `x2console` bridge, i.e., `--target console`.
-No options are supported.
-
-### File
-
-`can2x` supports a `x2file` bridge, i.e., `--target file`.
-The following options are supported.
-
-| Option              | Type                                                       | Default     | Required | Description | 
-|---------------------|------------------------------------------------------------|-------------|----------|-------------|
-| `--target-file`     | string                                                     | none        | true     |             |
-
-### HTTP
-
-`can2x` supports a `x2http` bridge, i.e., `--target http`.
-The following options are supported.
-
-| Option              | Type                                                       | Default     | Required | Description | 
-|---------------------|------------------------------------------------------------|-------------|----------|-------------|
-| `--target-endpoint` | string                                                     | none        | true     |             |
-
-### MQTT
-
-`can2x` supports a `x2mqtt` bridge, i.e., `--target mqtt`.
-The following options are supported.
-
-| Option                   | Type                                                       | Default     | Required | Description | 
-|--------------------------|------------------------------------------------------------|-------------|----------|-------------|
-| `--target-endpoint`      | string                                                     | none        | true     |             |
-| `--target-topic`         | string                                                     | `can2x`     | false    |             |
-| `--target-bidirectional` | boolean                                                    | `true`      | false    |             |
-
-### Socket.IO
-
-`can2x` supports a `x2socketio` bridge, i.e., `--target socketio`.
-The following options are supported.
-
-| Option                     | Type                                                       | Default     | Required | Description | 
-|----------------------------|------------------------------------------------------------|-------------|----------|-------------|
-| `--target-endpoint`        | string                                                     | none        | true     |             |
-| `--target-event`           | string                                                     | `can2x`     | false    |             |
-| `--target-bidirectional`   | boolean                                                    | `true`      | false    |             |
-
-### Websocket
-
-`can2x` supports a `x2ws` bridge, i.e., `--target ws`.
-The following options are supported.
-
-| Option                     | Type                                                       | Default     | Required | Description | 
-|----------------------------|------------------------------------------------------------|-------------|----------|-------------|
-| `--target-endpoint`        | string                                                     | none        | true     |             |
-| `--target-bidirectional`   | boolean                                                    | `true`      | false    |             |
-
-
-## Busses
-
-`can2x` supports the following busses.
-
-### Socket.IO
-
-`can2x` supports a `socketio` bridge, i.e., `--bus socketio`.
-The following options are supported.
-
-| Option    | Type         | Default      | Required | Description | 
-|-----------|--------------|--------------|----------|-------------|
-| `--port`  | number       | `3000`       | false    |             |
-| `--host`  | string       | `localhost`  | false    |             |
-| `--event` | string       | `can2x`      | false    |             |
 
 
 ## Limitations
@@ -400,7 +407,7 @@ ip link set vcan0 up
 
 ### Manually Stopping a vCAN
 
-The following commands stops a vCAN.
+The following commands stop a vCAN.
 
 ```shell
 ip link set vcan0 down
