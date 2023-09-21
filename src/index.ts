@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import * as actions from '#core/actions'
+import actions from '#actions'
 import hae from '#utils/hae'
 import {Command, Option} from 'commander'
 
@@ -47,7 +47,7 @@ bridge
     .option('--target-bidirectional [boolean]', '', true)
     .action(
         hae.exit(async options => {
-            await actions.startBridge(options)
+            await actions.bridge.start(options)
         })
     )
 
@@ -61,7 +61,7 @@ bus.command('start')
     .option('--event [string]', '', 'can2x')
     .action(
         hae.exit(async options => {
-            await actions.startBus(options)
+            await actions.bus.start(options)
         })
     )
 
@@ -72,7 +72,7 @@ vcan.command('start')
     .option('--name [string]', '', 'can2x')
     .action(
         hae.exit(async options => {
-            await actions.startVCAN(options)
+            await actions.vcan.start(options)
         })
     )
 
@@ -81,7 +81,7 @@ vcan.command('stop')
     .option('--name [string]', 'the name of the vcan', 'can2x')
     .action(
         hae.exit(async options => {
-            await actions.stopVCAN(options)
+            await actions.vcan.stop(options)
         })
     )
 

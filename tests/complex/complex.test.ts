@@ -1,4 +1,4 @@
-import * as actions from '#core/actions'
+import actions from '#actions'
 import Message from '#core/message'
 import * as files from '#files'
 import std from '#std'
@@ -12,7 +12,7 @@ import {afterEach} from 'mocha'
 describe('complex', () => {
     beforeEach(async () => {
         try {
-            await actions.startVCAN({
+            await actions.vcan.start({
                 name: 'can2x1',
             })
         } catch (error) {
@@ -20,7 +20,7 @@ describe('complex', () => {
         }
 
         try {
-            await actions.startVCAN({
+            await actions.vcan.start({
                 name: 'can2x2',
             })
         } catch (error) {
@@ -32,27 +32,27 @@ describe('complex', () => {
         const message = Message.fromJSON({id: 69, data: [1, 2, 3], ext: false, rtr: false})
         const output = files.temporary()
 
-        const can2file = await actions.startBridge({
+        const can2file = await actions.bridge.start({
             source: 'can',
             sourceName: 'can2x2',
             target: 'file',
             targetFile: output,
         })
 
-        const socketio2can = await actions.startBridge({
+        const socketio2can = await actions.bridge.start({
             source: 'socketio',
             target: 'can',
             targetName: 'can2x2',
         })
 
-        const can2socketio = await actions.startBridge({
+        const can2socketio = await actions.bridge.start({
             source: 'can',
             sourceName: 'can2x1',
             target: 'socketio',
             targetEndpoint: 'http://localhost:3000',
         })
 
-        const console2can = await actions.startBridge({
+        const console2can = await actions.bridge.start({
             source: 'console',
             sourceId: String(message.id),
             sourceData: message.data.map(String),
@@ -76,7 +76,7 @@ describe('complex', () => {
 
     afterEach(async () => {
         try {
-            await actions.stopVCAN({
+            await actions.vcan.stop({
                 name: 'can2x1',
             })
         } catch (error) {
@@ -84,7 +84,7 @@ describe('complex', () => {
         }
 
         try {
-            await actions.stopVCAN({
+            await actions.vcan.stop({
                 name: 'can2x2',
             })
         } catch (error) {

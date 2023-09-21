@@ -1,4 +1,4 @@
-import * as actions from '#core/actions'
+import actions from '#actions'
 import Message from '#core/message'
 import * as files from '#files'
 import std from '#std'
@@ -11,7 +11,7 @@ describe('can', () => {
 
     beforeEach(async () => {
         try {
-            await actions.startVCAN({
+            await actions.vcan.start({
                 name: vcan,
             })
         } catch (error) {
@@ -24,7 +24,7 @@ describe('can', () => {
         const output = files.temporary()
 
         // Start can source with file target
-        const source = await actions.startBridge({
+        const source = await actions.bridge.start({
             source: 'can',
             sourceName: vcan,
             target: 'file',
@@ -32,7 +32,7 @@ describe('can', () => {
         })
 
         // Send message using console source and can target
-        const target = await actions.startBridge({
+        const target = await actions.bridge.start({
             source: 'console',
             sourceId: String(message.id),
             sourceData: message.data.map(String),
@@ -54,7 +54,7 @@ describe('can', () => {
 
     afterEach(async () => {
         try {
-            await actions.stopVCAN({
+            await actions.vcan.stop({
                 name: vcan,
             })
         } catch (error) {

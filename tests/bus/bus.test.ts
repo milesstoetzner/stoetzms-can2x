@@ -1,4 +1,4 @@
-import * as actions from '#core/actions'
+import actions from '#actions'
 import Message from '#core/message'
 import * as files from '#files'
 import std from '#std'
@@ -12,13 +12,13 @@ describe('bus', () => {
 
     beforeEach(async () => {
         try {
-            await actions.startVCAN({
+            await actions.vcan.start({
                 name: can2x1,
             })
-            await actions.startVCAN({
+            await actions.vcan.start({
                 name: can2x2,
             })
-            await actions.startVCAN({
+            await actions.vcan.start({
                 name: can2x3,
             })
         } catch (error) {
@@ -32,20 +32,20 @@ describe('bus', () => {
         const message = Message.fromJSON({id: 69, data: [1, 2, 3], ext: false, rtr: false})
 
         // Bus
-        const bus = await actions.startBus({
+        const bus = await actions.bus.start({
             bus: 'socketio',
             port: 3333,
         })
 
         // Client 1
         const file1 = files.temporary()
-        const logger1 = await actions.startBridge({
+        const logger1 = await actions.bridge.start({
             source: 'can',
             sourceName: can2x1,
             target: 'file',
             targetFile: file1,
         })
-        const bridge1 = await actions.startBridge({
+        const bridge1 = await actions.bridge.start({
             source: 'can',
             sourceName: can2x1,
             target,
@@ -54,13 +54,13 @@ describe('bus', () => {
 
         // Client 2
         const file2 = files.temporary()
-        const logger2 = await actions.startBridge({
+        const logger2 = await actions.bridge.start({
             source: 'can',
             sourceName: can2x2,
             target: 'file',
             targetFile: file2,
         })
-        const bridge2 = await actions.startBridge({
+        const bridge2 = await actions.bridge.start({
             source: 'can',
             sourceName: can2x2,
             target,
@@ -69,13 +69,13 @@ describe('bus', () => {
 
         // Client 3
         const file3 = files.temporary()
-        const logger3 = await actions.startBridge({
+        const logger3 = await actions.bridge.start({
             source: 'can',
             sourceName: can2x3,
             target: 'file',
             targetFile: file3,
         })
-        const bridge3 = await actions.startBridge({
+        const bridge3 = await actions.bridge.start({
             source: 'can',
             sourceName: can2x3,
             target,
@@ -83,7 +83,7 @@ describe('bus', () => {
         })
 
         // Sender
-        const sender = await actions.startBridge({
+        const sender = await actions.bridge.start({
             source: 'console',
             sourceId: String(message.id),
             sourceData: message.data.map(String),
@@ -118,13 +118,13 @@ describe('bus', () => {
 
     afterEach(async () => {
         try {
-            await actions.stopVCAN({
+            await actions.vcan.stop({
                 name: can2x1,
             })
-            await actions.stopVCAN({
+            await actions.vcan.stop({
                 name: can2x2,
             })
-            await actions.stopVCAN({
+            await actions.vcan.stop({
                 name: can2x3,
             })
         } catch (error) {

@@ -10,6 +10,7 @@
             "#check": ["src/utils/check"],
             "#assert": ["src/utils/assert"],
             "#std": ["src/utils/std"],
+            "#actions": ["src/actions"],
             "#core/*": ["src/core/*"]
         },
         "outDir": "dist",

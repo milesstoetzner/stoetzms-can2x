@@ -1,4 +1,3 @@
-import {SocketIOBus} from '#/bus/socketio'
 import {CANSource} from '#/source/can'
 import {ConsoleSource} from '#/source/console'
 import {FileSource} from '#/source/file'
@@ -15,7 +14,6 @@ import {SocketIOTarget} from '#/target/socketio'
 import {WSTarget} from '#/target/ws'
 import * as assert from '#assert'
 import {Bridge} from '#core/bridge'
-import {VCAN, VCANOptions} from '#core/vcan'
 import std from '#std'
 
 export type BridgeOptions = {
@@ -51,44 +49,6 @@ export async function startBridge(options: BridgeOptions) {
     await bridge.start()
     return bridge
 }
-
-export type BusOptions = {
-    bus?: string
-    port?: number
-    host?: string
-    event?: string
-}
-
-// TODO: actions folder with one action per file
-export async function startBus(options: BusOptions) {
-    std.log('can2x bus', {options})
-
-    const bus = createBus(options)
-
-    std.log('starting bus')
-    await bus.start()
-    await bus.ready()
-    return bus
-}
-
-export async function startVCAN(options: VCANOptions) {
-    std.log('can2x vcan create', {options})
-
-    std.log('creating vcan')
-    const vcan = new VCAN(options)
-    await vcan.start()
-    return vcan
-}
-
-export async function stopVCAN(options: VCANOptions) {
-    std.log('can2x vcan delete', {options})
-
-    std.log('deleting vcan')
-    const vcan = new VCAN(options)
-    await vcan.stop()
-    return vcan
-}
-
 function createSource(options: BridgeOptions) {
     if (options.source === 'can')
         return new CANSource({
@@ -197,15 +157,4 @@ function createTarget(options: BridgeOptions) {
     }
 
     throw new Error(`Target of type "${options.target}" unknown`)
-}
-
-function createBus(options: BusOptions) {
-    if (options.bus === 'socketio')
-        return new SocketIOBus({
-            port: options.port ? Number(options.port) : 3000,
-            host: options.host ?? 'localhost',
-            event: options.event ?? 'can2x',
-        })
-
-    throw new Error(`Bus of type "${options.bus}" unknown`)
 }
