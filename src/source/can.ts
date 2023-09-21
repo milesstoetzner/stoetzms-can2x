@@ -39,7 +39,11 @@ export class CANSource extends Source {
     async stop() {
         std.log('stopping can source')
         if (check.isUndefined(this.source)) return std.log('can source not defined')
-        this.source.stop()
+        try {
+            this.source.stop()
+        } catch (error) {
+            std.log('stopping can source failed', {error: error})
+        }
         std.log('can source stopped')
     }
 
