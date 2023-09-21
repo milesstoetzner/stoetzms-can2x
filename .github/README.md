@@ -6,12 +6,12 @@
 [![Release](https://github.com/milesstoetzner/stoetzms-can2x/actions/workflows/release.yaml/badge.svg)](https://github.com/milesstoetzner/stoetzms-can2x/actions/workflows/release.yaml)
 [![Codacy Quality Badge](https://app.codacy.com/project/badge/Grade/8b0bd18dbdc844e4947b21b4e7bb5d9f)](https://app.codacy.com/gh/milesstoetzner/stoetzms-can2x/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Codacy Coverage Badge](https://app.codacy.com/project/badge/Coverage/8b0bd18dbdc844e4947b21b4e7bb5d9f)](https://app.codacy.com/gh/milesstoetzner/stoetzms-can2x/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](https://vintner.opentosca.org/code-of-conduct)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-blue.svg)](https://vintner.opentosca.org/code-of-conduct)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Platforms](https://img.shields.io/badge/Platforms-Linux-blue.svg)](https://vintner.opentosca.org)
 [![npm](https://img.shields.io/badge/npm-can2x-blue)](https://www.npmjs.com/package/can2x)
 
-`can2x` is a simple utility for connecting a CAN bus bidirectional with another CAN bus over the network using common web protocols, such as HTTP, MQTT, Socket.IO, and WebSockets.
+`can2x` is a simple utility for connecting a CAN bus bidirectional with one or multiple CAN busses over the network using common web protocols, such as HTTP, MQTT, Socket.IO, and WebSockets.
 
 ## Overview
 
@@ -20,6 +20,7 @@ A source, such as a CAN bus in a first computing environment, forwards the CAN m
 This target then acts as a source and forwards the CAN message to another target, such as a CAN bus connected to the second computing environment.
 It is also possible to have a arbitrary long chains of different of such bridges.
 Also, most bridges are bidirectional, thus, CAN message are also bridged backward.
+In addition, `can2x bus` is able to connect multiple `can2x bridges`.
 
 ## Installation
 
@@ -344,6 +345,10 @@ license-checker --production --summary --onlyAllow "MIT;Apache-2.0;Python-2.0;BS
 ├─ BlueOak-1.0.0: 2
 └─ Python-2.0: 1
 ```
+
+## Keywords
+
+http, mqtt, can, bridge, ws, websocket, socketio, vcan, can2http, can2mqtt, can2socketio, can2x, can2ws, virtual
 
 ## Acknowledgements
 
