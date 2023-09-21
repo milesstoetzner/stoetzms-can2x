@@ -1,8 +1,12 @@
-import {Message} from '#core/message'
+import Message from '#core/message'
+import {Processor} from '#core/types'
 import * as utils from '#utils'
 
-export abstract class Target {
+export default abstract class Target {
+    processor?: Processor
+
     protected readyPromise
+
     protected constructor() {
         this.readyPromise = utils.createDecomposedPromise()
     }
@@ -20,4 +24,8 @@ export abstract class Target {
     }
 
     abstract send(message: Message): Promise<void>
+
+    async receive(processor: Processor) {
+        this.processor = processor
+    }
 }

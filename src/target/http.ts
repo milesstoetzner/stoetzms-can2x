@@ -1,5 +1,5 @@
-import {Target} from '#/target/target'
-import {Message} from '#core/message'
+import Target from '#/target/target'
+import Message from '#core/message'
 import std from '#std'
 import fetch from 'cross-fetch'
 
@@ -19,7 +19,7 @@ export class HTTPTarget extends Target {
         std.log('http target sending', {message})
         await fetch(this.options.endpoint, {
             method: 'POST',
-            body: JSON.stringify(message),
+            body: message.toString(),
             headers: {'Content-Type': 'application/json'},
         })
         std.log('http target sent')

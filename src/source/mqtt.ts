@@ -1,5 +1,5 @@
-import {Source} from '#/source/source'
-import {Message} from '#core/message'
+import Source from '#/source/source'
+import Message from '#core/message'
 import std from '#std'
 import * as check from '#utils/check'
 import Aedes from 'aedes'
@@ -9,6 +9,7 @@ export type MQTTSourceOptions = {
     port: number
     host: string
     topic: string
+    bidirectional: boolean
 }
 
 export class MQTTSource extends Source {
@@ -53,7 +54,7 @@ export class MQTTSource extends Source {
             if (topic !== this.options.topic) return std.log('topic unknown', {topic})
 
             if (check.isUndefined(this.processor)) return std.log('no processor defined')
-            this.processor(JSON.parse(message) as Message)
+            this.processor(Message.fromString(message))
         })
 
         this.server.listen({port: this.options.port, host: this.options.host}, () => {
@@ -63,6 +64,30 @@ export class MQTTSource extends Source {
 
         this.server.on('error', error => {
             std.log('mqtt source error', {error})
+        })
+    }
+
+    async send(message: Message) {
+        std.log('sending mqtt source')
+        if (!this.options.bidirectional) return std.log('mqtt source not bidirectional')
+
+        return new Promise<void>((resolve, reject) => {
+            if (check.isUndefined(this.aedes)) return std.log('mqtt source not defined')
+            this.aedes.publish(
+                {
+                    qos: 0,
+                    cmd: 'publish',
+                    dup: false,
+                    payload: message.toString(),
+                    retain: false,
+                    topic: this.options.topic,
+                },
+                error => {
+                    if (check.isDefined(error)) return reject(error)
+                    std.log('mqtt source sent')
+                    return resolve()
+                }
+            )
         })
     }
 

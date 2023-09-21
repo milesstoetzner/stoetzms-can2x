@@ -1,5 +1,5 @@
-import {Target} from '#/target/target'
-import {Message} from '#core/message'
+import Target from '#/target/target'
+import Message from '#core/message'
 import * as files from '#files'
 import std from '#std'
 
@@ -18,7 +18,7 @@ export class FileTarget extends Target {
     async send(message: Message) {
         std.log('file target sending', {message})
         await files.createFile(this.options.file)
-        await files.appendFile(this.options.file, JSON.stringify(message) + '\n')
+        await files.appendFile(this.options.file, message.toString() + '\n')
         std.log('file target sent')
     }
 }

@@ -1,13 +1,14 @@
-import {Target} from '#/target/target'
+import Target from '#/target/target'
 import * as assert from '#assert'
 import * as check from '#check'
-import {Message} from '#core/message'
+import Message, {CANMessage} from '#core/message'
 import std from '#std'
 import {RawChannel} from '*can.node'
 import * as can from 'socketcan'
 
 export type CANTargetOptions = {
     name: string
+    bidirectional: boolean
 }
 
 export class CANTarget extends Target {
@@ -24,6 +25,15 @@ export class CANTarget extends Target {
         this.target = can.createRawChannel(this.options.name)
         // TODO: does this have a site-effect on the os?
         this.target.start()
+
+        if (this.options.bidirectional) {
+            this.target.addListener('onMessage', (message: CANMessage) => {
+                std.log('can source received', {message})
+                if (check.isUndefined(this.processor)) return std.log('no processor defined')
+                this.processor(Message.fromCAN(message))
+            })
+        }
+
         this.readyPromise.resolve()
         std.log('can target started')
     }
@@ -31,7 +41,7 @@ export class CANTarget extends Target {
     async send(message: Message) {
         std.log('can target sending', {message})
         assert.isDefined(this.target, 'can target not started')
-        this.target.send({ext: false, rtr: false, id: message.id, data: Buffer.from(message.data)})
+        this.target.send(message.toCAN())
         std.log('can target sent')
     }
 

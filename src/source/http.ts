@@ -1,5 +1,5 @@
-import {Source} from '#/source/source'
-import {Message} from '#core/message'
+import Source from '#/source/source'
+import Message from '#core/message'
 import std from '#std'
 import * as check from '#utils/check'
 import hae from '#utils/hae'
@@ -40,7 +40,7 @@ export class HTTPSource extends Source {
                 std.log('http source received', {message: req.body})
 
                 if (check.isDefined(this.processor)) {
-                    this.processor(req.body)
+                    this.processor(Message.fromJSON(req.body))
                 } else {
                     std.log('no processor defined')
                 }
