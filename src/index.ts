@@ -30,8 +30,9 @@ bridge
     .option('--source-name [string]', '', 'can2x')
     .option('--source-id [number]', '')
     .option('--source-data [numbers...]', '')
-    .option('--source-ext [boolean]', '', false) // TODO: docs
-    .option('--source-rtr [boolean]', '', false) // TODO: docs
+    .option('--source-ext [boolean]', '', false)
+    .option('--source-rtr [boolean]', '', false)
+    .option('--source-file [boolean]', '')
     .option('--source-bidirectional [boolean]', '', true)
     .addOption(
         new Option('--target [string]', '')
