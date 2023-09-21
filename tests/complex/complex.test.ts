@@ -9,7 +9,7 @@ import {afterEach} from 'mocha'
 /**
  * console2can --(can2x1)--> can2socketio -> socketio2can --(can2x2)--> can2file
  */
-describe.skip('complex', () => {
+describe('complex', () => {
     beforeEach(async () => {
         try {
             await actions.startVCAN({
@@ -56,6 +56,8 @@ describe.skip('complex', () => {
             source: 'console',
             sourceId: String(message.id),
             sourceData: message.data.map(String),
+            sourceExt: message.ext,
+            sourceRtr: message.rtr,
             target: 'can',
             targetName: 'can2x1',
         })

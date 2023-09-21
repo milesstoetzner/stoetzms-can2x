@@ -36,6 +36,8 @@ describe('can', () => {
             source: 'console',
             sourceId: String(message.id),
             sourceData: message.data.map(String),
+            sourceExt: message.ext,
+            sourceRtr: message.rtr,
             target: 'can',
             targetName: vcan,
         })
