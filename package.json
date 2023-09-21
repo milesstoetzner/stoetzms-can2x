@@ -1,7 +1,7 @@
 {
     "name": "can2x",
-    "version": "0.1.5",
-    "description": "can2x is a simple utility for connecting a CAN bus unidirectional with another CAN bus over the network using common web protocols, such as HTTP, MQTT, Socket.IO, and WebSockets.",
+    "version": "0.1.6",
+    "description": "can2x is a simple utility for connecting a CAN bus bidirectional with another CAN bus over the network using common web protocols, such as HTTP, MQTT, Socket.IO, and WebSockets.",
     "repository": "https://github.com/milesstoetzner/can2x",
     "homepage": "https://can2x.stoetz.ms",
     "author": {
