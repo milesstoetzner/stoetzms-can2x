@@ -1,4 +1,4 @@
-import * as actions from '#core/actions'
+import actions from '#actions'
 import Message from '#core/message'
 import * as files from '#files'
 import std from '#std'
@@ -12,7 +12,7 @@ describe('websocket', () => {
         const port = 3002
 
         // Start websocket source with file target
-        const source = await actions.startBridge({
+        const source = await actions.bridge.start({
             source: 'ws',
             sourcePort: String(port),
             target: 'file',
@@ -20,7 +20,7 @@ describe('websocket', () => {
         })
 
         // Send message using console source and websocket target
-        const target = await actions.startBridge({
+        const target = await actions.bridge.start({
             source: 'console',
             sourceId: String(message.id),
             sourceData: message.data.map(String),

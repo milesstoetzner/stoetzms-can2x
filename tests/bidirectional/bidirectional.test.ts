@@ -1,4 +1,4 @@
-import * as actions from '#core/actions'
+import actions from '#actions'
 import Message, {CANMessage} from '#core/message'
 import * as files from '#files'
 import std from '#std'
@@ -13,10 +13,10 @@ describe('bidirectional', () => {
 
     beforeEach(async () => {
         try {
-            await actions.startVCAN({
+            await actions.vcan.start({
                 name: can2xA,
             })
-            await actions.startVCAN({
+            await actions.vcan.start({
                 name: can2xB,
             })
         } catch (error) {
@@ -39,7 +39,7 @@ describe('bidirectional', () => {
         receiver.start()
 
         // Start can source with file target
-        const bridge = await actions.startBridge({
+        const bridge = await actions.bridge.start({
             source: 'can',
             sourceName: can2xA,
             target: 'can',
@@ -47,7 +47,7 @@ describe('bidirectional', () => {
         })
 
         // Send message using console source and can target
-        const logger = await actions.startBridge({
+        const logger = await actions.bridge.start({
             source: 'can',
             sourceName: can2xA,
             target: 'file',
@@ -55,7 +55,7 @@ describe('bidirectional', () => {
         })
 
         // Send message using console source and can target
-        const sender = await actions.startBridge({
+        const sender = await actions.bridge.start({
             source: 'console',
             sourceId: String(request.id),
             sourceData: request.data.map(String),
@@ -78,10 +78,10 @@ describe('bidirectional', () => {
 
     afterEach(async () => {
         try {
-            await actions.stopVCAN({
+            await actions.vcan.stop({
                 name: can2xA,
             })
-            await actions.stopVCAN({
+            await actions.vcan.stop({
                 name: can2xB,
             })
         } catch (error) {

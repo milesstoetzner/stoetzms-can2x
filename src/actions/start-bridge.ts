@@ -14,7 +14,6 @@ import {SocketIOTarget} from '#/target/socketio'
 import {WSTarget} from '#/target/ws'
 import * as assert from '#assert'
 import {Bridge} from '#core/bridge'
-import {VCAN, VCANOptions} from '#core/vcan'
 import std from '#std'
 
 export type BridgeOptions = {
@@ -50,25 +49,6 @@ export async function startBridge(options: BridgeOptions) {
     await bridge.start()
     return bridge
 }
-
-export async function startVCAN(options: VCANOptions) {
-    std.log('can2x vcan create', {options})
-
-    std.log('creating vcan')
-    const vcan = new VCAN(options)
-    await vcan.start()
-    return vcan
-}
-
-export async function stopVCAN(options: VCANOptions) {
-    std.log('can2x vcan delete', {options})
-
-    std.log('deleting vcan')
-    const vcan = new VCAN(options)
-    await vcan.stop()
-    return vcan
-}
-
 function createSource(options: BridgeOptions) {
     if (options.source === 'can')
         return new CANSource({

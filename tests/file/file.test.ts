@@ -1,4 +1,4 @@
-import * as actions from '#core/actions'
+import actions from '#actions'
 import Message from '#core/message'
 import * as files from '#files'
 import std from '#std'
@@ -15,14 +15,14 @@ describe('file', () => {
         const output = files.temporary()
         await files.createFile(output)
 
-        const file2file = await actions.startBridge({
+        const file2file = await actions.bridge.start({
             source: 'file',
             sourceFile: input,
             target: 'file',
             targetFile: output,
         })
 
-        const first = await actions.startBridge({
+        const first = await actions.bridge.start({
             source: 'console',
             sourceId: String(message.id),
             sourceData: message.data.map(String),
@@ -30,7 +30,7 @@ describe('file', () => {
             targetFile: input,
         })
 
-        const second = await actions.startBridge({
+        const second = await actions.bridge.start({
             source: 'console',
             sourceId: String(message.id),
             sourceData: message.data.map(String),

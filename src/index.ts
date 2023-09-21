@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import * as actions from '#core/actions'
+import actions from '#actions'
 import hae from '#utils/hae'
 import {Command, Option} from 'commander'
 
@@ -10,7 +10,7 @@ const can2x = program
     .name('can2x')
     .version('0.1.5')
     .description(
-        'can2x is a simple utility for connecting a can bus unidirectional with another can bus over the network using common web protocols, such as HTTP, MQTT, Socket.IO, and WebSockets.'
+        'can2x is a simple utility for connecting a can bus unidirectional with one or multiple CAN busses over the network using common web protocols, such as HTTP, MQTT, Socket.IO, and WebSockets.'
     )
 
 const bridge = can2x.command('bridge').description('manages a can2x bridge')
@@ -47,18 +47,32 @@ bridge
     .option('--target-bidirectional [boolean]', '', true)
     .action(
         hae.exit(async options => {
-            await actions.startBridge(options)
+            await actions.bridge.start(options)
         })
     )
 
-const vcan = program.command('vcan').description('manages a vcan')
+const bus = can2x.command('bus').description('manages a bus')
+
+bus.command('start')
+    .description('starts a bus')
+    .addOption(new Option('--bus [string]', '').default('socketio').choices(['socketio']))
+    .option('--port [number]', '', '3000')
+    .option('--host [string]', '', 'localhost')
+    .option('--event [string]', '', 'can2x')
+    .action(
+        hae.exit(async options => {
+            await actions.bus.start(options)
+        })
+    )
+
+const vcan = can2x.command('vcan').description('manages a vcan')
 
 vcan.command('start')
     .description('starts a vcan')
     .option('--name [string]', '', 'can2x')
     .action(
         hae.exit(async options => {
-            await actions.startVCAN(options)
+            await actions.vcan.start(options)
         })
     )
 
@@ -67,7 +81,7 @@ vcan.command('stop')
     .option('--name [string]', 'the name of the vcan', 'can2x')
     .action(
         hae.exit(async options => {
-            await actions.stopVCAN(options)
+            await actions.vcan.stop(options)
         })
     )
 

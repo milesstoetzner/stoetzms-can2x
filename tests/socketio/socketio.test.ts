@@ -1,4 +1,4 @@
-import * as actions from '#core/actions'
+import actions from '#actions'
 import Message from '#core/message'
 import * as files from '#files'
 import std from '#std'
@@ -13,7 +13,7 @@ describe('socketio', () => {
 
         // Start socketio source with file target
         // TODO: if an error is thrown then the test does not abort ...
-        const source = await actions.startBridge({
+        const source = await actions.bridge.start({
             source: 'socketio',
             sourcePort: String(port),
             target: 'file',
@@ -21,7 +21,7 @@ describe('socketio', () => {
         })
 
         // Send message using console source and socketio target
-        const target = await actions.startBridge({
+        const target = await actions.bridge.start({
             source: 'console',
             sourceId: String(message.id),
             sourceData: message.data.map(String),

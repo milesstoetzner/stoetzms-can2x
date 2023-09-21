@@ -1,4 +1,4 @@
-import * as actions from '#core/actions'
+import actions from '#actions'
 import Message from '#core/message'
 import * as files from '#files'
 import std from '#std'
@@ -12,7 +12,7 @@ describe('mqtt', () => {
         const port = 3000
 
         // Start mqtt source with file target
-        const source = await actions.startBridge({
+        const source = await actions.bridge.start({
             source: 'mqtt',
             sourcePort: String(port),
             target: 'file',
@@ -20,7 +20,7 @@ describe('mqtt', () => {
         })
 
         // Send message using console source and mqtt target
-        const target = await actions.startBridge({
+        const target = await actions.bridge.start({
             source: 'console',
             sourceId: String(message.id),
             sourceData: message.data.map(String),
