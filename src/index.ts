@@ -51,7 +51,21 @@ bridge
         })
     )
 
-const vcan = program.command('vcan').description('manages a vcan')
+const bus = can2x.command('bus').description('manages a bus')
+
+bus.command('start')
+    .description('starts a bus')
+    .addOption(new Option('--bus [string]', '').default('socketio').choices(['socketio']))
+    .option('--port [number]', '', '3000')
+    .option('--host [string]', '', 'localhost')
+    .option('--event [string]', '', 'can2x')
+    .action(
+        hae.exit(async options => {
+            await actions.startBus(options)
+        })
+    )
+
+const vcan = can2x.command('vcan').description('manages a vcan')
 
 vcan.command('start')
     .description('starts a vcan')

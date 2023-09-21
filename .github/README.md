@@ -82,7 +82,7 @@ can2x bridge start --source can --target socketio --target-endpoint http://<TARG
 
 Then, on the source host, send a message to the vCAN.
 
-``` 
+```shell
 sudo apt-get update -y
 sudo apt-get install can-utils -y
 cansend can2x 01a#11223344AABBCCDD
@@ -90,7 +90,7 @@ cansend can2x 01a#11223344AABBCCDD
 
 On the target host, we can observe the CAN message.
 
-```
+```shell
 can2x  01A   [8]  11 22 33 44 AA BB CC DD
 ```
 
@@ -103,7 +103,7 @@ can2x  01A   [8]  11 22 33 44 AA BB CC DD
 
 The following command starts a can2x bridge.
 
-```
+```shell
 can2x bridge start [options]
 ```
 
@@ -131,11 +131,29 @@ The following options are supported.
 | `--target-file`            | string                                                     | none        | false    |             |
 | `--target-bidirectional`   | boolean                                                    | `true`      | false    |             |
 
+### Bus Start
+
+The following command starts a can2x bus.
+
+```shell
+can2x bus start [options]
+```
+
+The following options are supported.
+
+| Option    | Type         | Default      | Required | Description | 
+|-----------|--------------|--------------|----------|-------------|
+| `--bus`   | `socketio`   | `socketio`   | false    |             |
+| `--port`  | number       | `3000`       | false    |             |
+| `--host`  | string       | `localhost`  | false    |             |
+| `--event` | string       | `can2x`      | false    |             |
+
+
 ### vCAN Start
 
 The following command starts a vCAN using SocketCAN.
 
-```
+```shell
 can2x vcan start [options]
 ```
 
@@ -149,7 +167,7 @@ The following options are supported.
 
 The following command stops a vCAN using SocketCAN.
 
-```
+```shell
 can2x vcan stop [options]
 ```
 
@@ -316,6 +334,23 @@ The following options are supported.
 |----------------------------|------------------------------------------------------------|-------------|----------|-------------|
 | `--target-endpoint`        | string                                                     | none        | true     |             |
 | `--target-bidirectional`   | boolean                                                    | `true`      | false    |             |
+
+
+## Busses
+
+`can2x` supports the following busses.
+
+### Socket.IO
+
+`can2x` supports a `socketio` bridge, i.e., `--bus socketio`.
+The following options are supported.
+
+| Option    | Type         | Default      | Required | Description | 
+|-----------|--------------|--------------|----------|-------------|
+| `--port`  | number       | `3000`       | false    |             |
+| `--host`  | string       | `localhost`  | false    |             |
+| `--event` | string       | `can2x`      | false    |             |
+
 
 ## Limitations
 
