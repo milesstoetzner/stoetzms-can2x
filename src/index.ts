@@ -67,6 +67,14 @@ bus.command('start')
 
 const vcan = can2x.command('vcan').description('manages a vcan')
 
+vcan.command('check')
+    .description('checks if vcan is supported')
+    .action(
+        hae.exit(async () => {
+            await actions.vcan.check()
+        })
+    )
+
 vcan.command('start')
     .description('starts a vcan')
     .option('--name [string]', '', 'can2x')

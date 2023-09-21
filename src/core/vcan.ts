@@ -16,13 +16,15 @@ export class VCAN {
         return this.options.name
     }
 
-    async check() {
+    static async check() {
+        await execa.command(`modprobe can`)
+        await execa.command(`modprobe can_raw`)
         await execa.command(`modprobe vcan`)
     }
 
     async start() {
         std.log('starting vcan', {options: this.options})
-        await this.check()
+        await VCAN.check()
         await execa.command(`ip link add ${this.options.name} type vcan`)
         await execa.command(`ip link set ${this.options.name} up`)
         std.log('vcan started')

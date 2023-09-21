@@ -381,6 +381,33 @@ license-checker --production --summary --onlyAllow "MIT;Apache-2.0;Python-2.0;BS
 └─ Python-2.0: 1
 ```
 
+## Notes
+
+Some helpful notes.
+
+### Manually Starting a vCAN
+
+The following commands start a vCAN.
+
+```shell
+sudo modprobe can
+sudo modprobe can_raw
+sudo modprobe vcan
+
+ip link add vcan0 type vcan
+ip link set vcan0 up
+```
+
+### Manually Stopping a vCAN
+
+The following commands stops a vCAN.
+
+```shell
+ip link set vcan0 down
+ip link delete vcan0
+```
+
+
 ## Keywords
 
 http, mqtt, can, bridge, ws, websocket, socketio, vcan, can2http, can2mqtt, can2socketio, can2x, can2ws, virtual
