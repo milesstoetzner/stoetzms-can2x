@@ -1,5 +1,5 @@
 import Source from '#/source/source'
-import Message from '#core/message'
+import Message, {JSONMessage} from '#core/message'
 import std from '#std'
 import * as check from '#utils/check'
 import http from 'http'
@@ -33,7 +33,7 @@ export class SocketIOSource extends Source {
             std.log(`socketio source connected`, {id: socket.id})
 
             this.socket = socket
-            this.socket.on(this.options.event, (message: any) => {
+            this.socket.on(this.options.event, (message: JSONMessage) => {
                 std.log('socketio source received', {message})
                 if (check.isUndefined(this.processor)) return std.log('no processor defined')
                 this.processor(Message.fromJSON(message))

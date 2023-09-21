@@ -4,8 +4,6 @@ import * as utils from '#utils'
 
 export default abstract class Source {
     processor?: Processor
-    // TODO: remove this?
-    options = {}
 
     protected readyPromise
 

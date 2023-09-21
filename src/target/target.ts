@@ -2,12 +2,11 @@ import Message from '#core/message'
 import {Processor} from '#core/types'
 import * as utils from '#utils'
 
-// TODO: merge this class with source?
-
 export default abstract class Target {
     processor?: Processor
 
     protected readyPromise
+
     protected constructor() {
         this.readyPromise = utils.createDecomposedPromise()
     }

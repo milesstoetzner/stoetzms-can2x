@@ -20,7 +20,7 @@ describe.skip('can', () => {
     })
 
     it('source-target', async () => {
-        const message = Message.fromJSON({id: 69, data: [1, 2, 3]})
+        const message = Message.fromJSON({id: 69, data: [1, 2, 3], ext: false, rtr: false})
         const output = files.temporary()
 
         // Start can source with file target

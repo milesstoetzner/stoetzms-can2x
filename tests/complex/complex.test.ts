@@ -29,7 +29,7 @@ describe.skip('complex', () => {
     })
 
     it('source-target', async () => {
-        const message = Message.fromJSON({id: 69, data: [1, 2, 3]})
+        const message = Message.fromJSON({id: 69, data: [1, 2, 3], ext: false, rtr: false})
         const output = files.temporary()
 
         const can2file = await actions.startBridge({

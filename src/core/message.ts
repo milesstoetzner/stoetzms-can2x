@@ -1,6 +1,13 @@
 import * as assert from '#assert'
 import {Message as CANMessage} from '*can.node'
 
+export type JSONMessage = {
+    id: number
+    data: number[]
+    ext: boolean
+    rtr: boolean
+}
+
 export default class Message {
     id: number
     data: number[]
@@ -17,12 +24,12 @@ export default class Message {
         this.rtr = rtr
     }
 
-    static fromJSON(message: {id: number; data: number[]; ext?: boolean; rtr?: boolean}) {
-        return new Message(message.id, message.data, message.ext ?? false, message.rtr ?? false)
+    static fromJSON(message: JSONMessage) {
+        return new Message(message.id, message.data, message.ext, message.rtr)
     }
 
-    toJSON() {
-        return {id: this.id, data: this.data}
+    toJSON(): JSONMessage {
+        return {id: this.id, data: this.data, ext: this.ext, rtr: this.rtr}
     }
 
     static fromString(message: string) {
