@@ -28,13 +28,13 @@ describe('bus', () => {
 
     it('bus', async () => {
         const target = 'socketio'
-        const targetEndpoint = 'http://localhost:3333'
+        const targetEndpoint = 'http://localhost:3000'
         const message = Message.fromJSON({id: 69, data: [1, 2, 3], ext: false, rtr: false})
 
         // Bus
         const bus = await actions.bus.start({
             bus: 'socketio',
-            port: 3333,
+            port: 3000,
         })
 
         // Client 1
@@ -94,7 +94,7 @@ describe('bus', () => {
         })
 
         std.log('waiting for message being bridged')
-        await utils.sleep(100)
+        await utils.sleep(250)
 
         expect(files.loadFile(file1).trim()).to.equal(message.toString())
         expect(files.loadFile(file2).trim()).to.equal(message.toString())
