@@ -49,6 +49,7 @@ export class CANTarget extends Target {
         std.log('stopping can target')
         if (check.isUndefined(this.target)) return std.log('can target undefined')
         try {
+            // TODO: does this have a site-effect on the os?
             this.target.stop()
             std.log('can target stopped')
         } catch (error) {
