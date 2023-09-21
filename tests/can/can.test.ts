@@ -6,7 +6,7 @@ import * as utils from '#utils'
 import {expect} from 'chai'
 import {afterEach} from 'mocha'
 
-describe.skip('can', () => {
+describe('can', () => {
     const vcan = 'can2x'
 
     beforeEach(async () => {
@@ -36,6 +36,8 @@ describe.skip('can', () => {
             source: 'console',
             sourceId: String(message.id),
             sourceData: message.data.map(String),
+            sourceExt: message.ext,
+            sourceRtr: message.rtr,
             target: 'can',
             targetName: vcan,
         })

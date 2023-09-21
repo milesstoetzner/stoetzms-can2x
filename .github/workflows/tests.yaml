@@ -4,6 +4,7 @@ on:
     push:
         branches:
             - main
+            - fix-workflow-tests
     pull_request:
         branches:
             - main
@@ -33,6 +34,13 @@ jobs:
             - name: (PREPARE) Install Node Modules
               run: yarn --frozen-lockfile
 
+            - name: (PREPARE) Setup SocketCAN
+              run: |
+                  sudo apt-get install -y can-utils libnode-dev linux-modules-extra-$(uname -r)
+                  sudo modprobe can
+                  sudo modprobe can_raw
+                  sudo modprobe vcan
+
             ###################################################
             #
             # Test
@@ -48,4 +56,4 @@ jobs:
               run: yarn style:check
 
             - name: (TEST) Run Tests
-              run: yarn test
+              run: sudo yarn test

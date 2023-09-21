@@ -46,7 +46,12 @@ export default class Message {
     }
 
     static fromCAN(message: CANMessage): Message {
-        return this.fromJSON({id: message.id, data: Array.from(message.data), ext: message.ext, rtr: message.rtr})
+        return this.fromJSON({
+            id: message.id,
+            data: Array.from(message.data),
+            ext: message.ext ?? false,
+            rtr: message.rtr ?? false,
+        })
     }
 
     toCAN(): CANMessage {
