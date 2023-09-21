@@ -4,9 +4,9 @@
 
 [![Codacy Code Quality Badge](https://app.codacy.com/project/badge/Grade/8b0bd18dbdc844e4947b21b4e7bb5d9f)](https://app.codacy.com/gh/milesstoetzner/stoetzms-can2x/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](https://vintner.opentosca.org/code-of-conduct)
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)  
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Platforms](https://img.shields.io/badge/Platforms-Linux-blue.svg)](https://vintner.opentosca.org)
-[![npm](https://img.shields.io/badge/npm-can2x-blue)](https://www.npmjs.com/package/opentosca-vintner)
+[![npm](https://img.shields.io/badge/npm-can2x-blue)](https://www.npmjs.com/package/can2x)
 
 `can2x` is a simple utility for connecting a CAN bus bidirectional with another CAN bus over the network using common web protocols, such as HTTP, MQTT, Socket.IO, and WebSockets.
 
