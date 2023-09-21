@@ -31,6 +31,7 @@
 - [Similar Projects](#similar-projects)
 - [Dependencies](#dependencies)
 - [Notes](#notes)
+- [Keywords](#keywords)
 - [Acknowledgements](#acknowledgements)
 
 ## Overview
@@ -43,6 +44,8 @@ Also, most bridges are bidirectional, thus, CAN message are also bridged backwar
 In addition, a can2x bus is able to connect multiple can2x bridges.
 
 ## Example
+
+![Example](./example.png)
 
 In the following example, we connect a vCAN on the source host to a vCAN on the target host using Socket.IO.
 
