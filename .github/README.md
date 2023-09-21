@@ -14,6 +14,25 @@
 
 `can2x` is a simple utility for connecting a CAN bus bidirectional with one or multiple CAN busses over the network using common web protocols, such as HTTP, MQTT, Socket.IO, and WebSockets.
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Example](#example)
+- [Installation](#installation)
+- [Requirements](#requirements)
+- [Commands](#commands)
+  - [bridge start](#command-bridge-start) 
+  - [bus start](#command-bus-start) 
+  - [vcan check](#command-vcan-check) 
+  - [vcan start](#command-vcan-start) 
+  - [vcan stop](#command-vcan-stop) 
+- [CAN Message](#can-message)
+- [Limitations](#limitations)
+- [Similar Projects](#similar-projects)
+- [Dependencies](#dependencies)
+- [Notes](#notes)
+- [Acknowledgements](#acknowledgements)
+
 ## Overview
 
 `can2x` supports various sources and targets when bridging CAN messages. 
@@ -63,7 +82,6 @@ On the target host, we can observe the CAN message.
 ```shell
 can2x  01A   [8]  11 22 33 44 AA BB CC DD
 ```
-
 
 ## Installation
 
