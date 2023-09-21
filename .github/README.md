@@ -355,7 +355,7 @@ The following options are supported.
 ## Limitations
 
 - security aspects, such as encryption, authentication, and authorization, are not supported
-- messages are not guaranteed to be delivered
+- there are no guarantees, e.g., the ordering of messages or even if a message is delivered at all
 
 ## Similar Projects
 
