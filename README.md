@@ -156,6 +156,8 @@ A CAN message is internally represented as follows.
 |--------|----------|-----------------------------------------|
 | `id`   | number   | The decimal id of the CAN message.      |
 | `data` | number[] | The decimal payload of the CAN message. |
+| `ext`  | boolean  |                                         |
+| `rtr`  | boolean  |                                         |
 
 ## Sources
 
@@ -305,7 +307,6 @@ The following options are supported.
 
 ## Limitations
 
-- `can2x` currently only supports `id` and `data` of a CAN message.
 - security aspects, such as encryption, authentication, and authorization, are not supported
 - messages are not guaranteed to be delivered
 
