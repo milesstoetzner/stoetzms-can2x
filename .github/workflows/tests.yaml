@@ -4,6 +4,7 @@ on:
     push:
         branches:
             - main
+            - fix-workflow-tests
     pull_request:
         branches:
             - main
@@ -32,6 +33,12 @@ jobs:
 
             - name: (PREPARE) Install Node Modules
               run: yarn --frozen-lockfile
+
+            - name: (PREPARE) vCAN
+              run: |
+                  modprobe vcan | true
+                  ip link add vcan0 type vcan
+                  ip link set vcan0
 
             ###################################################
             #
