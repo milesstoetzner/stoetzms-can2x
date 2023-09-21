@@ -36,9 +36,16 @@ jobs:
 
             - name: (PREPARE) vCAN
               run: |
-                  modprobe vcan | true
-                  ip link add vcan0 type vcan
-                  ip link set vcan0
+                  sudo apt-get install -y can-utils
+                  sudo apt-get install -y libnode-dev
+                  sudo apt-get install linux-modules-extra-$(uname -r)
+                  
+                  sudo modprobe can | true
+                  sudo modprobe can_raw | true
+                  sudo modprobe vcan | true
+                  
+                  sudo ip link add vcan0 type vcan
+                  sudo ip link set vcan0
 
             ###################################################
             #
