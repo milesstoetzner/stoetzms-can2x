@@ -20,46 +20,41 @@ jobs:
             #
             ###################################################
 
-            - name: (PREPARE) Checkout Repository
-              uses: actions/checkout@v3
-              with:
-                  lfs: true
+            -   name: (PREPARE) Checkout Repository
+                uses: actions/checkout@v3
+                with:
+                    lfs: true
 
-            - name: (PREPARE) Setup Node
-              uses: actions/setup-node@v3
-              with:
-                  node-version: 18
-                  cache: yarn
+            -   name: (PREPARE) Setup Node
+                uses: actions/setup-node@v3
+                with:
+                    node-version: 18
+                    cache: yarn
 
-            - name: (PREPARE) Install Node Modules
-              run: yarn --frozen-lockfile
+            -   name: (PREPARE) Install Node Modules
+                run: yarn --frozen-lockfile
 
-            - name: (PREPARE) vCAN
-              run: |
-                  sudo apt-get install -y can-utils
-                  sudo apt-get install -y libnode-dev
-                  sudo apt-get install linux-modules-extra-$(uname -r)
-                  
-                  sudo modprobe can | true
-                  sudo modprobe can_raw | true
-                  sudo modprobe vcan | true
-                  
-                  sudo ip link add vcan0 type vcan
-                  sudo ip link set vcan0
+            -   name: (PREPARE) vCAN
+                run: |
+                    sudo apt-get install -y can-utils libnode-dev linux-modules-extra-$(uname -r)
+                    
+                    sudo modprobe can
+                    sudo modprobe can_raw
+                    sudo modprobe vcan
 
             ###################################################
             #
             # Test
             #
             ###################################################
-            - name: (TEST) Check Dependencies
-              run: yarn dependencies:check
+            -   name: (TEST) Check Dependencies
+                run: yarn dependencies:check
 
-            - name: (TEST) Check ESLint
-              run: yarn lint:check
+            -   name: (TEST) Check ESLint
+                run: yarn lint:check
 
-            - name: (TEST) Check Prettier
-              run: yarn style:check
+            -   name: (TEST) Check Prettier
+                run: yarn style:check
 
-            - name: (TEST) Run Tests
-              run: yarn test
+            -   name: (TEST) Run Tests
+                run: yarn test
