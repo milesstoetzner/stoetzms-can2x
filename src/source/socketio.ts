@@ -70,9 +70,9 @@ export class SocketIOSource extends Source {
     private async stopServer() {
         if (check.isUndefined(this.server)) return std.log('socketio http server not defined')
         const server = this.server
-        return new Promise<void>((resolve, reject) => {
+        return new Promise<void>(resolve => {
             server.close(error => {
-                if (check.isDefined(error)) return reject(error)
+                if (check.isDefined(error)) std.log(error)
                 return resolve()
             })
         })

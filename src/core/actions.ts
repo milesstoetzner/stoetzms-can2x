@@ -1,3 +1,4 @@
+import {SocketIOBus} from '#/bus/socketio'
 import {CANSource} from '#/source/can'
 import {ConsoleSource} from '#/source/console'
 import {FileSource} from '#/source/file'
@@ -49,6 +50,23 @@ export async function startBridge(options: BridgeOptions) {
     std.log('starting bridge')
     await bridge.start()
     return bridge
+}
+
+export type BusOptions = {
+    bus?: string
+    port?: number
+    host?: string
+    event?: string
+}
+
+export async function startBus(options: BusOptions) {
+    std.log('can2x bus', {options})
+
+    const bus = createBus(options)
+
+    std.log('starting bus')
+    await bus.start()
+    return bus
 }
 
 export async function startVCAN(options: VCANOptions) {
@@ -177,4 +195,15 @@ function createTarget(options: BridgeOptions) {
     }
 
     throw new Error(`Target of type "${options.target}" unknown`)
+}
+
+function createBus(options: BusOptions) {
+    if (options.bus === 'socketio')
+        return new SocketIOBus({
+            port: options.port ? Number(options.port) : 3000,
+            host: options.host ?? 'localhost',
+            event: options.event ?? 'can2x',
+        })
+
+    throw new Error(`Bus of type "${options.bus}" unknown`)
 }
