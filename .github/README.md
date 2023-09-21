@@ -17,6 +17,7 @@
 A source, such as a CAN bus in a first computing environment, forwards the CAN message to the target, such as a Socket.IO server running on a second computing environment.
 This target then acts as a source and forwards the CAN message to another target, such as a CAN bus connected to the second computing environment.
 It is also possible to have a arbitrary long chains of different of such bridges.
+Also, most bridges are bidirectional, thus, CAN message are also bridged backward.
 
 ## Installation
 
@@ -175,9 +176,10 @@ A CAN message is internally represented as follows.
 `can2x` supports a `can2x` bridge, i.e., `--source can`.
 The following options are supported.
 
-| Option              | Type                                                       | Default     | Required | Description | 
-|---------------------|------------------------------------------------------------|-------------|----------|-------------|
-| `--source-name`     | string                                                     | `can2x`     | false    |             |
+| Option                   | Type                                                       | Default     | Required | Description | 
+|--------------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--source-name`          | string                                                     | `can2x`     | false    |             |
+| `--source-bidirectional` | boolean                                                    | `true`      | false    |             |
 
 ### Console
 
@@ -188,7 +190,6 @@ The following options are supported.
 |----------------------------|------------------------------------------------------------|-------------|----------|-------------|
 | `--source-id`              | number                                                     | none        | true     |             |
 | `--source-data`            | number[]                                                   | none        | true     |             |
-| `--source-bidirectional`   | boolean                                                    | `true`      | false    |             |
 
 ### File
 
@@ -253,9 +254,10 @@ The following options are supported.
 `can2x` supports a `x2can` bridge, i.e., `--target can`.
 The following options are supported.
 
-| Option          | Type                                                       | Default     | Required | Description | 
-|-----------------|------------------------------------------------------------|-------------|----------|-------------|
-| `--target-name` | string                                                     | `can2x`     | false    |             |
+| Option                   | Type                                                       | Default     | Required | Description | 
+|--------------------------|------------------------------------------------------------|-------------|----------|-------------|
+| `--target-name`          | string                                                     | `can2x`     | false    |             |
+| `--target-bidirectional` | boolean                                                    | `true`      | false    |             |
 
 ### Console
 
