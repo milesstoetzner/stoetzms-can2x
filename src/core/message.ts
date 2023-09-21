@@ -1,5 +1,7 @@
 import * as assert from '#assert'
-import {Message as CANMessage} from '*can.node'
+import {Message as _CANMessage} from '*can.node'
+
+export type CANMessage = _CANMessage
 
 export type JSONMessage = {
     id: number
@@ -17,6 +19,8 @@ export default class Message {
     private constructor(id: number, data: number[], ext: boolean, rtr: boolean) {
         assert.isNumber(id)
         assert.isNumbers(data)
+        assert.isBoolean(ext)
+        assert.isBoolean(rtr)
 
         this.id = id
         this.data = data

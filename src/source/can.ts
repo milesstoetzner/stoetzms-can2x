@@ -1,8 +1,8 @@
 import Source from '#/source/source'
 import * as check from '#check'
-import Message from '#core/message'
+import Message, {CANMessage} from '#core/message'
 import std from '#std'
-import {Message as CANMessage, RawChannel} from '*can.node'
+import {RawChannel} from '*can.node'
 import * as can from 'socketcan'
 
 export type CANSourceOptions = {

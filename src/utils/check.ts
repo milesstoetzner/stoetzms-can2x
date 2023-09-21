@@ -1,3 +1,5 @@
+import Message from '#core/message'
+
 export function isTrue(element?: boolean) {
     return isDefined(element) && element === true
 }
@@ -40,4 +42,7 @@ export function isName(name: string) {
 
 export function isBuffer(element: unknown): element is Buffer {
     return Buffer.isBuffer(element)
+}
+export function isMessage(element: any): element is Message {
+    return element instanceof Message
 }

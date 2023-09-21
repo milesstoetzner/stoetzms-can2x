@@ -3,7 +3,7 @@ import Message from '#core/message'
 import std from '#std'
 import * as check from '#utils/check'
 import http from 'http'
-import WebSocket, * as ws from 'ws'
+import {WebSocket, WebSocketServer} from 'ws'
 
 export type WSSourceOptions = {
     port: number
@@ -25,7 +25,7 @@ export class WSSource extends Source {
         std.log('starting websocket source', {options: this.options})
         this.server = http.createServer()
 
-        const wss = new ws.WebSocketServer({
+        const wss = new WebSocketServer({
             server: this.server,
         })
 

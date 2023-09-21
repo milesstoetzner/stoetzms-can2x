@@ -54,5 +54,5 @@ export function isBuffer(element: unknown): asserts element is Buffer {
 }
 
 export function isMessage(element: any): asserts element is Message {
-    if (!(element instanceof Message)) throw new Error(`Object "${element}" is not a message"`)
+    if (!check.isMessage(element)) throw new Error(`Object "${element}" is not a message"`)
 }
