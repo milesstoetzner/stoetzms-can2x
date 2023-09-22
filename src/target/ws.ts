@@ -27,7 +27,7 @@ export class WSTarget extends Target {
 
         this.target.on('open', () => {
             std.log(`websocket target connected`)
-            this.readyPromise.resolve()
+            this.setReady()
             std.log('websocket target started')
         })
 

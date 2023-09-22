@@ -39,7 +39,7 @@ export class SocketIOBus extends Bus {
 
         this.server.listen({port: this.options.port, host: this.options.host}, () => {
             std.log(`socketio bus running on "http://${this.options.host}:${this.options.port}"`)
-            this.readyPromise.resolve()
+            this.setReady()
         })
 
         this.server.on('error', error => {

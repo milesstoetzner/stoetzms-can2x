@@ -33,7 +33,7 @@ export class CANSource extends Source {
             this.processor(Message.fromCAN(message))
         })
 
-        this.readyPromise.resolve()
+        this.setReady()
         std.log('can source started')
     }
 

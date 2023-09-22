@@ -34,7 +34,7 @@ export class FileSource extends Source {
         })
 
         this.source.watch()
-        this.readyPromise.resolve()
+        this.setReady()
         std.log('file source started')
     }
 

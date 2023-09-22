@@ -35,7 +35,7 @@ export class CANTarget extends Target {
             })
         }
 
-        this.readyPromise.resolve()
+        this.setReady()
         std.log('can target started')
     }
 

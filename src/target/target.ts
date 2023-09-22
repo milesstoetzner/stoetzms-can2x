@@ -13,6 +13,10 @@ export default abstract class Target {
 
     abstract start(): Promise<void>
 
+    protected setReady() {
+        this.readyPromise.resolve()
+    }
+
     async ready() {
         return this.readyPromise.promise
     }

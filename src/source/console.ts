@@ -15,7 +15,7 @@ export class ConsoleSource extends Source {
 
     async start() {
         std.log('starting console source')
-        this.readyPromise.resolve()
+        this.setReady()
         std.log('console source started')
     }
 

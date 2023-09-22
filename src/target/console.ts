@@ -9,7 +9,7 @@ export class ConsoleTarget extends Target {
 
     async start() {
         std.log('starting console target')
-        this.readyPromise.resolve()
+        this.setReady()
         std.log('console target started')
     }
 

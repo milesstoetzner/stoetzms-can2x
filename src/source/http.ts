@@ -66,7 +66,7 @@ export class HTTPSource extends Source {
 
         this.source.listen({port: this.options.port, host: this.options.host}, () => {
             std.log(`http source is now running on "http://${this.options.host}:${this.options.port}"`)
-            this.readyPromise.resolve()
+            this.setReady()
         })
     }
 

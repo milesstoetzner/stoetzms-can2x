@@ -17,7 +17,7 @@ export class FileTarget extends Target {
 
     async start() {
         std.log('starting file target')
-        this.readyPromise.resolve()
+        this.setReady()
         std.log('file target started')
     }
 

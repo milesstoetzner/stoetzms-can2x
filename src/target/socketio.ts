@@ -28,7 +28,7 @@ export class SocketIOTarget extends Target {
 
         this.target.on('connect', () => {
             std.log(`socketio target connected`, {id: this.target!.id})
-            this.readyPromise.resolve()
+            this.setReady()
             std.log('socketio target started')
         })
 

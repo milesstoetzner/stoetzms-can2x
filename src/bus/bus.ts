@@ -11,6 +11,10 @@ export default abstract class Bus {
 
     abstract stop(): Promise<void>
 
+    protected setReady() {
+        this.readyPromise.resolve()
+    }
+
     async ready() {
         return this.readyPromise.promise
     }

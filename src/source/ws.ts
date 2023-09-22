@@ -48,7 +48,7 @@ export class WSSource extends Source {
 
         this.server.listen({port: this.options.port, host: this.options.host}, () => {
             std.log(`websocket source is now running on "ws://${this.options.host}:${this.options.port}"`)
-            this.readyPromise.resolve()
+            this.setReady()
         })
 
         this.server.on('error', error => {

@@ -30,7 +30,7 @@ export class CANBus extends Bus {
         })
         this.channel.start()
 
-        this.readyPromise.resolve()
+        this.setReady()
         std.log('can bus started')
     }
 
