@@ -1,4 +1,5 @@
 import {CANBus} from '#/bus/can'
+import {MQTTBus} from '#/bus/mqtt'
 import {SocketIOBus} from '#/bus/socketio'
 import WSBus from '#/bus/ws'
 import std from '#std'
@@ -9,6 +10,7 @@ export type BusOptions = {
     host?: string
     event?: string
     name?: string
+    topic?: string
 }
 
 export async function startBus(options: BusOptions) {
@@ -39,6 +41,13 @@ function createBus(options: BusOptions) {
         return new WSBus({
             port: options.port ? Number(options.port) : 3000,
             host: options.host ?? 'localhost',
+        })
+
+    if (options.bus === 'mqtt')
+        return new MQTTBus({
+            port: options.port ? Number(options.port) : 3000,
+            host: options.host ?? 'localhost',
+            topic: options.topic ?? 'can2x',
         })
 
     throw new Error(`Bus of type "${options.bus}" unknown`)

@@ -307,13 +307,13 @@ can2x bus start [options]
 
 The following options are supported.
 
-| Option    | Type                     | Default      | Required | Description | 
-|-----------|--------------------------|--------------|----------|-------------|
-| `--bus`   | `can`, `socketio`, `ws`  | `socketio`   | false    |             |
-| `--port`  | number                   | `3000`       | false    |             |
-| `--host`  | string                   | `localhost`  | false    |             |
-| `--event` | string                   | `can2x`      | false    |             |
-| `--name`  | string                   | `can2x`      | false    |             |
+| Option    | Type                             | Default      | Required | Description | 
+|-----------|----------------------------------|--------------|----------|-------------|
+| `--bus`   | `can`, `mqtt`, `socketio`, `ws`  | `socketio`   | false    |             |
+| `--port`  | number                           | `3000`       | false    |             |
+| `--host`  | string                           | `localhost`  | false    |             |
+| `--event` | string                           | `can2x`      | false    |             |
+| `--name`  | string                           | `can2x`      | false    |             |
 
 
 `can2x` supports the following busses.
@@ -327,6 +327,17 @@ The following options are supported.
 | Option   | Type         | Default      | Required | Description | 
 |----------|--------------|--------------|----------|-------------|
 | `--name` | string       | `can2x`      | false    |             |
+
+#### MQTT
+
+`can2x` supports a `mqtt` bus, i.e., `--bus mqtt`.
+The following options are supported.
+
+| Option    | Type         | Default      | Required | Description | 
+|-----------|--------------|--------------|----------|-------------|
+| `--port`  | number       | `3000`       | false    |             |
+| `--host`  | string       | `localhost`  | false    |             |
+| `--topic` | string       | `can2x`      | false    |             |
 
 
 #### Socket.IO
