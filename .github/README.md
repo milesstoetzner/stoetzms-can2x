@@ -17,6 +17,7 @@
 ## Table of Contents
 
 - [Overview](#overview)
+- [Features](#features)
 - [Example](#example)
 - [Installation](#installation)
 - [Requirements](#requirements)
@@ -42,6 +43,24 @@ This target then acts as a source and forwards the CAN message to another target
 It is also possible to have a arbitrary long chains of different of such bridges.
 Also, most bridges are bidirectional, thus, CAN message are also bridged backward.
 In addition, a can2x bus is able to connect multiple can2x bridges.
+
+## Features
+
+`can2x` provides the following features.
+
+- connect CAN busses over the network, e.g., public internet
+- bidirectional bridges
+- unidirectional bridges
+- multi-client bidirectional busses
+- protocols/ sources/ targets
+  - CAN
+  - Console/ stdout
+  - File
+  - HTTP
+  - MQTT
+  - Socket.IO
+  - Websocket (WS)
+- open source
 
 ## Example
 
