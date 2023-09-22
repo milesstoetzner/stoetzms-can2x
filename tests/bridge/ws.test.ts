@@ -1,7 +1,6 @@
 import {createBidirectionalBridgeTest, createBridgeTest} from './utils'
 
-// TODO: why does this not work
-describe.skip('bridge', () => {
+describe('bridge', () => {
     createBidirectionalBridgeTest(
         'websocket',
         {

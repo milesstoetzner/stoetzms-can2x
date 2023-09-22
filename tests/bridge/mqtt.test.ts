@@ -1,6 +1,6 @@
 import {createBidirectionalBridgeTest, createBridgeTest} from './utils'
 
-// TODO: why does this not work
+// TODO: mqtt returns to original sender ... (similar but not same bug as at mqtt bus)
 describe.skip('bridge', () => {
     createBidirectionalBridgeTest(
         'mqtt',
