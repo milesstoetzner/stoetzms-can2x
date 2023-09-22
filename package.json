@@ -94,7 +94,7 @@
     },
     "scripts": {
         "prepack": "yarn build",
-        "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+        "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json && sed -i \"s/__VERSION__/$(git rev-parse HEAD)/\" dist/index.js",
         "package": "pkg --config .pkgrc.json build/index.js",
         "lint:check": "eslint .",
         "lint:fix": "eslint . --fix",

@@ -8,7 +8,7 @@ export const program = new Command()
 
 const can2x = program
     .name('can2x')
-    .version('0.1.5')
+    .version('__VERSION__')
     .description(
         'can2x is a simple utility for connecting a can bus unidirectional with one or multiple CAN busses over the network using common web protocols, such as HTTP, MQTT, Socket.IO, and WebSockets.'
     )

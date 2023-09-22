@@ -331,7 +331,7 @@ The following options are supported.
 
 ### Command `vcan check`
 
-The following command check if required module exist.
+The following command checks if required module exist.
 
 ```shell
 can2x vcan check
