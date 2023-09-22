@@ -5,7 +5,7 @@ import std from '#std'
 import * as utils from '#utils'
 import {expect} from 'chai'
 
-describe('file', () => {
+describe('bridge', () => {
     it('file2file', async () => {
         const message = Message.fromJSON({id: 69, data: [1, 2, 3], ext: false, rtr: false})
 

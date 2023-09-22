@@ -3,6 +3,7 @@ import Message from '#core/message'
 import * as files from '#files'
 import std from '#std'
 import * as utils from '#utils'
+import hae from '#utils/hae'
 import {expect} from 'chai'
 import {afterEach} from 'mocha'
 
@@ -10,31 +11,23 @@ import {afterEach} from 'mocha'
  * console2can --(can2x1)--> can2socketio -> socketio2can --(can2x2)--> can2file
  */
 describe('complex', () => {
-    beforeEach(async () => {
-        try {
-            await actions.vcan.start({
-                name: 'can2x1',
-            })
-        } catch (error) {
-            std.log('vcan "can2x1" not created', {error})
-        }
+    const cans = ['can2x1', 'can2x2']
 
-        try {
-            await actions.vcan.start({
-                name: 'can2x2',
-            })
-        } catch (error) {
-            std.log('vcan "can2x2" not created', {error})
+    beforeEach(async () => {
+        for (const can of cans) {
+            await hae.try(async () => {
+                await actions.vcan.start({name: can})
+            }, `problem when creating vcan "${can}"`)
         }
     })
 
-    it('source-target', async () => {
+    it('complex', async () => {
         const message = Message.fromJSON({id: 69, data: [1, 2, 3], ext: false, rtr: false})
         const output = files.temporary()
 
         const can2file = await actions.bridge.start({
             source: 'can',
-            sourceName: 'can2x2',
+            sourceName: cans[1],
             target: 'file',
             targetFile: output,
         })
@@ -42,12 +35,12 @@ describe('complex', () => {
         const socketio2can = await actions.bridge.start({
             source: 'socketio',
             target: 'can',
-            targetName: 'can2x2',
+            targetName: cans[1],
         })
 
         const can2socketio = await actions.bridge.start({
             source: 'can',
-            sourceName: 'can2x1',
+            sourceName: cans[0],
             target: 'socketio',
             targetEndpoint: 'http://localhost:3000',
         })
@@ -59,7 +52,7 @@ describe('complex', () => {
             sourceExt: message.ext,
             sourceRtr: message.rtr,
             target: 'can',
-            targetName: 'can2x1',
+            targetName: cans[0],
         })
 
         std.log('waiting for message being bridged')
@@ -75,20 +68,10 @@ describe('complex', () => {
     })
 
     afterEach(async () => {
-        try {
-            await actions.vcan.stop({
-                name: 'can2x1',
-            })
-        } catch (error) {
-            std.log('vcan "can2x1" not stopped', {error})
-        }
-
-        try {
-            await actions.vcan.stop({
-                name: 'can2x2',
-            })
-        } catch (error) {
-            std.log('vcan "can2x" not stopped', {error})
+        for (const can of cans) {
+            await hae.try(async () => {
+                await actions.vcan.stop({name: can})
+            }, `problem when stopping vcan "${can}"`)
         }
     })
 })

@@ -67,7 +67,7 @@ export function loadYAML<T>(file: string) {
 }
 
 export async function createFile(file: string) {
-    const handle = await fs.promises.open(path.resolve(file), 'w+')
+    const handle = await fs.promises.open(path.resolve(file), 'a+')
     await handle.close()
 }
 

@@ -1,6 +1,6 @@
 import {createBusTest} from './utils'
 
-// TODO: message seems not to be published
+// TODO: Uncaught ReferenceError: WebSocket is not defined
 describe.skip('bus', () => {
     createBusTest(
         'ws',

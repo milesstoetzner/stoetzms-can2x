@@ -11,8 +11,8 @@ function exit<T>(fn: (args: T) => Promise<void>): (args: T) => Promise<void> {
     return async (options: T) => {
         try {
             await fn(options)
-        } catch (e) {
-            std.log(e)
+        } catch (error) {
+            std.log({error})
             process.exit(1)
         }
     }
@@ -22,8 +22,8 @@ function log<T>(fn: (args: T) => Promise<void>): (args: T) => Promise<void> {
     return async (args: T) => {
         try {
             await fn(args)
-        } catch (e) {
-            std.log(e)
+        } catch (error) {
+            std.log({error})
         }
     }
 }
@@ -31,8 +31,8 @@ function log<T>(fn: (args: T) => Promise<void>): (args: T) => Promise<void> {
 async function _try(fn: () => Promise<void>, reason?: string) {
     try {
         await fn()
-    } catch (e) {
-        std.log(reason, e)
+    } catch (error) {
+        std.log(reason, {error})
     }
 }
 
