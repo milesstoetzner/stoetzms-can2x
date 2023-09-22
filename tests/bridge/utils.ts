@@ -64,7 +64,7 @@ export function createBridgeTest(
 }
 
 /**
- * sender --(can2xSender)--> source <--(can2xBridge)--> target <--(can2xReceiver)--> receiver
+ * sender --(can2xSender)--> source <----> target <--(can2xReceiver)--> receiver
  * logger <------┘
  */
 export function createBidirectionalBridgeTest(
@@ -92,7 +92,15 @@ export function createBidirectionalBridgeTest(
             const receiver = can.createRawChannel(cans[1])
             receiver.addListener('onMessage', function (message: CANMessage) {
                 std.log('receiver received', {message})
+
+                std.log('ensuring that received message is request')
                 expect(Message.fromCAN(message).toString()).to.equal(request.toString())
+                std.log('received message is request')
+
+                std.log('ensuring that already logged message is request')
+                expect(files.loadFile(output).trim()).to.equal(request.toString())
+                std.log('already logged message is request')
+
                 receiver.send(response.toCAN())
             })
             receiver.start()
@@ -139,8 +147,9 @@ export function createBidirectionalBridgeTest(
             await files.deleteFile(output)
             await sender.stop()
             await logger.stop()
-            await target.stop()
             await source.stop()
+            await target.stop()
+            receiver.stop()
         })
 
         afterEach(async () => {
