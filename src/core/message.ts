@@ -1,5 +1,6 @@
 import * as assert from '#assert'
 import {Message as _CANMessage} from '*can.node'
+import _ from 'lodash'
 
 export type CANMessage = _CANMessage
 
@@ -66,5 +67,9 @@ export default class Message {
     static fromBuffer(message: Buffer) {
         assert.isBuffer(message)
         return this.fromString(message.toString('utf-8'))
+    }
+
+    copy() {
+        return Message.fromJSON(_.cloneDeep(this.toJSON()))
     }
 }
