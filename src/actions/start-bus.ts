@@ -1,5 +1,6 @@
 import {CANBus} from '#/bus/can'
 import {SocketIOBus} from '#/bus/socketio'
+import WSBus from '#/bus/ws'
 import std from '#std'
 
 export type BusOptions = {
@@ -32,6 +33,12 @@ function createBus(options: BusOptions) {
             port: options.port ? Number(options.port) : 3000,
             host: options.host ?? 'localhost',
             event: options.event ?? 'can2x',
+        })
+
+    if (options.bus === 'ws')
+        return new WSBus({
+            port: options.port ? Number(options.port) : 3000,
+            host: options.host ?? 'localhost',
         })
 
     throw new Error(`Bus of type "${options.bus}" unknown`)

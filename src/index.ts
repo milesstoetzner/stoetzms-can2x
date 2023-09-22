@@ -55,7 +55,7 @@ const bus = can2x.command('bus').description('manages a bus')
 
 bus.command('start')
     .description('starts a bus')
-    .addOption(new Option('--bus [string]', '').default('socketio').choices(['can', 'socketio']))
+    .addOption(new Option('--bus [string]', '').default('socketio').choices(['can', 'socketio', 'ws']))
     .option('--port [number]', '', '3000')
     .option('--host [string]', '', 'localhost')
     .option('--event [string]', '', 'can2x')

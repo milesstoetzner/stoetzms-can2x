@@ -307,13 +307,13 @@ can2x bus start [options]
 
 The following options are supported.
 
-| Option    | Type               | Default      | Required | Description | 
-|-----------|--------------------|--------------|----------|-------------|
-| `--bus`   | `can`, `socketio`  | `socketio`   | false    |             |
-| `--port`  | number             | `3000`       | false    |             |
-| `--host`  | string             | `localhost`  | false    |             |
-| `--event` | string             | `can2x`      | false    |             |
-| `--name`  | string             | `can2x`      | false    |             |
+| Option    | Type                     | Default      | Required | Description | 
+|-----------|--------------------------|--------------|----------|-------------|
+| `--bus`   | `can`, `socketio`, `ws`  | `socketio`   | false    |             |
+| `--port`  | number                   | `3000`       | false    |             |
+| `--host`  | string                   | `localhost`  | false    |             |
+| `--event` | string                   | `can2x`      | false    |             |
+| `--name`  | string                   | `can2x`      | false    |             |
 
 
 `can2x` supports the following busses.
@@ -339,6 +339,17 @@ The following options are supported.
 | `--port`  | number       | `3000`       | false    |             |
 | `--host`  | string       | `localhost`  | false    |             |
 | `--event` | string       | `can2x`      | false    |             |
+
+
+#### Websocket
+
+`can2x` supports a `ws` bus, i.e., `--bus ws`.
+The following options are supported.
+
+| Option    | Type         | Default      | Required | Description | 
+|-----------|--------------|--------------|----------|-------------|
+| `--port`  | number       | `3000`       | false    |             |
+| `--host`  | string       | `localhost`  | false    |             |
 
 
 ### Command `vcan check`
