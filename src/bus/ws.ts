@@ -36,7 +36,7 @@ export default class WSBus extends Bus {
 
             client.on('message', (message: Buffer) => {
                 std.log('websocket bus received', {message})
-                wss.clients.forEach(function each(it) {
+                wss.clients.forEach(function (it) {
                     if (it !== client && it.readyState === WebSocket.OPEN) {
                         it.send(message)
                     }

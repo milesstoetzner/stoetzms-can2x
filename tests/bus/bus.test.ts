@@ -1,85 +1,111 @@
+import {BridgeTargetOptions} from '#/actions/start-bridge'
+import {BusOptions} from '#/actions/start-bus'
 import actions from '#actions'
 import Message from '#core/message'
 import * as files from '#files'
 import std from '#std'
 import * as utils from '#utils'
+import hae from '#utils/hae'
 import {expect} from 'chai'
 
-describe('bus', () => {
-    const can2x1 = 'can2x1'
-    const can2x2 = 'can2x2'
-    const can2x3 = 'can2x3'
-
-    beforeEach(async () => {
-        try {
-            await actions.vcan.start({
-                name: can2x1,
-            })
-            await actions.vcan.start({
-                name: can2x2,
-            })
-            await actions.vcan.start({
-                name: can2x3,
-            })
-        } catch (error) {
-            std.log('vcan not created', {error})
+describe.only('bus', () => {
+    createBusTest(
+        'can',
+        {bus: 'can', name: 'can2x0'},
+        {
+            target: 'can',
+            targetName: 'can2x0',
         }
-    })
+    )
 
-    it('bus', async () => {
-        const target = 'socketio'
-        const targetEndpoint = 'http://localhost:3000'
+    /**
+    createBusTest(
+        'mqtt',
+        {bus: 'mqtt'},
+        {
+            target: 'mqtt',
+            targetEndpoint: 'mqtt://localhost:3000',
+        }
+    )
+        **/
+
+    createBusTest(
+        'socketio',
+        {bus: 'socketio'},
+        {
+            target: 'socketio',
+            targetEndpoint: 'http://localhost:3000',
+        }
+    )
+    /**
+     **/
+
+    /**
+    createBusTest(
+        'ws',
+        {bus: 'ws'},
+        {
+            target: 'ws',
+            targetEndpoint: 'ws://localhost:3000',
+        }
+    )
+        **/
+})
+
+function createBusTest(name: string, busOptions: BusOptions, bridgeTargetOptions: BridgeTargetOptions) {
+    return it(name, async () => {
+        const cans = ['can2x1', 'can2x2', 'can2x3']
+        for (const can of cans) {
+            await hae.try(async () => {
+                await actions.vcan.start({name: can})
+            }, `problem when creating vcan "${can}"`)
+        }
+
         const message = Message.fromJSON({id: 69, data: [1, 2, 3], ext: false, rtr: false})
 
         // Bus
-        const bus = await actions.bus.start({
-            bus: 'socketio',
-            port: 3000,
-        })
+        const bus = await actions.bus.start(busOptions)
 
         // Client 1
         const file1 = files.temporary()
         const logger1 = await actions.bridge.start({
             source: 'can',
-            sourceName: can2x1,
+            sourceName: cans[0],
             target: 'file',
             targetFile: file1,
         })
         const bridge1 = await actions.bridge.start({
             source: 'can',
-            sourceName: can2x1,
-            target,
-            targetEndpoint,
+            sourceName: cans[0],
+            ...bridgeTargetOptions,
         })
 
         // Client 2
         const file2 = files.temporary()
         const logger2 = await actions.bridge.start({
             source: 'can',
-            sourceName: can2x2,
+            sourceName: cans[1],
             target: 'file',
             targetFile: file2,
         })
         const bridge2 = await actions.bridge.start({
             source: 'can',
-            sourceName: can2x2,
-            target,
-            targetEndpoint,
+            sourceName: cans[1],
+            ...bridgeTargetOptions,
         })
 
         // Client 3
         const file3 = files.temporary()
         const logger3 = await actions.bridge.start({
             source: 'can',
-            sourceName: can2x3,
+            sourceName: cans[2],
             target: 'file',
             targetFile: file3,
         })
         const bridge3 = await actions.bridge.start({
             source: 'can',
-            sourceName: can2x3,
-            target,
-            targetEndpoint,
+            sourceName: cans[2],
+            ...bridgeTargetOptions,
         })
 
         // Sender
@@ -90,7 +116,7 @@ describe('bus', () => {
             sourceExt: message.ext,
             sourceRtr: message.rtr,
             target: 'can',
-            targetName: can2x1,
+            targetName: cans[0],
         })
 
         std.log('waiting for message being bridged')
@@ -114,21 +140,11 @@ describe('bus', () => {
 
         await sender.stop()
         await bus.stop()
-    })
 
-    afterEach(async () => {
-        try {
-            await actions.vcan.stop({
-                name: can2x1,
-            })
-            await actions.vcan.stop({
-                name: can2x2,
-            })
-            await actions.vcan.stop({
-                name: can2x3,
-            })
-        } catch (error) {
-            std.log('vcan not stopped', {error})
+        for (const can of cans) {
+            await hae.try(async () => {
+                await actions.vcan.stop({name: can})
+            }, `problem when stopping vcan "${can}"`)
         }
     })
-})
+}

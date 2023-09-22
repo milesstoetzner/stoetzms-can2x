@@ -16,7 +16,9 @@ import * as assert from '#assert'
 import {Bridge} from '#core/bridge'
 import std from '#std'
 
-export type BridgeOptions = {
+export type BridgeOptions = BridgeSourceOptions & BridgeTargetOptions
+
+export type BridgeSourceOptions = {
     source?: string
     sourcePort?: string
     sourceHost?: string
@@ -29,6 +31,9 @@ export type BridgeOptions = {
     sourceRtr?: boolean
     sourceFile?: string
     sourceBidirectional?: boolean
+}
+
+export type BridgeTargetOptions = {
     target?: string
     targetEndpoint?: string
     targetEvent?: string
@@ -49,7 +54,7 @@ export async function startBridge(options: BridgeOptions) {
     await bridge.start()
     return bridge
 }
-function createSource(options: BridgeOptions) {
+function createSource(options: BridgeSourceOptions) {
     if (options.source === 'can')
         return new CANSource({
             name: options.sourceName ?? 'can2x',
@@ -107,7 +112,7 @@ function createSource(options: BridgeOptions) {
     throw new Error(`Source of type "${options.source}" unknown`)
 }
 
-function createTarget(options: BridgeOptions) {
+function createTarget(options: BridgeTargetOptions) {
     if (options.target === 'can')
         return new CANTarget({
             name: options.targetName ?? 'can2x',
