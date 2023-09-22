@@ -3,6 +3,7 @@ import * as assert from '#assert'
 import * as check from '#check'
 import Message from '#core/message'
 import std from '#std'
+import hae from '#utils/hae'
 import * as mqtt from 'mqtt'
 
 export type MQTTTargetOptions = {
@@ -73,7 +74,9 @@ export class MQTTTarget extends Target {
 
     async stop() {
         std.log('stopping mqtt target')
-        if (check.isDefined(this.target)) await this.target.endAsync()
+        await hae.try(async () => {
+            if (check.isDefined(this.target)) await this.target.endAsync()
+        }, 'problem when stopping mqtt target')
         std.log('mqtt target stopped')
     }
 }

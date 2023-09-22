@@ -3,6 +3,7 @@ import * as assert from '#assert'
 import * as check from '#check'
 import Message, {JSONMessage} from '#core/message'
 import std from '#std'
+import hae from '#utils/hae'
 import SocketIOClient, {Socket} from 'socket.io-client'
 
 export type SocketIOTargetOptions = {
@@ -62,7 +63,9 @@ export class SocketIOTarget extends Target {
     async stop() {
         // TODO: wait for disconnect
         std.log('stopping socketio target')
-        if (check.isDefined(this.target)) this.target.disconnect()
+        await hae.try(async () => {
+            if (check.isDefined(this.target)) this.target.disconnect()
+        }, 'problem when stopping socketio target')
         std.log('socketio target stopped')
     }
 }

@@ -3,6 +3,7 @@ import * as assert from '#assert'
 import * as check from '#check'
 import Message from '#core/message'
 import std from '#std'
+import hae from '#utils/hae'
 import WebSocket from 'ws'
 
 export type WSTargetOptions = {
@@ -57,7 +58,9 @@ export class WSTarget extends Target {
     async stop() {
         // TODO: wait for disconnect
         std.log('stopping websocket target')
-        if (check.isDefined(this.target)) this.target.close()
+        await hae.try(async () => {
+            if (check.isDefined(this.target)) this.target.close()
+        }, 'problem when stopping websocket target')
         std.log('websocket target stopped')
     }
 }
