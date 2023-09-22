@@ -1,6 +1,6 @@
 import {createBusTest} from './utils'
 
-describe('socketio-bus', () => {
+describe('bus', () => {
     createBusTest(
         'socketio',
         {bus: 'socketio'},

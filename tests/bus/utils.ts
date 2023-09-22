@@ -10,7 +10,7 @@ import {expect} from 'chai'
 import {afterEach} from 'mocha'
 
 export function createBusTest(name: string, busOptions: BusOptions, bridgeTargetOptions: BridgeTargetOptions) {
-    return describe(name + '-bus', () => {
+    return describe(name, () => {
         const cans = ['can2x1', 'can2x2', 'can2x3']
 
         beforeEach(async () => {
@@ -21,7 +21,7 @@ export function createBusTest(name: string, busOptions: BusOptions, bridgeTarget
             }
         })
 
-        it(name + '-bus', async () => {
+        it(name, async () => {
             const message = Message.fromJSON({id: 69, data: [1, 2, 3], ext: false, rtr: false})
 
             // Bus

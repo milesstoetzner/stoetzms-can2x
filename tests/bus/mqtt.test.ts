@@ -1,7 +1,7 @@
 import {createBusTest} from './utils'
 
 // TODO: mqtt returns to original sender ...
-describe.skip('mqtt-bus', () => {
+describe.skip('bus', () => {
     createBusTest(
         'mqtt',
         {bus: 'mqtt'},

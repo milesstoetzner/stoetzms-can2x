@@ -1,7 +1,7 @@
 import {createBusTest} from './utils'
 
 // TODO: message seems not to be published
-describe.skip('ws-bus', () => {
+describe.skip('bus', () => {
     createBusTest(
         'ws',
         {bus: 'ws'},

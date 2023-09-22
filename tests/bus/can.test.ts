@@ -1,6 +1,6 @@
 import {createBusTest} from './utils'
 
-describe('can-bus', () => {
+describe('bus', () => {
     createBusTest(
         'can',
         {bus: 'can', name: 'can2x0'},
