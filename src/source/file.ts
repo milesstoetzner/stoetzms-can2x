@@ -2,6 +2,7 @@ import Source from '#/source/source'
 import Message from '#core/message'
 import std from '#std'
 import * as check from '#utils/check'
+import hae from '#utils/hae'
 import {Tail} from 'tail'
 
 export type FileSourceOptions = {
@@ -39,8 +40,12 @@ export class FileSource extends Source {
 
     async stop() {
         std.log('stopping file source')
-        if (check.isUndefined(this.source)) return std.log('file source not defined')
-        this.source.unwatch()
+
+        await hae.try(async () => {
+            if (check.isUndefined(this.source)) return std.log('file source not defined')
+            this.source.unwatch()
+        }, 'problem while stopping file source')
+
         std.log('file source stopped')
     }
 }

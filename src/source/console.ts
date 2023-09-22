@@ -13,9 +13,20 @@ export class ConsoleSource extends Source {
         this.options = options
     }
 
+    async start() {
+        std.log('starting console source')
+        this.readyPromise.resolve()
+        std.log('console source started')
+    }
+
+    async stop() {
+        std.log('stopping console source')
+        std.log('console source stopped')
+    }
+
     async receive(processor: Processor) {
         const message = Message.fromJSON(this.options)
-        std.log('console received', {message})
+        std.log('console source received', {message})
         this.processor = processor
         this.processor(message)
     }

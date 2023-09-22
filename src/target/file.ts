@@ -15,6 +15,17 @@ export class FileTarget extends Target {
         this.options = options
     }
 
+    async start() {
+        std.log('starting file target')
+        this.readyPromise.resolve()
+        std.log('file target started')
+    }
+
+    async stop() {
+        std.log('stopping file target')
+        std.log('file target stopped')
+    }
+
     async send(message: Message) {
         std.log('file target sending', {message})
         await files.createFile(this.options.file)

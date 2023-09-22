@@ -3,6 +3,7 @@ import * as assert from '#assert'
 import * as check from '#check'
 import Message, {CANMessage} from '#core/message'
 import std from '#std'
+import hae from '#utils/hae'
 import {RawChannel} from '*can.node'
 import * as can from 'socketcan'
 
@@ -47,14 +48,10 @@ export class CANTarget extends Target {
 
     async stop() {
         std.log('stopping can target')
-        if (check.isUndefined(this.target)) return std.log('can target undefined')
-        try {
-            // TODO: does this have a site-effect on the os?
+        await hae.try(async () => {
+            if (check.isUndefined(this.target)) return std.log('can target undefined')
             this.target.stop()
-            std.log('can target stopped')
-        } catch (error) {
-            // TODO: why doesnt this throw the same error when stopping the can server
-            std.log('stopping can target failed', {error: error})
-        }
+        }, 'problem when stopping can target')
+        std.log('can target stopped')
     }
 }

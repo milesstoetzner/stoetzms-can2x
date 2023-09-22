@@ -11,17 +11,13 @@ export default abstract class Source {
         this.readyPromise = utils.createDecomposedPromise()
     }
 
-    async start() {
-        this.readyPromise.resolve()
-    }
+    abstract start(): Promise<void>
 
     async ready() {
         return this.readyPromise.promise
     }
 
-    async stop() {
-        // nil
-    }
+    abstract stop(): Promise<void>
 
     async receive(processor: Processor) {
         this.processor = processor

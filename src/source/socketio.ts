@@ -2,6 +2,7 @@ import Source from '#/source/source'
 import Message, {JSONMessage} from '#core/message'
 import std from '#std'
 import * as check from '#utils/check'
+import hae from '#utils/hae'
 import http from 'http'
 import SocketIO from 'socket.io'
 
@@ -54,7 +55,6 @@ export class SocketIOSource extends Source {
         std.log('sending socketio source')
         if (!this.options.bidirectional) return std.log('socketio source not bidirectional')
 
-        // TODO: broadcast?
         if (check.isUndefined(this.socket)) return std.log('socketio socket not defined')
         this.socket.emit(this.options.event, message.toJSON())
 
@@ -63,7 +63,9 @@ export class SocketIOSource extends Source {
 
     async stop() {
         std.log('stopping socketio source')
-        await this.stopServer()
+        await hae.try(async () => {
+            await this.stopServer()
+        }, 'problem when stopping socketio http server')
         std.log('socketio source stopped')
     }
 

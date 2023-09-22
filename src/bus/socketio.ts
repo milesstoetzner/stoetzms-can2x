@@ -2,6 +2,7 @@ import Bus from '#/bus/bus'
 import * as check from '#check'
 import {JSONMessage} from '#core/message'
 import std from '#std'
+import hae from '#utils/hae'
 import http from 'http'
 import SocketIO from 'socket.io'
 
@@ -48,7 +49,11 @@ export class SocketIOBus extends Bus {
 
     async stop() {
         std.log('stopping socketio bus')
-        await this.stopServer()
+
+        await hae.try(async () => {
+            await this.stopServer()
+        }, 'problem while stopping socketio bus server')
+
         std.log('socketio bus stopped')
     }
 

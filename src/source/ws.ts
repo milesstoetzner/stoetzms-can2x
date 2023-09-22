@@ -2,6 +2,7 @@ import Source from '#/source/source'
 import Message from '#core/message'
 import std from '#std'
 import * as check from '#utils/check'
+import hae from '#utils/hae'
 import http from 'http'
 import {WebSocket, WebSocketServer} from 'ws'
 
@@ -57,7 +58,9 @@ export class WSSource extends Source {
 
     async stop() {
         std.log('stopping websocket source')
-        await this.stopServer()
+        await hae.try(async () => {
+            await this.stopServer()
+        }, 'problem when stopping websocket http server')
         std.log('websocket source stopped')
     }
 

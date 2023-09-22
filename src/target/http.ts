@@ -24,4 +24,15 @@ export class HTTPTarget extends Target {
         })
         std.log('http target sent')
     }
+
+    async start() {
+        std.log('starting http target')
+        this.readyPromise.resolve()
+        std.log('http target started')
+    }
+
+    async stop() {
+        std.log('stopping http target')
+        std.log('http target stopped')
+    }
 }

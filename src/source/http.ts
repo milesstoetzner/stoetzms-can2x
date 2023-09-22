@@ -72,7 +72,9 @@ export class HTTPSource extends Source {
 
     async stop() {
         std.log('stopping http source')
-        await this.stopSource()
+        await hae.try(async () => {
+            await this.stopSource()
+        }, 'problem while stopping http source')
         std.log('http source stopped')
     }
 

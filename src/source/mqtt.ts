@@ -2,6 +2,7 @@ import Source from '#/source/source'
 import Message from '#core/message'
 import std from '#std'
 import * as check from '#utils/check'
+import hae from '#utils/hae'
 import Aedes from 'aedes'
 import net from 'net'
 
@@ -95,11 +96,15 @@ export class MQTTSource extends Source {
         std.log('stopping mqtt source')
 
         std.log('stopping mqtt aedes server')
-        await this.stopAedes()
+        await hae.try(async () => {
+            await this.stopAedes()
+        }, 'problem when stopping mqtt aedes server')
         std.log('mqtt aeded server stopped')
 
         std.log('stopping mqtt http server')
-        await this.stopServer()
+        await hae.try(async () => {
+            await this.stopServer()
+        }, 'problem when stopping mqtt http server')
         std.log('mqtt http server stopped')
 
         std.log('mqtt source stopped')
