@@ -28,8 +28,17 @@ function log<T>(fn: (args: T) => Promise<void>): (args: T) => Promise<void> {
     }
 }
 
+async function _try(fn: () => Promise<void>, reason?: string) {
+    try {
+        await fn()
+    } catch (e) {
+        std.log(reason, e)
+    }
+}
+
 export default {
     express,
     exit,
     log,
+    try: _try,
 }

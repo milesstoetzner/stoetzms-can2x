@@ -25,7 +25,13 @@ export class VCAN {
     async start() {
         std.log('starting vcan', {options: this.options})
         await VCAN.check()
-        await execa.command(`ip link add ${this.options.name} type vcan`)
+
+        try {
+            await execa.command(`ip link add ${this.options.name} type vcan`)
+        } catch (error) {
+            if (!error.message.includes('File exists')) throw error
+        }
+
         await execa.command(`ip link set ${this.options.name} up`)
         std.log('vcan started')
     }

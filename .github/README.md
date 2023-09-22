@@ -307,15 +307,27 @@ can2x bus start [options]
 
 The following options are supported.
 
-| Option    | Type         | Default      | Required | Description | 
-|-----------|--------------|--------------|----------|-------------|
-| `--bus`   | `socketio`   | `socketio`   | false    |             |
-| `--port`  | number       | `3000`       | false    |             |
-| `--host`  | string       | `localhost`  | false    |             |
-| `--event` | string       | `can2x`      | false    |             |
+| Option    | Type               | Default      | Required | Description | 
+|-----------|--------------------|--------------|----------|-------------|
+| `--bus`   | `can`, `socketio`  | `socketio`   | false    |             |
+| `--port`  | number             | `3000`       | false    |             |
+| `--host`  | string             | `localhost`  | false    |             |
+| `--event` | string             | `can2x`      | false    |             |
+| `--name`  | string             | `can2x`      | false    |             |
 
 
 `can2x` supports the following busses.
+
+
+#### CAN Bus
+
+`can2x` supports a `can` bus, i.e., `--bus can`.
+The following options are supported.
+
+| Option   | Type         | Default      | Required | Description | 
+|----------|--------------|--------------|----------|-------------|
+| `--name` | string       | `can2x`      | false    |             |
+
 
 #### Socket.IO
 

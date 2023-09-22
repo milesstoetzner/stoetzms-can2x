@@ -2,6 +2,7 @@ import Source from '#/source/source'
 import * as check from '#check'
 import Message, {CANMessage} from '#core/message'
 import std from '#std'
+import hae from '#utils/hae'
 import {RawChannel} from '*can.node'
 import * as can from 'socketcan'
 
@@ -38,12 +39,12 @@ export class CANSource extends Source {
 
     async stop() {
         std.log('stopping can source')
-        if (check.isUndefined(this.source)) return std.log('can source not defined')
-        try {
+
+        await hae.try(async () => {
+            if (check.isUndefined(this.source)) return std.log('can source not defined')
             this.source.stop()
-        } catch (error) {
-            std.log('stopping can source failed', {error: error})
-        }
+        }, 'problem while stopping can source')
+
         std.log('can source stopped')
     }
 

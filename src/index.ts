@@ -55,10 +55,11 @@ const bus = can2x.command('bus').description('manages a bus')
 
 bus.command('start')
     .description('starts a bus')
-    .addOption(new Option('--bus [string]', '').default('socketio').choices(['socketio']))
+    .addOption(new Option('--bus [string]', '').default('socketio').choices(['can', 'socketio']))
     .option('--port [number]', '', '3000')
     .option('--host [string]', '', 'localhost')
     .option('--event [string]', '', 'can2x')
+    .option('--name [string]', '', 'can2x')
     .action(
         hae.exit(async options => {
             await actions.bus.start(options)
