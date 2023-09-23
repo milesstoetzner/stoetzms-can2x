@@ -28,7 +28,7 @@ export class CANSource extends Source {
         this.source.start()
 
         this.source.addListener('onMessage', (message: CANMessage) => {
-            std.log('can source received', {message})
+            std.log('can source received', {message, options: this.options})
             if (check.isUndefined(this.processor)) return std.log('no processor defined')
             this.processor(Message.fromCAN(message))
         })
@@ -49,7 +49,7 @@ export class CANSource extends Source {
     }
 
     async send(message: Message) {
-        std.log('sending can source')
+        std.log('sending can source', {message, options: this.options})
         if (!this.options.bidirectional) return std.log('can source not bidirectional')
 
         if (check.isUndefined(this.source)) return std.log('can source not defined')

@@ -40,7 +40,7 @@ export class CANTarget extends Target {
     }
 
     async send(message: Message) {
-        std.log('can target sending', {message})
+        std.log('can target sending', {message, options: this.options})
         assert.isDefined(this.target, 'can target not started')
         this.target.send(message.toCAN())
         std.log('can target sent')

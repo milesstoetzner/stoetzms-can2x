@@ -94,13 +94,18 @@ export function createBidirectionalBridgeTest(
                 std.log('receiver received', {message})
 
                 std.log('ensuring that received message is request')
-                expect(Message.fromCAN(message).toString()).to.equal(request.toString())
+                expect(Message.fromCAN(message).toString(), 'received message is not request').to.equal(
+                    request.toString()
+                )
                 std.log('received message is request')
 
                 std.log('ensuring that already logged message is request')
-                expect(files.loadFile(output).trim()).to.equal(request.toString())
+                expect(files.loadFile(output).trim(), 'already logged message is not request').to.equal(
+                    request.toString()
+                )
                 std.log('already logged message is request')
 
+                std.log('receiver sending message', {message: response, options: {name: cans[1]}})
                 receiver.send(response.toCAN())
             })
             receiver.start()
@@ -142,7 +147,7 @@ export function createBidirectionalBridgeTest(
             const result = files.loadFile(output).trim().split('\n')
             const expected = [request.toString(), response.toString()]
             std.log({result, expected})
-            expect(result).to.deep.equal(expected)
+            expect(result, 'result not as expected').to.deep.equal(expected)
 
             await files.deleteFile(output)
             await sender.stop()

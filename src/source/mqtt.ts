@@ -26,36 +26,39 @@ export class MQTTSource extends Source {
     async start() {
         std.log('starting mqtt source', {options: this.options})
 
-        this.aedes = new Aedes()
+        const aedes = new Aedes()
+        this.aedes = aedes
 
         this.server = net.createServer(this.aedes.handle)
 
-        this.aedes.on('subscribe', (subscriptions, source) => {
+        aedes.on('subscribe', (subscriptions, source) => {
             std.log('mqtt source subscribed', {id: source.id, subscriptions: subscriptions.map(it => it.topic)})
         })
 
-        this.aedes.on('unsubscribe', (subscriptions, source) => {
+        aedes.on('unsubscribe', (subscriptions, source) => {
             std.log('mqtt source unsubscribed', {id: source.id, subscriptions: subscriptions})
         })
 
-        this.aedes.on('client', source => {
+        aedes.on('client', source => {
             std.log('mqtt source connected', {id: source.id})
         })
 
-        this.aedes.on('clientDisconnect', source => {
+        aedes.on('clientDisconnect', source => {
             std.log('mqtt source disconnected', {id: source.id})
         })
 
-        this.aedes.on('publish', packet => {
+        aedes.on('publish', packet => {
             const topic = packet.topic
-            const message = packet.payload.toString()
 
-            std.log('mqtt source received', {message, topic})
+            std.log('mqtt source received', {message: packet.payload, topic})
             if (topic.startsWith('$SYS')) return
             if (topic !== this.options.topic) return std.log('topic unknown', {topic})
 
+            const message = Message.fromString(packet.payload.toString())
+            if (check.isDefined(message.origin) && message.origin === aedes.id) return std.log('ignoring own message')
+
             if (check.isUndefined(this.processor)) return std.log('no processor defined')
-            this.processor(Message.fromString(message))
+            this.processor(message)
         })
 
         this.server.listen({port: this.options.port, host: this.options.host}, () => {
@@ -74,6 +77,7 @@ export class MQTTSource extends Source {
 
         return new Promise<void>((resolve, reject) => {
             if (check.isUndefined(this.aedes)) return std.log('mqtt source not defined')
+            message.origin = this.aedes.id
             this.aedes.publish(
                 {
                     qos: 0,
