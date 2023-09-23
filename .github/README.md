@@ -1,6 +1,6 @@
 # can2x
 
-> This project is a research prototype.
+> This project is a research prototype. TLR is about 3 heading towards 4.
 
 [![BMWK](https://img.shields.io/badge/BMWK-SofDCar%20(19S21002)-blue.svg)](https://sofdcar.de)
 [![Release](https://github.com/milesstoetzner/stoetzms-can2x/actions/workflows/release.yaml/badge.svg)](https://github.com/milesstoetzner/stoetzms-can2x/actions/workflows/release.yaml)
