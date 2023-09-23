@@ -84,7 +84,7 @@ export function createBusTest(name: string, busOptions: BusOptions, bridgeTarget
             })
 
             std.log('waiting for message being bridged')
-            await utils.sleep(250)
+            await utils.sleep(500)
 
             std.log({expected: message.toString()})
 

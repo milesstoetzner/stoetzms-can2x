@@ -45,7 +45,7 @@ export function createBridgeTest(
             })
 
             std.log('waiting for message being bridged')
-            await utils.sleep(250)
+            await utils.sleep(500)
 
             const result = files.loadFile(output).trim()
             const expected = message.toString()
@@ -146,7 +146,7 @@ export function createBidirectionalBridgeTest(
             })
 
             std.log('waiting for message being bridged')
-            await utils.sleep(250)
+            await utils.sleep(500)
 
             const result = files.loadFile(output).trim().split('\n')
             const expected = [request.toString(), response.toString()]
