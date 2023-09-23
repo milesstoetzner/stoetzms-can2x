@@ -23,7 +23,9 @@ export function createBridgeTest(
 
         it(name, async () => {
             const message = Message.fromJSON({id: 69, data: [1, 2, 3], ext: false, rtr: false})
+
             const output = files.temporary()
+            await files.createFile(output)
 
             // Start can source with file target
             const bridge = await actions.bridge.start({
@@ -86,7 +88,9 @@ export function createBidirectionalBridgeTest(
         it(name, async () => {
             const request = Message.fromJSON({id: 69, data: [1, 2, 3], ext: false, rtr: false})
             const response = Message.fromJSON({id: 42, data: [4, 5, 6], ext: false, rtr: false})
+
             const output = files.temporary()
+            await files.createFile(output)
 
             // Receives "request" and returns "answer"
             const receiver = can.createRawChannel(cans[1])
