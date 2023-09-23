@@ -3,7 +3,7 @@ import * as check from '#check'
 import std from '#std'
 import hae from '#utils/hae'
 import http from 'http'
-import {WebSocketServer} from 'ws'
+import {WebSocket, WebSocketServer} from 'ws'
 
 export type WSBusOptions = {
     port: number
