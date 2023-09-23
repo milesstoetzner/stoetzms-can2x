@@ -24,40 +24,45 @@ export class MQTTTarget extends Target {
     async start() {
         std.log('starting mqtt target', {options: this.options})
 
-        this.target = await mqtt.connectAsync(this.options.endpoint)
+        const target = await mqtt.connectAsync(this.options.endpoint)
+        this.target = target
         std.log(`mqtt target connected`)
 
-        await this.target.subscribeAsync(this.options.topic)
+        await target.subscribeAsync(this.options.topic)
         std.log(`mqtt target subscribed`)
 
-        this.target.on('error', error => {
+        target.on('error', error => {
             std.log(`mqtt target errored`, {error})
         })
 
-        this.target.on('disconnect', () => {
+        target.on('disconnect', () => {
             std.log(`mqtt target disconnected`)
         })
 
-        this.target.on('offline', () => {
+        target.on('offline', () => {
             std.log(`mqtt target offline`)
         })
 
-        this.target.on('close', () => {
+        target.on('close', () => {
             std.log(`mqtt target closed`)
         })
 
-        this.target.on('end', () => {
+        target.on('end', () => {
             std.log(`mqtt target ended`)
         })
 
         if (this.options.bidirectional) {
-            this.target.on('message', (topic, message) => {
-                std.log('mqtt target received', {message, topic})
+            this.target.on('message', (topic, buffer) => {
+                std.log('mqtt target received', {message: buffer, topic})
                 if (topic.startsWith('$SYS')) return
                 if (topic !== this.options.topic) return std.log('topic unknown', {topic})
 
+                const message = Message.fromBuffer(buffer)
+                if (check.isDefined(message.origin) && message.origin === target.options.clientId)
+                    return std.log('ignoring own message')
+
                 if (check.isUndefined(this.processor)) return std.log('no processor defined')
-                this.processor(Message.fromBuffer(message))
+                this.processor(message)
             })
         }
 
@@ -68,6 +73,7 @@ export class MQTTTarget extends Target {
     async send(message: Message) {
         std.log('mqtt target publishing', {message})
         assert.isDefined(this.target, 'mqtt target not started')
+        message.origin = this.target.options.clientId
         await this.target.publishAsync(this.options.topic, message.toString())
         std.log('mqtt target published')
     }

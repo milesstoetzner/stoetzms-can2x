@@ -425,13 +425,13 @@ The following options are supported.
 
 A CAN message is internally represented as follows.
 
-| Option | Type     | Description                             | 
-|--------|----------|-----------------------------------------|
-| `id`   | number   | The decimal id of the CAN message.      |
-| `data` | number[] | The decimal payload of the CAN message. |
-| `ext`  | boolean  |                                         |
-| `rtr`  | boolean  |                                         |
-
+| Keyword   | Type     | Description                                                                     | 
+|-----------|----------|---------------------------------------------------------------------------------|
+| `id`      | number   | The decimal id of the CAN message.                                              |
+| `data`    | number[] | The decimal payload of the CAN message.                                         |
+| `ext`     | boolean  |                                                                                 |
+| `rtr`     | boolean  |                                                                                 |
+| `origin?` | string   | The origin of the message used, e.g., for MQTT to detect own published messages |
 
 ## Limitations
 

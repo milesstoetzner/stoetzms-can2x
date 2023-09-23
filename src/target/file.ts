@@ -28,6 +28,7 @@ export class FileTarget extends Target {
 
     async send(message: Message) {
         std.log('file target sending', {message})
+        message.clean()
         await files.appendFile(this.options.file, message.toString() + '\n')
         std.log('file target sent')
     }

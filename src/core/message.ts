@@ -1,4 +1,5 @@
 import * as assert from '#assert'
+import * as check from '#check'
 import {Message as _CANMessage} from '*can.node'
 import _ from 'lodash'
 
@@ -9,6 +10,7 @@ export type JSONMessage = {
     data: number[]
     ext: boolean
     rtr: boolean
+    origin?: string
 }
 
 export default class Message {
@@ -17,24 +19,28 @@ export default class Message {
     ext: boolean
     rtr: boolean
 
-    private constructor(id: number, data: number[], ext: boolean, rtr: boolean) {
+    origin?: string
+
+    private constructor(id: number, data: number[], ext: boolean, rtr: boolean, origin?: string) {
         assert.isNumber(id)
         assert.isNumbers(data)
         assert.isBoolean(ext)
         assert.isBoolean(rtr)
+        if (check.isDefined(origin)) assert.isString(origin)
 
         this.id = id
         this.data = data
         this.ext = ext
         this.rtr = rtr
+        this.origin = origin
     }
 
     static fromJSON(message: JSONMessage) {
-        return new Message(message.id, message.data, message.ext, message.rtr)
+        return new Message(message.id, message.data, message.ext, message.rtr, message.origin)
     }
 
     toJSON(): JSONMessage {
-        return {id: this.id, data: this.data, ext: this.ext, rtr: this.rtr}
+        return {id: this.id, data: this.data, ext: this.ext, rtr: this.rtr, origin: this.origin}
     }
 
     static fromString(message: string) {
@@ -71,5 +77,9 @@ export default class Message {
 
     copy() {
         return Message.fromJSON(_.cloneDeep(this.toJSON()))
+    }
+
+    clean() {
+        delete this.origin
     }
 }

@@ -31,7 +31,7 @@ export class Bridge {
             hae.log(async message => {
                 std.log('bridging forward', {message})
                 assert.isMessage(message)
-                await this.target.send(message)
+                await this.target.send(message.copy())
                 if (!this.source.continuous) await this.stop()
             })
         )
@@ -40,7 +40,7 @@ export class Bridge {
             hae.log(async message => {
                 std.log('bridging backward', {message})
                 assert.isMessage(message)
-                await this.source.send(message)
+                await this.source.send(message.copy())
             })
         )
     }
