@@ -5,10 +5,11 @@ describe('bridge', () => {
         'websocket',
         {
             source: 'ws',
+            sourcePort: '3005',
         },
         {
             target: 'ws',
-            targetEndpoint: 'ws://localhost:3000',
+            targetEndpoint: 'ws://localhost:3005',
         }
     )
 })
@@ -18,10 +19,11 @@ describe('bridge', () => {
         'websocket',
         {
             source: 'ws',
+            sourcePort: '3006',
         },
         {
             target: 'ws',
-            targetEndpoint: 'ws://localhost:3000',
+            targetEndpoint: 'ws://localhost:3006',
         }
     )
 })

@@ -6,7 +6,7 @@ import std from '#std'
 
 export type BusOptions = {
     bus?: string
-    port?: number
+    port?: string
     host?: string
     event?: string
     name?: string

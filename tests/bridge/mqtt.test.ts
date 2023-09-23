@@ -6,10 +6,11 @@ describe.skip('bridge', () => {
         'mqtt',
         {
             source: 'mqtt',
+            sourcePort: '3001',
         },
         {
             target: 'mqtt',
-            targetEndpoint: 'mqtt://localhost:3000',
+            targetEndpoint: 'mqtt://localhost:3001',
         }
     )
 })
@@ -19,10 +20,11 @@ describe('bridge', () => {
         'mqtt',
         {
             source: 'mqtt',
+            sourcePort: '3002',
         },
         {
             target: 'mqtt',
-            targetEndpoint: 'mqtt://localhost:3000',
+            targetEndpoint: 'mqtt://localhost:3002',
         }
     )
 })

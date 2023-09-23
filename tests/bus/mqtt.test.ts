@@ -4,10 +4,10 @@ import {createBusTest} from './utils'
 describe.skip('bus', () => {
     createBusTest(
         'mqtt',
-        {bus: 'mqtt'},
+        {bus: 'mqtt', port: '3007'},
         {
             target: 'mqtt',
-            targetEndpoint: 'mqtt://localhost:3000',
+            targetEndpoint: 'mqtt://localhost:3007',
         }
     )
 })

@@ -4,10 +4,10 @@ import {createBusTest} from './utils'
 describe.skip('bus', () => {
     createBusTest(
         'ws',
-        {bus: 'ws'},
+        {bus: 'ws', port: '3009'},
         {
             target: 'ws',
-            targetEndpoint: 'ws://localhost:3000',
+            targetEndpoint: 'ws://localhost:3009',
         }
     )
 })

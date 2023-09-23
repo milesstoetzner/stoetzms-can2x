@@ -34,6 +34,7 @@ describe('complex', () => {
 
         const socketio2can = await actions.bridge.start({
             source: 'socketio',
+            sourcePort: '3010',
             target: 'can',
             targetName: cans[1],
         })
@@ -42,7 +43,7 @@ describe('complex', () => {
             source: 'can',
             sourceName: cans[0],
             target: 'socketio',
-            targetEndpoint: 'http://localhost:3000',
+            targetEndpoint: 'http://localhost:3010',
         })
 
         const console2can = await actions.bridge.start({

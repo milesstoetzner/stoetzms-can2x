@@ -5,10 +5,11 @@ describe('bridge', () => {
         'socketio',
         {
             source: 'socketio',
+            sourcePort: '3003',
         },
         {
             target: 'socketio',
-            targetEndpoint: 'http://localhost:3000',
+            targetEndpoint: 'http://localhost:3003',
         }
     )
 })
@@ -18,10 +19,11 @@ describe('bridge', () => {
         'socketio',
         {
             source: 'socketio',
+            sourcePort: '3004',
         },
         {
             target: 'socketio',
-            targetEndpoint: 'http://localhost:3000',
+            targetEndpoint: 'http://localhost:3004',
         }
     )
 })
