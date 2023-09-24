@@ -23,7 +23,9 @@ export function createBridgeTest(
 
         it(name, async () => {
             const message = Message.fromJSON({id: 69, data: [1, 2, 3], ext: false, rtr: false})
+
             const output = files.temporary()
+            await files.createFile(output)
 
             // Start can source with file target
             const bridge = await actions.bridge.start({
@@ -43,7 +45,7 @@ export function createBridgeTest(
             })
 
             std.log('waiting for message being bridged')
-            await utils.sleep(25)
+            await utils.sleep(500)
 
             const result = files.loadFile(output).trim()
             const expected = message.toString()
@@ -86,12 +88,16 @@ export function createBidirectionalBridgeTest(
         it(name, async () => {
             const request = Message.fromJSON({id: 69, data: [1, 2, 3], ext: false, rtr: false})
             const response = Message.fromJSON({id: 42, data: [4, 5, 6], ext: false, rtr: false})
+
             const output = files.temporary()
+            await files.createFile(output)
 
             // Receives "request" and returns "answer"
-            const receiver = can.createRawChannel(cans[1])
-            receiver.addListener('onMessage', function (message: CANMessage) {
+            const receiver = can.createRawChannelWithOptions(cans[1], {non_block_send: true})
+            receiver.addListener('onMessage', async function (message: CANMessage) {
                 std.log('receiver received', {message})
+
+                await utils.sleep(250)
 
                 std.log('ensuring that received message is request')
                 expect(Message.fromCAN(message).toString(), 'received message is not request').to.equal(

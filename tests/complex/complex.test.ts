@@ -57,7 +57,7 @@ describe('complex', () => {
         })
 
         std.log('waiting for message being bridged')
-        await utils.sleep(250)
+        await utils.sleep(500)
 
         expect(files.loadFile(output).trim()).to.equal(message.toString())
 

@@ -29,6 +29,7 @@ export function createBusTest(name: string, busOptions: BusOptions, bridgeTarget
 
             // Client 1
             const file1 = files.temporary()
+            await files.createFile(file1)
             const logger1 = await actions.bridge.start({
                 source: 'can',
                 sourceName: cans[0],
@@ -43,6 +44,7 @@ export function createBusTest(name: string, busOptions: BusOptions, bridgeTarget
 
             // Client 2
             const file2 = files.temporary()
+            await files.createFile(file2)
             const logger2 = await actions.bridge.start({
                 source: 'can',
                 sourceName: cans[1],
@@ -57,6 +59,7 @@ export function createBusTest(name: string, busOptions: BusOptions, bridgeTarget
 
             // Client 3
             const file3 = files.temporary()
+            await files.createFile(file3)
             const logger3 = await actions.bridge.start({
                 source: 'can',
                 sourceName: cans[2],
@@ -81,7 +84,7 @@ export function createBusTest(name: string, busOptions: BusOptions, bridgeTarget
             })
 
             std.log('waiting for message being bridged')
-            await utils.sleep(250)
+            await utils.sleep(500)
 
             std.log({expected: message.toString()})
 

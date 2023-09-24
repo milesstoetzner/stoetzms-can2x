@@ -39,7 +39,7 @@ describe('bridge', () => {
         })
 
         std.log('waiting for message being bridged')
-        await utils.sleep(25)
+        await utils.sleep(500)
 
         expect(files.loadFile(output).trim().split('\n')).to.deep.equal([message.toString(), message.toString()])
 

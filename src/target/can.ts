@@ -23,7 +23,7 @@ export class CANTarget extends Target {
 
     async start() {
         std.log('starting can target', {options: this.options})
-        this.target = can.createRawChannel(this.options.name)
+        this.target = can.createRawChannelWithOptions(this.options.name, {non_block_send: true})
         // TODO: does this have a site-effect on the os?
         this.target.start()
 
@@ -50,7 +50,11 @@ export class CANTarget extends Target {
         std.log('stopping can target')
         await hae.try(async () => {
             if (check.isUndefined(this.target)) return std.log('can target undefined')
-            this.target.stop()
+            try {
+                this.target.stop()
+            } catch (error) {
+                if (!error.message.includes('Channel not started')) throw error
+            }
         }, 'problem when stopping can target')
         std.log('can target stopped')
     }

@@ -24,7 +24,7 @@ export class CANBus extends Bus {
         std.log('starting can bus', {options: this.options})
         await actions.vcan.start({name: this.options.name})
 
-        this.channel = can.createRawChannel(this.options.name)
+        this.channel = can.createRawChannelWithOptions(this.options.name, {non_block_send: true})
         this.channel.addListener('onMessage', function (message: CANMessage) {
             std.log('can bus received', {message: Message.fromCAN(message).toJSON()})
         })
