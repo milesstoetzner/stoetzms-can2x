@@ -94,8 +94,10 @@ export function createBidirectionalBridgeTest(
 
             // Receives "request" and returns "answer"
             const receiver = can.createRawChannelWithOptions(cans[1], {non_block_send: true})
-            receiver.addListener('onMessage', function (message: CANMessage) {
+            receiver.addListener('onMessage', async function (message: CANMessage) {
                 std.log('receiver received', {message})
+
+                await utils.sleep(250)
 
                 std.log('ensuring that received message is request')
                 expect(Message.fromCAN(message).toString(), 'received message is not request').to.equal(
