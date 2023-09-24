@@ -50,7 +50,11 @@ export class CANTarget extends Target {
         std.log('stopping can target')
         await hae.try(async () => {
             if (check.isUndefined(this.target)) return std.log('can target undefined')
-            this.target.stop()
+            try {
+                this.target.stop()
+            } catch (error) {
+                if (!error.message.includes('Channel not started')) throw error
+            }
         }, 'problem when stopping can target')
         std.log('can target stopped')
     }
