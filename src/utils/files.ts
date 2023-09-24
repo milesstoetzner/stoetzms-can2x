@@ -71,15 +71,6 @@ export async function createFile(file: string) {
     await handle.close()
 }
 
-export async function appendFile(file: string, data: string) {
-    return new Promise((resolve, reject) => {
-        fs.appendFile(path.resolve(file), data, error => {
-            if (check.isDefined(error)) return reject(error)
-            return resolve(file)
-        })
-    })
-}
-
 export function storeFile(file: string, data: string) {
     fs.writeFileSync(path.resolve(file), data)
     return file
