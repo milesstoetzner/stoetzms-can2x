@@ -93,7 +93,7 @@ export function createBidirectionalBridgeTest(
             await files.createFile(output)
 
             // Receives "request" and returns "answer"
-            const receiver = can.createRawChannel(cans[1])
+            const receiver = can.createRawChannelWithOptions(cans[1], {non_block_send: true})
             receiver.addListener('onMessage', function (message: CANMessage) {
                 std.log('receiver received', {message})
 
