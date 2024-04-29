@@ -79,12 +79,11 @@ jobs:
 
             - name: (PACKAGE) Compress Binaries
               run: |
-                cd dist
-                for BINARY in can2x-alpine-x64 can2x-linux-arm64 can2x-linux-x64
-                do 
-                  tar -cJf ${BINARY}.xz ${BINARY}             
-                done
-
+                  cd dist
+                  for BINARY in can2x-alpine-x64 can2x-linux-arm64 can2x-linux-x64
+                  do 
+                    tar -cJf ${BINARY}.xz ${BINARY}             
+                  done
 
             ###################################################
             #
