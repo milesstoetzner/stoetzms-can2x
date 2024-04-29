@@ -1,7 +1,7 @@
 {
     "name": "can2x",
     "pkg": {
-        "targets": ["node16-alpine-x64", "node16-linux-x64", "node16-linux-arm64"],
+        "targets": ["node18-alpine-x64", "node18-linux-x64", "node18-linux-arm64"],
         "outputPath": "dist"
     }
 }

@@ -13,7 +13,7 @@
             "#actions": ["src/actions"],
             "#core/*": ["src/core/*"]
         },
-        "outDir": "dist",
+        "outDir": "build",
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": false,
         "useUnknownInCatchVariables": false,

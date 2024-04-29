@@ -43,6 +43,7 @@ jobs:
             # Test
             #
             ###################################################
+
             - name: (TEST) Check Dependencies
               run: yarn dependencies:check
 
@@ -60,3 +61,34 @@ jobs:
               with:
                   project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
                   coverage-reports: coverage/lcov.info
+
+          ###################################################
+          #
+          # Build
+          #
+          ###################################################
+
+            - name: (BUILD) Transpile to Javascript
+              run: yarn build
+
+            - name: (BUILD) Build Binaries
+              run: yarn package
+
+          ###################################################
+          #
+          # Release
+          #
+          ###################################################
+
+            - name: (RELEASE) Delete Latest Release
+              run: gh release delete latest --cleanup-tag --yes || true
+              env:
+                GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: (RELEASE) Delete Latest Tag (Local)
+              run: git tag --delete latest || true
+
+            - name: (RELEASE) Create Latest Release
+              run: gh release create latest --target ${GITHUB_SHA} --latest -t "Latest Release" -n "This is the latest release of this project" ./dist/*
+              env:
+                GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
