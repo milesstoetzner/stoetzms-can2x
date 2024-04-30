@@ -64,23 +64,3 @@ jobs:
               with:
                   project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
                   coverage-reports: coverage/lcov.info
-
-            ###################################################
-            #
-            # Build
-            #
-            ###################################################
-
-            - name: (BUILD) Transpile to Javascript
-              run: yarn build
-
-            - name: (BUILD) Build Binaries
-              run: yarn package
-
-            - name: (PACKAGE) Compress Binaries
-              run: |
-                  cd dist
-                  for BINARY in can2x-alpine-x64 can2x-linux-arm64 can2x-linux-x64
-                  do 
-                    tar -cJf ${BINARY}.xz ${BINARY}             
-                  done
