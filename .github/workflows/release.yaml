@@ -57,7 +57,7 @@ jobs:
               run: yarn style:check
 
             - name: (TEST) Run Tests
-              run: sudo timeout 1m sudo yarn test
+              run: sudo env "PATH=$PATH" timeout 1m yarn test
 
             - name: (TEST) Upload Tests to Codacy
               uses: codacy/codacy-coverage-reporter-action@v1
