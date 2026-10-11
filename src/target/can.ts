@@ -4,8 +4,7 @@ import * as check from '#check'
 import Message, {CANMessage} from '#core/message'
 import std from '#std'
 import hae from '#utils/hae'
-import {RawChannel} from '*can.node'
-import * as can from 'socketcan'
+import * as socketcan from '#utils/socketcan'
 
 export type CANTargetOptions = {
     name: string
@@ -13,7 +12,7 @@ export type CANTargetOptions = {
 }
 
 export class CANTarget extends Target {
-    target?: RawChannel
+    target?: socketcan.RawChannel
     options: CANTargetOptions
 
     constructor(options: CANTargetOptions) {
@@ -23,6 +22,7 @@ export class CANTarget extends Target {
 
     async start() {
         std.log('starting can target', {options: this.options})
+        const can = socketcan.load()
         this.target = can.createRawChannelWithOptions(this.options.name, {non_block_send: true})
         // TODO: does this have a site-effect on the os?
         this.target.start()

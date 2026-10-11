@@ -3,8 +3,7 @@ import * as check from '#check'
 import Message, {CANMessage} from '#core/message'
 import std from '#std'
 import hae from '#utils/hae'
-import {RawChannel} from '*can.node'
-import * as can from 'socketcan'
+import * as socketcan from '#utils/socketcan'
 
 export type CANSourceOptions = {
     name: string
@@ -12,7 +11,7 @@ export type CANSourceOptions = {
 }
 
 export class CANSource extends Source {
-    source?: RawChannel
+    source?: socketcan.RawChannel
     options: CANSourceOptions
 
     constructor(options: CANSourceOptions) {
@@ -22,6 +21,8 @@ export class CANSource extends Source {
 
     async start() {
         std.log('starting can source', {options: this.options})
+
+        const can = socketcan.load()
 
         // TODO: non_block_send: false!?
         this.source = can.createRawChannelWithOptions(this.options.name, {non_block_send: true})

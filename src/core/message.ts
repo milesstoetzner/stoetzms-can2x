@@ -1,9 +1,9 @@
 import * as assert from '#assert'
 import * as check from '#check'
-import {Message as _CANMessage} from '*can.node'
+import * as socketcan from '#utils/socketcan'
 import _ from 'lodash'
 
-export type CANMessage = _CANMessage
+export type CANMessage = socketcan.CANMessage
 
 export type JSONMessage = {
     id: number
