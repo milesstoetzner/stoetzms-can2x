@@ -5,6 +5,10 @@ import _ from 'lodash'
 
 export type CANMessage = socketcan.CANMessage
 
+const MAX_STANDARD_ID = 0x7ff
+const MAX_EXTENDED_ID = 0x1fffffff
+const MAX_DATA_LENGTH = 8
+
 export type JSONMessage = {
     id: number
     data: number[]
@@ -27,6 +31,18 @@ export default class Message {
         assert.isBoolean(ext)
         assert.isBoolean(rtr)
         if (check.isDefined(origin)) assert.isString(origin)
+
+        const maxId = ext ? MAX_EXTENDED_ID : MAX_STANDARD_ID
+        if (!Number.isInteger(id) || id < 0 || id > maxId)
+            throw new Error(`CAN id "${id}" is not a valid ${ext ? 'extended (29-bit)' : 'standard (11-bit)'} id`)
+
+        if (data.length > MAX_DATA_LENGTH)
+            throw new Error(`CAN data has ${data.length} bytes, but at most ${MAX_DATA_LENGTH} are allowed`)
+
+        for (const byte of data) {
+            if (!Number.isInteger(byte) || byte < 0 || byte > 0xff)
+                throw new Error(`CAN data byte "${byte}" is not an integer between 0 and 255`)
+        }
 
         this.id = id
         this.data = data
