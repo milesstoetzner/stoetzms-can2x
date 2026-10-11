@@ -35,11 +35,16 @@ export class SocketIOSource extends Source {
 
             socket.on(
                 this.options.event,
-                hae.listener((message: JSONMessage, ack?: () => void) => {
-                    std.log('socketio source received', {message})
+                hae.listener((json: JSONMessage, ack?: () => void) => {
+                    std.log('socketio source received', {message: json})
                     if (check.isDefined(ack)) ack()
+                    const message = Message.fromJSON(json)
+
+                    // Send to all other clients, like on a CAN bus, where every other node receives the message
+                    if (this.options.bidirectional) socket.broadcast.emit(this.options.event, message.toJSON())
+
                     if (check.isUndefined(this.processor)) return std.log('no processor defined')
-                    this.processor(Message.fromJSON(message))
+                    this.processor(message)
                 }, 'problem while receiving socketio source message')
             )
         })
