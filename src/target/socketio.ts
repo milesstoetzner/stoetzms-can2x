@@ -6,6 +6,8 @@ import std from '#std'
 import hae from '#utils/hae'
 import SocketIOClient, {Socket} from 'socket.io-client'
 
+const ACK_TIMEOUT = 5000
+
 export type SocketIOTargetOptions = {
     endpoint: string
     event: string
@@ -59,7 +61,8 @@ export class SocketIOTarget extends Target {
     async send(message: Message) {
         std.log('socketio target sending', {message})
         assert.isDefined(this.target, 'socketio target not started')
-        this.target.emit(this.options.event, message)
+        // Wait for the acknowledgement, since the server drops events which it receives together with a disconnect
+        await this.target.timeout(ACK_TIMEOUT).emitWithAck(this.options.event, message.toJSON())
         std.log('socketio target sent')
     }
 

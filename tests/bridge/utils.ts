@@ -8,6 +8,7 @@ import hae from '#utils/hae'
 import * as socketcan from '#utils/socketcan'
 import {expect} from 'chai'
 import {afterEach} from 'mocha'
+import {Stopper} from '../stopper'
 
 export function createBridgeTest(
     name: string,
@@ -15,6 +16,9 @@ export function createBridgeTest(
     bridgeTargetOptions: BridgeTargetOptions
 ) {
     return describe(name, () => {
+        const stopper = new Stopper()
+        afterEach(async () => await stopper.stop())
+
         beforeEach(async () => {
             await hae.try(async () => {
                 await actions.vcan.start({})
@@ -28,21 +32,25 @@ export function createBridgeTest(
             await files.createFile(output)
 
             // Start can source with file target
-            const bridge = await actions.bridge.start({
-                ...bridgeSourceOptions,
-                target: 'file',
-                targetFile: output,
-            })
+            const bridge = stopper.add(
+                await actions.bridge.start({
+                    ...bridgeSourceOptions,
+                    target: 'file',
+                    targetFile: output,
+                })
+            )
 
             // Send message using console source and can target
-            const sender = await actions.bridge.start({
-                source: 'console',
-                sourceId: String(message.id),
-                sourceData: message.data.map(String),
-                sourceExt: message.ext,
-                sourceRtr: message.rtr,
-                ...bridgeTargetOptions,
-            })
+            const sender = stopper.add(
+                await actions.bridge.start({
+                    source: 'console',
+                    sourceId: String(message.id),
+                    sourceData: message.data.map(String),
+                    sourceExt: message.ext,
+                    sourceRtr: message.rtr,
+                    ...bridgeTargetOptions,
+                })
+            )
 
             std.log('waiting for message being bridged')
             await utils.sleep(500)
@@ -53,8 +61,6 @@ export function createBridgeTest(
             expect(result).to.equal(expected)
 
             await files.deleteFile(output)
-            await sender.stop()
-            await bridge.stop()
         })
 
         afterEach(async () => {
@@ -75,6 +81,9 @@ export function createBidirectionalBridgeTest(
     bridgeTargetOptions: BridgeTargetOptions
 ) {
     return describe(name, () => {
+        const stopper = new Stopper()
+        afterEach(async () => await stopper.stop())
+
         const cans = ['can2xSender', 'can2xReceiver', 'can2xBridge']
 
         beforeEach(async () => {
@@ -116,37 +125,46 @@ export function createBidirectionalBridgeTest(
                 receiver.send(response.toCAN())
             })
             receiver.start()
+            stopper.add(receiver)
 
-            const target = await actions.bridge.start({
-                ...bridgeSourceOptions,
-                target: 'can',
-                targetName: cans[1],
-            })
+            const target = stopper.add(
+                await actions.bridge.start({
+                    ...bridgeSourceOptions,
+                    target: 'can',
+                    targetName: cans[1],
+                })
+            )
 
-            const source = await actions.bridge.start({
-                source: 'can',
-                sourceName: cans[0],
-                ...bridgeTargetOptions,
-            })
-
-            // Send message using console source and can target
-            const logger = await actions.bridge.start({
-                source: 'can',
-                sourceName: cans[0],
-                target: 'file',
-                targetFile: output,
-            })
+            const source = stopper.add(
+                await actions.bridge.start({
+                    source: 'can',
+                    sourceName: cans[0],
+                    ...bridgeTargetOptions,
+                })
+            )
 
             // Send message using console source and can target
-            const sender = await actions.bridge.start({
-                source: 'console',
-                sourceId: String(request.id),
-                sourceData: request.data.map(String),
-                sourceExt: request.ext,
-                sourceRtr: request.rtr,
-                target: 'can',
-                targetName: cans[0],
-            })
+            const logger = stopper.add(
+                await actions.bridge.start({
+                    source: 'can',
+                    sourceName: cans[0],
+                    target: 'file',
+                    targetFile: output,
+                })
+            )
+
+            // Send message using console source and can target
+            const sender = stopper.add(
+                await actions.bridge.start({
+                    source: 'console',
+                    sourceId: String(request.id),
+                    sourceData: request.data.map(String),
+                    sourceExt: request.ext,
+                    sourceRtr: request.rtr,
+                    target: 'can',
+                    targetName: cans[0],
+                })
+            )
 
             std.log('waiting for message being bridged')
             await utils.sleep(500)
@@ -157,11 +175,6 @@ export function createBidirectionalBridgeTest(
             expect(result, 'result not as expected').to.deep.equal(expected)
 
             await files.deleteFile(output)
-            await sender.stop()
-            await logger.stop()
-            await source.stop()
-            await target.stop()
-            receiver.stop()
         })
 
         afterEach(async () => {
