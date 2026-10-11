@@ -46,10 +46,12 @@ export class WSSource extends Source {
 
             ws.on(
                 'message',
-                hae.listener((message: Buffer) => {
-                    std.log('websocket source received', {message})
+                hae.listener((buffer: Buffer) => {
+                    std.log('websocket source received', {message: buffer})
+                    const message = Message.fromBuffer(buffer)
+                    this.relay(message, ws)
                     if (check.isUndefined(this.processor)) return std.log('no processor defined')
-                    this.processor(Message.fromBuffer(message))
+                    this.processor(message)
                 }, 'problem while receiving websocket source message')
             )
         })
@@ -83,6 +85,18 @@ export class WSSource extends Source {
         }
 
         std.log('websocket source sent')
+    }
+
+    /**
+     * Sends a message received from a client to all other clients, like on a CAN bus, where every other node receives it.
+     */
+    private relay(message: Message, sender: WebSocket) {
+        if (!this.options.bidirectional) return
+        if (check.isUndefined(this.wss)) return
+
+        for (const client of this.wss.clients) {
+            if (client !== sender && client.readyState === WebSocket.OPEN) client.send(message.toString())
+        }
     }
 
     private async stopWebSocketServer() {
