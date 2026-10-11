@@ -44,22 +44,14 @@ export class MQTTBus extends Bus {
             std.log('mqtt bus disconnected', {id: source.id})
         })
 
-        this.aedes.on('publish', (packet, client) => {
+        // The broker itself forwards each message to all subscribed clients
+        this.aedes.on('publish', packet => {
             const topic = packet.topic
             const message = packet.payload.toString()
 
-            std.log('mqtt bus received', {message, topic})
             if (topic.startsWith('$SYS')) return
+            std.log('mqtt bus received', {message, topic})
             if (topic !== this.options.topic) return std.log('topic unknown', {topic})
-
-            return new Promise<void>((resolve, reject) => {
-                if (check.isUndefined(client)) return std.log('mqtt bus client not defined')
-                client.publish(packet, error => {
-                    if (check.isDefined(error)) return reject(error)
-                    std.log('mqtt bus sent')
-                    return resolve()
-                })
-            })
         })
 
         this.server.listen({port: this.options.port, host: this.options.host}, () => {
