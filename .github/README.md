@@ -444,8 +444,35 @@ A CAN message is internally represented as follows.
 
 ## Limitations
 
-- security aspects, such as encryption, authentication, and authorization, are not supported
-- there are no guarantees, e.g., the ordering of messages or even if a message is delivered at all
+`can2x` forwards CAN messages over the network as they arrive.
+It does not provide the guarantees of a CAN bus.
+
+- **No real-time guarantees.**
+  A CAN bus guarantees timing.
+  Bridging over a network adds the delay and jitter of the network, and `can2x` does not compensate for it.
+  Thus, CAN messages which are sent periodically, e.g., every 10 ms, may arrive irregularly or in bursts, and devices which monitor timeouts may report errors.
+- **No timestamps.**
+  CAN messages do not carry the time at which they have been received from the CAN bus.
+  Thus, the receiving side cannot tell how old a CAN message is.
+- **No priority.**
+  CAN messages are forwarded in the order in which they arrive, not by the priority of their CAN id.
+- **No rate limiting.**
+  Bursts of CAN messages from the network are sent to the CAN bus as fast as possible.
+  If the CAN bus cannot keep up, CAN messages might be dropped.
+- **No delivery guarantee.**
+  CAN messages might be lost, e.g., while a `ws` target reconnects or if the network fails.
+  Lost CAN messages are not sent again.
+- **Order only per connection.**
+  CAN messages from the same source arrive in order.
+  There is no order between CAN messages from different sources or clients.
+- **HTTP is slow.**
+  The `http` target sends one CAN message per round trip.
+  For high message rates, use `ws`, `socketio`, or `mqtt` instead.
+- **Classic CAN only.**
+  CAN messages have at most 8 data bytes.
+  CAN FD is not supported.
+- **No security.**
+  Encryption, authentication, and authorization are not supported.
 
 ## Similar Projects
 
