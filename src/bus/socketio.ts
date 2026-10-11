@@ -3,6 +3,7 @@ import * as check from '#check'
 import {JSONMessage} from '#core/message'
 import std from '#std'
 import hae from '#utils/hae'
+import {once} from 'events'
 import http from 'http'
 import SocketIO from 'socket.io'
 
@@ -37,14 +38,15 @@ export class SocketIOBus extends Bus {
             })
         })
 
-        this.server.listen({port: this.options.port, host: this.options.host}, () => {
-            std.log(`socketio bus running on "http://${this.options.host}:${this.options.port}"`)
-            this.setReady()
-        })
-
         this.server.on('error', error => {
             std.log('socketio bus error', {error})
         })
+
+        // Rejects if the server emits an error instead, e.g., since the port is in use
+        this.server.listen({port: this.options.port, host: this.options.host})
+        await once(this.server, 'listening')
+        std.log(`socketio bus running on "http://${this.options.host}:${this.options.port}"`)
+        this.setReady()
     }
 
     async stop() {

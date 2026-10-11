@@ -3,6 +3,7 @@ import std from '#std'
 import * as check from '#utils/check'
 import hae from '#utils/hae'
 import Aedes from 'aedes'
+import {once} from 'events'
 import net from 'net'
 
 export type MQTTBusOptions = {
@@ -54,14 +55,15 @@ export class MQTTBus extends Bus {
             if (topic !== this.options.topic) return std.log('topic unknown', {topic})
         })
 
-        this.server.listen({port: this.options.port, host: this.options.host}, () => {
-            std.log(`mqtt bus is now running on "mqtt://${this.options.host}:${this.options.port}"`)
-            this.setReady()
-        })
-
         this.server.on('error', error => {
             std.log('mqtt bus error', {error})
         })
+
+        // Rejects if the server emits an error instead, e.g., since the port is in use
+        this.server.listen({port: this.options.port, host: this.options.host})
+        await once(this.server, 'listening')
+        std.log(`mqtt bus is now running on "mqtt://${this.options.host}:${this.options.port}"`)
+        this.setReady()
     }
 
     async stop() {

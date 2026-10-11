@@ -3,6 +3,7 @@ import Message from '#core/message'
 import std from '#std'
 import * as check from '#utils/check'
 import hae from '#utils/hae'
+import {once} from 'events'
 import http from 'http'
 import {WebSocket, WebSocketServer} from 'ws'
 
@@ -32,6 +33,11 @@ export class WSSource extends Source {
         })
         this.wss = wss
 
+        // Also receives the errors of the http server
+        wss.on('error', error => {
+            std.log('websocket source error', {error})
+        })
+
         wss.on('connection', ws => {
             std.log('websocket source connected')
 
@@ -48,14 +54,11 @@ export class WSSource extends Source {
             })
         })
 
-        this.server.listen({port: this.options.port, host: this.options.host}, () => {
-            std.log(`websocket source is now running on "ws://${this.options.host}:${this.options.port}"`)
-            this.setReady()
-        })
-
-        this.server.on('error', error => {
-            std.log('websocket source error', {error})
-        })
+        // Rejects if the server emits an error instead, e.g., since the port is in use
+        this.server.listen({port: this.options.port, host: this.options.host})
+        await once(this.server, 'listening')
+        std.log(`websocket source is now running on "ws://${this.options.host}:${this.options.port}"`)
+        this.setReady()
     }
 
     async stop() {
