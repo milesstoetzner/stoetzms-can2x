@@ -5,9 +5,9 @@ import * as files from '#files'
 import std from '#std'
 import * as utils from '#utils'
 import hae from '#utils/hae'
+import * as socketcan from '#utils/socketcan'
 import {expect} from 'chai'
 import {afterEach} from 'mocha'
-import * as can from 'socketcan'
 
 export function createBridgeTest(
     name: string,
@@ -93,6 +93,7 @@ export function createBidirectionalBridgeTest(
             await files.createFile(output)
 
             // Receives "request" and returns "answer"
+            const can = socketcan.load()
             const receiver = can.createRawChannelWithOptions(cans[1], {non_block_send: true})
             receiver.addListener('onMessage', async function (message: CANMessage) {
                 std.log('receiver received', {message})

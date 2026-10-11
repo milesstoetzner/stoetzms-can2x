@@ -36,9 +36,6 @@
         "LICENSE",
         "README.md"
     ],
-    "os": [
-        "linux"
-    ],
     "dependencies": {
         "aedes": "^0.50.0",
         "commander": "^10.0.1",
@@ -52,10 +49,12 @@
         "mqtt": "^5.0.4",
         "socket.io": "^4.7.2",
         "socket.io-client": "^4.7.2",
-        "socketcan": "^4.0.3",
         "tail": "^2.2.6",
         "uuid": "^9.0.0",
         "ws": "^8.13.0"
+    },
+    "optionalDependencies": {
+        "socketcan": "^4.0.3"
     },
     "devDependencies": {
         "@istanbuljs/nyc-config-typescript": "^1.0.2",

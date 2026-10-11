@@ -4,15 +4,14 @@ import * as check from '#check'
 import Message, {CANMessage} from '#core/message'
 import std from '#std'
 import hae from '#utils/hae'
-import {RawChannel} from '*can.node'
-import * as can from 'socketcan'
+import * as socketcan from '#utils/socketcan'
 
 export type CANBusOptions = {
     name: string
 }
 
 export class CANBus extends Bus {
-    channel?: RawChannel
+    channel?: socketcan.RawChannel
     options: CANBusOptions
 
     constructor(options: CANBusOptions) {
@@ -24,6 +23,7 @@ export class CANBus extends Bus {
         std.log('starting can bus', {options: this.options})
         await actions.vcan.start({name: this.options.name})
 
+        const can = socketcan.load()
         this.channel = can.createRawChannelWithOptions(this.options.name, {non_block_send: true})
         this.channel.addListener('onMessage', function (message: CANMessage) {
             std.log('can bus received', {message: Message.fromCAN(message).toJSON()})
