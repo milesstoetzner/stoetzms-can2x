@@ -28,11 +28,14 @@ export class CANTarget extends Target {
         this.target.start()
 
         if (this.options.bidirectional) {
-            this.target.addListener('onMessage', (message: CANMessage) => {
-                std.log('can source received', {message})
-                if (check.isUndefined(this.processor)) return std.log('no processor defined')
-                this.processor(Message.fromCAN(message))
-            })
+            this.target.addListener(
+                'onMessage',
+                hae.listener((message: CANMessage) => {
+                    std.log('can source received', {message})
+                    if (check.isUndefined(this.processor)) return std.log('no processor defined')
+                    this.processor(Message.fromCAN(message))
+                }, 'problem while receiving can target message')
+            )
         }
 
         this.setReady()

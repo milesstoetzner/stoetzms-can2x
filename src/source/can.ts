@@ -28,11 +28,14 @@ export class CANSource extends Source {
         this.source = can.createRawChannelWithOptions(this.options.name, {non_block_send: true})
         this.source.start()
 
-        this.source.addListener('onMessage', (message: CANMessage) => {
-            std.log('can source received', {message, options: this.options})
-            if (check.isUndefined(this.processor)) return std.log('no processor defined')
-            this.processor(Message.fromCAN(message))
-        })
+        this.source.addListener(
+            'onMessage',
+            hae.listener((message: CANMessage) => {
+                std.log('can source received', {message, options: this.options})
+                if (check.isUndefined(this.processor)) return std.log('no processor defined')
+                this.processor(Message.fromCAN(message))
+            }, 'problem while receiving can source message')
+        )
 
         this.setReady()
         std.log('can source started')

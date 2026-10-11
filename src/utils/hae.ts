@@ -28,6 +28,19 @@ function log<T>(fn: (args: T) => Promise<void>): (args: T) => Promise<void> {
     }
 }
 
+/**
+ * Wraps an event listener, so that an error, e.g., due to a malformed message, is logged instead of crashing the process.
+ */
+function listener<T extends unknown[]>(fn: (...args: T) => void, reason?: string): (...args: T) => void {
+    return (...args: T) => {
+        try {
+            fn(...args)
+        } catch (error) {
+            std.log(reason, {error})
+        }
+    }
+}
+
 async function _try(fn: () => Promise<void>, reason?: string) {
     try {
         await fn()
@@ -40,5 +53,6 @@ export default {
     express,
     exit,
     log,
+    listener,
     try: _try,
 }

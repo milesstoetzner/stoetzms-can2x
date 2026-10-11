@@ -52,18 +52,21 @@ export class MQTTTarget extends Target {
         })
 
         if (this.options.bidirectional) {
-            this.target.on('message', (topic, buffer) => {
-                std.log('mqtt target received', {message: buffer, topic})
-                if (topic.startsWith('$SYS')) return
-                if (topic !== this.options.topic) return std.log('topic unknown', {topic})
+            this.target.on(
+                'message',
+                hae.listener((topic, buffer) => {
+                    std.log('mqtt target received', {message: buffer, topic})
+                    if (topic.startsWith('$SYS')) return
+                    if (topic !== this.options.topic) return std.log('topic unknown', {topic})
 
-                const message = Message.fromBuffer(buffer)
-                if (check.isDefined(message.origin) && message.origin === target.options.clientId)
-                    return std.log('ignoring own message')
+                    const message = Message.fromBuffer(buffer)
+                    if (check.isDefined(message.origin) && message.origin === target.options.clientId)
+                        return std.log('ignoring own message')
 
-                if (check.isUndefined(this.processor)) return std.log('no processor defined')
-                this.processor(message)
-            })
+                    if (check.isUndefined(this.processor)) return std.log('no processor defined')
+                    this.processor(message)
+                }, 'problem while receiving mqtt target message')
+            )
         }
 
         this.setReady()

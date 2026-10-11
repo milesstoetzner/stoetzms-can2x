@@ -35,11 +35,14 @@ export class SocketIOSource extends Source {
             std.log(`socketio source connected`, {id: socket.id})
 
             this.socket = socket
-            this.socket.on(this.options.event, (message: JSONMessage) => {
-                std.log('socketio source received', {message})
-                if (check.isUndefined(this.processor)) return std.log('no processor defined')
-                this.processor(Message.fromJSON(message))
-            })
+            this.socket.on(
+                this.options.event,
+                hae.listener((message: JSONMessage) => {
+                    std.log('socketio source received', {message})
+                    if (check.isUndefined(this.processor)) return std.log('no processor defined')
+                    this.processor(Message.fromJSON(message))
+                }, 'problem while receiving socketio source message')
+            )
         })
 
         this.server.on('error', error => {

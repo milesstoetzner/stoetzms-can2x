@@ -54,11 +54,14 @@ export class WSTarget extends Target {
         })
 
         if (this.options.bidirectional) {
-            target.on('message', message => {
-                std.log('websocket target received', {message})
-                if (check.isUndefined(this.processor)) return std.log('no processor defined')
-                this.processor(Message.fromArrayBuffer(message))
-            })
+            target.on(
+                'message',
+                hae.listener(message => {
+                    std.log('websocket target received', {message})
+                    if (check.isUndefined(this.processor)) return std.log('no processor defined')
+                    this.processor(Message.fromArrayBuffer(message))
+                }, 'problem while receiving websocket target message')
+            )
         }
     }
 
