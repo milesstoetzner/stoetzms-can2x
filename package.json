@@ -81,7 +81,7 @@
         "eslint-plugin-check-file": "^2.6.2",
         "eslint-plugin-import": "^2.27.5",
         "license-checker": "^25.0.1",
-        "mocha": "^10.2.0",
+        "mocha": "^11.8.0",
         "nyc": "^15.1.0",
         "prettier": "^2.8.7",
         "prettier-plugin-organize-imports": "^3.2.2",
