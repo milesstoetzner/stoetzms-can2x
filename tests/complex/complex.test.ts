@@ -6,6 +6,7 @@ import * as utils from '#utils'
 import hae from '#utils/hae'
 import {expect} from 'chai'
 import {afterEach} from 'mocha'
+import {readMessages} from '../read-messages'
 import {Stopper} from '../stopper'
 
 /**
@@ -71,7 +72,7 @@ describe('complex', () => {
         std.log('waiting for message being bridged')
         await utils.sleep(500)
 
-        expect(files.loadFile(output).trim()).to.equal(message.toString())
+        expect(readMessages(output)).to.deep.equal([message.toString()])
 
         await files.deleteFile(output)
     })

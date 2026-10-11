@@ -8,6 +8,7 @@ import * as utils from '#utils'
 import hae from '#utils/hae'
 import {expect} from 'chai'
 import {afterEach} from 'mocha'
+import {readMessages} from '../read-messages'
 import {Stopper} from '../stopper'
 
 export function createBusTest(name: string, busOptions: BusOptions, bridgeTargetOptions: BridgeTargetOptions) {
@@ -106,17 +107,17 @@ export function createBusTest(name: string, busOptions: BusOptions, bridgeTarget
 
             std.log({expected: message.toString()})
 
-            const result1 = files.loadFile(file1).trim()
+            const result1 = readMessages(file1)
             std.log({result1})
-            expect(result1).to.equal(message.toString())
+            expect(result1).to.deep.equal([message.toString()])
 
-            const result2 = files.loadFile(file2).trim()
+            const result2 = readMessages(file2)
             std.log({result2})
-            expect(result2).to.equal(message.toString())
+            expect(result2).to.deep.equal([message.toString()])
 
-            const result3 = files.loadFile(file3).trim()
+            const result3 = readMessages(file3)
             std.log({result3})
-            expect(result3).to.equal(message.toString())
+            expect(result3).to.deep.equal([message.toString()])
 
             await files.deleteFile(file1)
 

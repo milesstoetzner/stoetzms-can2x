@@ -432,6 +432,7 @@ A CAN message is internally represented as follows.
 | `data`    | number[] | The decimal payload of the CAN message.                                         |
 | `ext`     | boolean  |                                                                                 |
 | `rtr`     | boolean  |                                                                                 |
+| `timestamp?` | number | The time at which the message has been received from a CAN bus, in microseconds since the Unix epoch |
 | `origin?` | string   | The origin of the message used, e.g., for MQTT to detect own published messages |
 
 ## Limitations

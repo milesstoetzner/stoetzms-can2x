@@ -23,7 +23,7 @@ export class CANTarget extends Target {
     async start() {
         std.log('starting can target', {options: this.options})
         const can = socketcan.load()
-        this.target = can.createRawChannelWithOptions(this.options.name, {non_block_send: true})
+        this.target = can.createRawChannelWithOptions(this.options.name, {non_block_send: true, timestamps: true})
         // TODO: does this have a site-effect on the os?
         this.target.start()
 

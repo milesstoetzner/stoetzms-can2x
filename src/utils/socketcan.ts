@@ -7,6 +7,11 @@ export type CANMessage = {
     ext: boolean
     rtr: boolean
     data: Buffer
+    /**
+     * Receive time, if the channel has been created with timestamps
+     */
+    ts_sec?: number
+    ts_usec?: number
 }
 
 export type RawChannel = {

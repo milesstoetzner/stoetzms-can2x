@@ -25,7 +25,7 @@ export class CANSource extends Source {
         const can = socketcan.load()
 
         // TODO: non_block_send: false!?
-        this.source = can.createRawChannelWithOptions(this.options.name, {non_block_send: true})
+        this.source = can.createRawChannelWithOptions(this.options.name, {non_block_send: true, timestamps: true})
         this.source.start()
 
         this.source.addListener(

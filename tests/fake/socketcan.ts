@@ -5,16 +5,19 @@ import {CANMessage, ChannelOptions, RawChannel} from '#utils/socketcan'
  *
  * Interfaces are created on demand. Like CAN_RAW with its defaults (loopback on, recv_own_msgs off),
  * a frame sent on a channel is delivered asynchronously to every other started channel on the same interface.
+ * Channels created with timestamps receive the time of delivery, like the kernel's receive time.
  */
 const interfaces = new Map<string, Set<FakeRawChannel>>()
 
 class FakeRawChannel implements RawChannel {
     private readonly name: string
+    private readonly options: ChannelOptions
     private readonly listeners: ((message: CANMessage) => void)[] = []
     private started = false
 
-    constructor(name: string) {
+    constructor(name: string, options: ChannelOptions) {
         this.name = name
+        this.options = options
     }
 
     addListener(event: 'onMessage', callback: (message: CANMessage) => void) {
@@ -46,10 +49,14 @@ class FakeRawChannel implements RawChannel {
 
     private receive(message: CANMessage) {
         if (!this.started) return
+        if (this.options.timestamps) {
+            const now = Date.now()
+            message = {...message, ts_sec: Math.floor(now / 1000), ts_usec: (now % 1000) * 1000}
+        }
         this.listeners.forEach(listener => listener(message))
     }
 }
 
 export function createRawChannelWithOptions(channel: string, options: ChannelOptions): RawChannel {
-    return new FakeRawChannel(channel)
+    return new FakeRawChannel(channel, options)
 }

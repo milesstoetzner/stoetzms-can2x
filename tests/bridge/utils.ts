@@ -8,6 +8,7 @@ import hae from '#utils/hae'
 import * as socketcan from '#utils/socketcan'
 import {expect} from 'chai'
 import {afterEach} from 'mocha'
+import {readMessages} from '../read-messages'
 import {Stopper} from '../stopper'
 
 export function createBridgeTest(
@@ -55,10 +56,10 @@ export function createBridgeTest(
             std.log('waiting for message being bridged')
             await utils.sleep(500)
 
-            const result = files.loadFile(output).trim()
-            const expected = message.toString()
+            const result = readMessages(output)
+            const expected = [message.toString()]
             std.log({result, expected})
-            expect(result).to.equal(expected)
+            expect(result).to.deep.equal(expected)
 
             await files.deleteFile(output)
         })
@@ -116,9 +117,9 @@ export function createBidirectionalBridgeTest(
                 std.log('received message is request')
 
                 std.log('ensuring that already logged message is request')
-                expect(files.loadFile(output).trim(), 'already logged message is not request').to.equal(
-                    request.toString()
-                )
+                expect(readMessages(output), 'already logged message is not request').to.deep.equal([
+                    request.toString(),
+                ])
                 std.log('already logged message is request')
 
                 std.log('receiver sending message', {message: response, options: {name: cans[1]}})
@@ -169,7 +170,7 @@ export function createBidirectionalBridgeTest(
             std.log('waiting for message being bridged')
             await utils.sleep(500)
 
-            const result = files.loadFile(output).trim().split('\n')
+            const result = readMessages(output)
             const expected = [request.toString(), response.toString()]
             std.log({result, expected})
             expect(result, 'result not as expected').to.deep.equal(expected)

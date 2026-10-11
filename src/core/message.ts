@@ -14,6 +14,10 @@ export type JSONMessage = {
     data: number[]
     ext: boolean
     rtr: boolean
+    /**
+     * Time at which the message has been received from a CAN bus, in microseconds since the Unix epoch
+     */
+    timestamp?: number
     origin?: string
 }
 
@@ -22,14 +26,16 @@ export default class Message {
     data: number[]
     ext: boolean
     rtr: boolean
+    timestamp?: number
 
     origin?: string
 
-    private constructor(id: number, data: number[], ext: boolean, rtr: boolean, origin?: string) {
+    private constructor(id: number, data: number[], ext: boolean, rtr: boolean, timestamp?: number, origin?: string) {
         assert.isNumber(id)
         assert.isNumbers(data)
         assert.isBoolean(ext)
         assert.isBoolean(rtr)
+        if (check.isDefined(timestamp)) assert.isNumber(timestamp)
         if (check.isDefined(origin)) assert.isString(origin)
 
         const maxId = ext ? MAX_EXTENDED_ID : MAX_STANDARD_ID
@@ -44,19 +50,30 @@ export default class Message {
                 throw new Error(`CAN data byte "${byte}" is not an integer between 0 and 255`)
         }
 
+        if (check.isDefined(timestamp) && (!Number.isSafeInteger(timestamp) || timestamp < 0))
+            throw new Error(`Timestamp "${timestamp}" is not a non-negative integer of microseconds`)
+
         this.id = id
         this.data = data
         this.ext = ext
         this.rtr = rtr
+        this.timestamp = timestamp
         this.origin = origin
     }
 
     static fromJSON(message: JSONMessage) {
-        return new Message(message.id, message.data, message.ext, message.rtr, message.origin)
+        return new Message(message.id, message.data, message.ext, message.rtr, message.timestamp, message.origin)
     }
 
     toJSON(): JSONMessage {
-        return {id: this.id, data: this.data, ext: this.ext, rtr: this.rtr, origin: this.origin}
+        return {
+            id: this.id,
+            data: this.data,
+            ext: this.ext,
+            rtr: this.rtr,
+            timestamp: this.timestamp,
+            origin: this.origin,
+        }
     }
 
     static fromString(message: string) {
@@ -74,6 +91,9 @@ export default class Message {
             data: Array.from(message.data),
             ext: message.ext ?? false,
             rtr: message.rtr ?? false,
+            timestamp: check.isDefined(message.ts_sec)
+                ? message.ts_sec * 1_000_000 + (message.ts_usec ?? 0)
+                : undefined,
         })
     }
 
