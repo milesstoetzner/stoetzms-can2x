@@ -3,7 +3,6 @@ import Message from '#core/message'
 import std from '#std'
 import * as check from '#utils/check'
 import hae from '#utils/hae'
-import bodyParser from 'body-parser'
 import cors from 'cors'
 import type {ErrorRequestHandler} from 'express'
 import express, {Request} from 'express'
@@ -30,8 +29,8 @@ export class HTTPSource extends Source {
         const expressServer = express()
         expressServer.use(cors())
         expressServer.set('json spaces', 2)
-        expressServer.use(bodyParser.json())
-        expressServer.get('/favicon.ico', (req, res) => res.status(204))
+        expressServer.use(express.json())
+        expressServer.get('/favicon.ico', (req, res) => res.sendStatus(204))
 
         const resolvers = express.Router()
         resolvers.post(
