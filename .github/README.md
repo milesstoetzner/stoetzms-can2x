@@ -332,6 +332,7 @@ The following options are supported.
 | `--port`  | number                           | `3000`       | false    |             |
 | `--host`  | string                           | `localhost`  | false    |             |
 | `--event` | string                           | `can2x`      | false    |             |
+| `--topic` | string                           | `can2x`      | false    |             |
 | `--name`  | string                           | `can2x`      | false    |             |
 
 
