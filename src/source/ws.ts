@@ -14,6 +14,7 @@ export type WSSourceOptions = {
 
 export class WSSource extends Source {
     server?: http.Server
+    wss?: WebSocketServer
     options: WSSourceOptions
     ws?: WebSocket
 
@@ -29,6 +30,7 @@ export class WSSource extends Source {
         const wss = new WebSocketServer({
             server: this.server,
         })
+        this.wss = wss
 
         wss.on('connection', ws => {
             std.log('websocket source connected')
@@ -59,6 +61,10 @@ export class WSSource extends Source {
     async stop() {
         std.log('stopping websocket source')
         await hae.try(async () => {
+            await this.stopWebSocketServer()
+        }, 'problem when stopping websocket server')
+
+        await hae.try(async () => {
             await this.stopServer()
         }, 'problem when stopping websocket http server')
         std.log('websocket source stopped')
@@ -72,6 +78,21 @@ export class WSSource extends Source {
         this.ws.send(message.toString())
 
         std.log('can source sent')
+    }
+
+    private async stopWebSocketServer() {
+        if (check.isUndefined(this.wss)) return std.log('websocket server not defined')
+        const wss = this.wss
+
+        // Otherwise, the http server waits for the open connections forever
+        for (const client of wss.clients) client.terminate()
+
+        return new Promise<void>((resolve, reject) => {
+            wss.close(error => {
+                if (check.isDefined(error)) return reject(error)
+                return resolve()
+            })
+        })
     }
 
     private async stopServer() {
