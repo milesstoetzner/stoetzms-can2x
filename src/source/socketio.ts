@@ -18,7 +18,6 @@ export class SocketIOSource extends Source {
     io?: SocketIO.Server
     server?: http.Server
     options: SocketIOSourceOptions
-    socket?: SocketIO.Socket
 
     constructor(options: SocketIOSourceOptions) {
         super()
@@ -34,8 +33,7 @@ export class SocketIOSource extends Source {
         this.io.on('connection', socket => {
             std.log(`socketio source connected`, {id: socket.id})
 
-            this.socket = socket
-            this.socket.on(
+            socket.on(
                 this.options.event,
                 hae.listener((message: JSONMessage, ack?: () => void) => {
                     std.log('socketio source received', {message})
@@ -61,8 +59,8 @@ export class SocketIOSource extends Source {
         std.log('sending socketio source')
         if (!this.options.bidirectional) return std.log('socketio source not bidirectional')
 
-        if (check.isUndefined(this.socket)) return std.log('socketio socket not defined')
-        this.socket.emit(this.options.event, message.toJSON())
+        if (check.isUndefined(this.io)) return std.log('socketio source not defined')
+        this.io.emit(this.options.event, message.toJSON())
 
         std.log('socketio source sent')
     }
