@@ -32,9 +32,10 @@ export class SocketIOBus extends Bus {
         this.io.on('connection', socket => {
             std.log(`socketio client connected`, {id: socket.id})
 
-            socket.on(this.options.event, (message: JSONMessage) => {
-                std.log('socketio source received', {message})
+            socket.on(this.options.event, (message: JSONMessage, ack?: () => void) => {
+                std.log('socketio bus received', {message})
                 socket.broadcast.emit(this.options.event, message)
+                if (check.isDefined(ack)) ack()
             })
         })
 

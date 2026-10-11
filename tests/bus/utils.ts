@@ -8,9 +8,13 @@ import * as utils from '#utils'
 import hae from '#utils/hae'
 import {expect} from 'chai'
 import {afterEach} from 'mocha'
+import {Stopper} from '../stopper'
 
 export function createBusTest(name: string, busOptions: BusOptions, bridgeTargetOptions: BridgeTargetOptions) {
     return describe(name, () => {
+        const stopper = new Stopper()
+        afterEach(async () => await stopper.stop())
+
         const cans = ['can2x1', 'can2x2', 'can2x3']
 
         beforeEach(async () => {
@@ -25,63 +29,77 @@ export function createBusTest(name: string, busOptions: BusOptions, bridgeTarget
             const message = Message.fromJSON({id: 69, data: [1, 2, 3], ext: false, rtr: false})
 
             // Bus
-            const bus = await actions.bus.start(busOptions)
+            const bus = stopper.add(await actions.bus.start(busOptions))
 
             // Client 1
             const file1 = files.temporary()
             await files.createFile(file1)
-            const logger1 = await actions.bridge.start({
-                source: 'can',
-                sourceName: cans[0],
-                target: 'file',
-                targetFile: file1,
-            })
-            const bridge1 = await actions.bridge.start({
-                source: 'can',
-                sourceName: cans[0],
-                ...bridgeTargetOptions,
-            })
+            const logger1 = stopper.add(
+                await actions.bridge.start({
+                    source: 'can',
+                    sourceName: cans[0],
+                    target: 'file',
+                    targetFile: file1,
+                })
+            )
+            const bridge1 = stopper.add(
+                await actions.bridge.start({
+                    source: 'can',
+                    sourceName: cans[0],
+                    ...bridgeTargetOptions,
+                })
+            )
 
             // Client 2
             const file2 = files.temporary()
             await files.createFile(file2)
-            const logger2 = await actions.bridge.start({
-                source: 'can',
-                sourceName: cans[1],
-                target: 'file',
-                targetFile: file2,
-            })
-            const bridge2 = await actions.bridge.start({
-                source: 'can',
-                sourceName: cans[1],
-                ...bridgeTargetOptions,
-            })
+            const logger2 = stopper.add(
+                await actions.bridge.start({
+                    source: 'can',
+                    sourceName: cans[1],
+                    target: 'file',
+                    targetFile: file2,
+                })
+            )
+            const bridge2 = stopper.add(
+                await actions.bridge.start({
+                    source: 'can',
+                    sourceName: cans[1],
+                    ...bridgeTargetOptions,
+                })
+            )
 
             // Client 3
             const file3 = files.temporary()
             await files.createFile(file3)
-            const logger3 = await actions.bridge.start({
-                source: 'can',
-                sourceName: cans[2],
-                target: 'file',
-                targetFile: file3,
-            })
-            const bridge3 = await actions.bridge.start({
-                source: 'can',
-                sourceName: cans[2],
-                ...bridgeTargetOptions,
-            })
+            const logger3 = stopper.add(
+                await actions.bridge.start({
+                    source: 'can',
+                    sourceName: cans[2],
+                    target: 'file',
+                    targetFile: file3,
+                })
+            )
+            const bridge3 = stopper.add(
+                await actions.bridge.start({
+                    source: 'can',
+                    sourceName: cans[2],
+                    ...bridgeTargetOptions,
+                })
+            )
 
             // Sender
-            const sender = await actions.bridge.start({
-                source: 'console',
-                sourceId: String(message.id),
-                sourceData: message.data.map(String),
-                sourceExt: message.ext,
-                sourceRtr: message.rtr,
-                target: 'can',
-                targetName: cans[0],
-            })
+            const sender = stopper.add(
+                await actions.bridge.start({
+                    source: 'console',
+                    sourceId: String(message.id),
+                    sourceData: message.data.map(String),
+                    sourceExt: message.ext,
+                    sourceRtr: message.rtr,
+                    target: 'can',
+                    targetName: cans[0],
+                })
+            )
 
             std.log('waiting for message being bridged')
             await utils.sleep(500)
@@ -101,19 +119,10 @@ export function createBusTest(name: string, busOptions: BusOptions, bridgeTarget
             expect(result3).to.equal(message.toString())
 
             await files.deleteFile(file1)
-            await logger1.stop()
-            await bridge1.stop()
 
             await files.deleteFile(file2)
-            await logger2.stop()
-            await bridge2.stop()
 
             await files.deleteFile(file3)
-            await logger3.stop()
-            await bridge3.stop()
-
-            await sender.stop()
-            await bus.stop()
         })
 
         afterEach(async () => {

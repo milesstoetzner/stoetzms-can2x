@@ -6,11 +6,15 @@ import * as utils from '#utils'
 import hae from '#utils/hae'
 import {expect} from 'chai'
 import {afterEach} from 'mocha'
+import {Stopper} from '../stopper'
 
 /**
  * console2can --(can2x1)--> can2socketio -> socketio2can --(can2x2)--> can2file
  */
 describe('complex', () => {
+    const stopper = new Stopper()
+    afterEach(async () => await stopper.stop())
+
     const cans = ['can2x1', 'can2x2']
 
     beforeEach(async () => {
@@ -25,36 +29,44 @@ describe('complex', () => {
         const message = Message.fromJSON({id: 69, data: [1, 2, 3], ext: false, rtr: false})
         const output = files.temporary()
 
-        const can2file = await actions.bridge.start({
-            source: 'can',
-            sourceName: cans[1],
-            target: 'file',
-            targetFile: output,
-        })
+        const can2file = stopper.add(
+            await actions.bridge.start({
+                source: 'can',
+                sourceName: cans[1],
+                target: 'file',
+                targetFile: output,
+            })
+        )
 
-        const socketio2can = await actions.bridge.start({
-            source: 'socketio',
-            sourcePort: '3010',
-            target: 'can',
-            targetName: cans[1],
-        })
+        const socketio2can = stopper.add(
+            await actions.bridge.start({
+                source: 'socketio',
+                sourcePort: '3010',
+                target: 'can',
+                targetName: cans[1],
+            })
+        )
 
-        const can2socketio = await actions.bridge.start({
-            source: 'can',
-            sourceName: cans[0],
-            target: 'socketio',
-            targetEndpoint: 'http://localhost:3010',
-        })
+        const can2socketio = stopper.add(
+            await actions.bridge.start({
+                source: 'can',
+                sourceName: cans[0],
+                target: 'socketio',
+                targetEndpoint: 'http://localhost:3010',
+            })
+        )
 
-        const console2can = await actions.bridge.start({
-            source: 'console',
-            sourceId: String(message.id),
-            sourceData: message.data.map(String),
-            sourceExt: message.ext,
-            sourceRtr: message.rtr,
-            target: 'can',
-            targetName: cans[0],
-        })
+        const console2can = stopper.add(
+            await actions.bridge.start({
+                source: 'console',
+                sourceId: String(message.id),
+                sourceData: message.data.map(String),
+                sourceExt: message.ext,
+                sourceRtr: message.rtr,
+                target: 'can',
+                targetName: cans[0],
+            })
+        )
 
         std.log('waiting for message being bridged')
         await utils.sleep(500)
@@ -62,10 +74,6 @@ describe('complex', () => {
         expect(files.loadFile(output).trim()).to.equal(message.toString())
 
         await files.deleteFile(output)
-        await console2can.stop()
-        await can2socketio.stop()
-        await socketio2can.stop()
-        await can2file.stop()
     })
 
     afterEach(async () => {
