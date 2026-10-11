@@ -4,6 +4,7 @@ import std from '#std'
 import * as check from '#utils/check'
 import hae from '#utils/hae'
 import Aedes from 'aedes'
+import {once} from 'events'
 import net from 'net'
 
 export type MQTTSourceOptions = {
@@ -61,14 +62,15 @@ export class MQTTSource extends Source {
             this.processor(message)
         })
 
-        this.server.listen({port: this.options.port, host: this.options.host}, () => {
-            std.log(`mqtt source is now running on "mqtt://${this.options.host}:${this.options.port}"`)
-            this.setReady()
-        })
-
         this.server.on('error', error => {
             std.log('mqtt source error', {error})
         })
+
+        // Rejects if the server emits an error instead, e.g., since the port is in use
+        this.server.listen({port: this.options.port, host: this.options.host})
+        await once(this.server, 'listening')
+        std.log(`mqtt source is now running on "mqtt://${this.options.host}:${this.options.port}"`)
+        this.setReady()
     }
 
     async send(message: Message) {

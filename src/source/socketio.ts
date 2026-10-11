@@ -3,6 +3,7 @@ import Message, {JSONMessage} from '#core/message'
 import std from '#std'
 import * as check from '#utils/check'
 import hae from '#utils/hae'
+import {once} from 'events'
 import http from 'http'
 import SocketIO from 'socket.io'
 
@@ -41,14 +42,15 @@ export class SocketIOSource extends Source {
             })
         })
 
-        this.server.listen({port: this.options.port, host: this.options.host}, () => {
-            std.log(`socketio source running on "http://${this.options.host}:${this.options.port}"`)
-            this.setReady()
-        })
-
         this.server.on('error', error => {
             std.log('socketio source error', {error})
         })
+
+        // Rejects if the server emits an error instead, e.g., since the port is in use
+        this.server.listen({port: this.options.port, host: this.options.host})
+        await once(this.server, 'listening')
+        std.log(`socketio source running on "http://${this.options.host}:${this.options.port}"`)
+        this.setReady()
     }
 
     async send(message: Message) {

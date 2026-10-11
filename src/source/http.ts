@@ -5,6 +5,7 @@ import * as check from '#utils/check'
 import hae from '#utils/hae'
 import bodyParser from 'body-parser'
 import cors from 'cors'
+import {once} from 'events'
 import type {ErrorRequestHandler} from 'express'
 import express, {Request} from 'express'
 import http from 'http'
@@ -64,10 +65,11 @@ export class HTTPSource extends Source {
 
         this.source = http.createServer(expressServer)
 
-        this.source.listen({port: this.options.port, host: this.options.host}, () => {
-            std.log(`http source is now running on "http://${this.options.host}:${this.options.port}"`)
-            this.setReady()
-        })
+        // Rejects if the server emits an error instead, e.g., since the port is in use
+        this.source.listen({port: this.options.port, host: this.options.host})
+        await once(this.source, 'listening')
+        std.log(`http source is now running on "http://${this.options.host}:${this.options.port}"`)
+        this.setReady()
     }
 
     async stop() {

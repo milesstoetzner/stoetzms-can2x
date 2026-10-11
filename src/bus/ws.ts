@@ -2,6 +2,7 @@ import Bus from '#/bus/bus'
 import * as check from '#check'
 import std from '#std'
 import hae from '#utils/hae'
+import {once} from 'events'
 import http from 'http'
 import {WebSocket, WebSocketServer} from 'ws'
 
@@ -27,6 +28,11 @@ export default class WSBus extends Bus {
             server: this.server,
         })
 
+        // Also receives the errors of the http server
+        wss.on('error', error => {
+            std.log('websocket bus error', {error})
+        })
+
         wss.on('connection', client => {
             std.log('websocket bus connected')
 
@@ -44,14 +50,11 @@ export default class WSBus extends Bus {
             })
         })
 
-        this.server.listen({port: this.options.port, host: this.options.host}, () => {
-            std.log(`websocket bus is now running on "ws://${this.options.host}:${this.options.port}"`)
-            this.setReady()
-        })
-
-        this.server.on('error', error => {
-            std.log('websocket bus error', {error})
-        })
+        // Rejects if the server emits an error instead, e.g., since the port is in use
+        this.server.listen({port: this.options.port, host: this.options.host})
+        await once(this.server, 'listening')
+        std.log(`websocket bus is now running on "ws://${this.options.host}:${this.options.port}"`)
+        this.setReady()
     }
 
     async stop() {
