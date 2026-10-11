@@ -210,6 +210,10 @@ The following options are supported.
 | `--source-port`     | number                                                     | `3000`      | false    |             |
 | `--source-host`     | string                                                     | `localhost` | false    |             |
 
+Each request carries one CAN message.
+Concurrent requests may be processed in any order, thus, clients must send one request after another and wait for each response to keep the order of CAN messages.
+The `http` target does this.
+
 #### MQTT
 
 `can2x` supports a `mqtt2x` bridge, i.e., `--source mqtt`.
@@ -281,6 +285,10 @@ The following options are supported.
 | Option              | Type                                                       | Default     | Required | Description | 
 |---------------------|------------------------------------------------------------|-------------|----------|-------------|
 | `--target-endpoint` | string                                                     | none        | true     |             |
+
+The target sends one request per CAN message, one after another, and waits for each response.
+This keeps the order of CAN messages but limits the throughput to one CAN message per round trip.
+For high message rates, use `ws`, `socketio`, or `mqtt` instead.
 
 #### MQTT
 
