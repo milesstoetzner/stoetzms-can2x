@@ -23,11 +23,14 @@ export class FileSource extends Source {
 
         this.source = new Tail(this.options.file)
 
-        this.source.on('line', (message: string) => {
-            std.log('file source received', {message})
-            if (check.isUndefined(this.processor)) return std.log('no processor defined')
-            this.processor(Message.fromString(message))
-        })
+        this.source.on(
+            'line',
+            hae.listener((message: string) => {
+                std.log('file source received', {message})
+                if (check.isUndefined(this.processor)) return std.log('no processor defined')
+                this.processor(Message.fromString(message))
+            }, 'problem while receiving file source message')
+        )
 
         this.source.on('error', error => {
             std.log('file source error', {error})

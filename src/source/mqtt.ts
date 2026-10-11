@@ -48,19 +48,23 @@ export class MQTTSource extends Source {
             std.log('mqtt source disconnected', {id: source.id})
         })
 
-        aedes.on('publish', packet => {
-            const topic = packet.topic
+        aedes.on(
+            'publish',
+            hae.listener(packet => {
+                const topic = packet.topic
 
-            std.log('mqtt source received', {message: packet.payload, topic})
-            if (topic.startsWith('$SYS')) return
-            if (topic !== this.options.topic) return std.log('topic unknown', {topic})
+                std.log('mqtt source received', {message: packet.payload, topic})
+                if (topic.startsWith('$SYS')) return
+                if (topic !== this.options.topic) return std.log('topic unknown', {topic})
 
-            const message = Message.fromString(packet.payload.toString())
-            if (check.isDefined(message.origin) && message.origin === aedes.id) return std.log('ignoring own message')
+                const message = Message.fromString(packet.payload.toString())
+                if (check.isDefined(message.origin) && message.origin === aedes.id)
+                    return std.log('ignoring own message')
 
-            if (check.isUndefined(this.processor)) return std.log('no processor defined')
-            this.processor(message)
-        })
+                if (check.isUndefined(this.processor)) return std.log('no processor defined')
+                this.processor(message)
+            }, 'problem while receiving mqtt source message')
+        )
 
         this.server.on('error', error => {
             std.log('mqtt source error', {error})

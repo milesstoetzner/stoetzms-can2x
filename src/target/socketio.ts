@@ -45,11 +45,14 @@ export class SocketIOTarget extends Target {
         })
 
         if (this.options.bidirectional) {
-            this.target.on(this.options.event, (message: JSONMessage) => {
-                std.log('socketio target received')
-                if (check.isUndefined(this.processor)) return std.log('no processor defined')
-                this.processor(Message.fromJSON(message))
-            })
+            this.target.on(
+                this.options.event,
+                hae.listener((message: JSONMessage) => {
+                    std.log('socketio target received')
+                    if (check.isUndefined(this.processor)) return std.log('no processor defined')
+                    this.processor(Message.fromJSON(message))
+                }, 'problem while receiving socketio target message')
+            )
         }
     }
 

@@ -47,11 +47,14 @@ export class WSSource extends Source {
                 std.log('websocket source error', {error})
             })
 
-            this.ws.on('message', (message: Buffer) => {
-                std.log('websocket source received', {message})
-                if (check.isUndefined(this.processor)) return std.log('no processor defined')
-                this.processor(Message.fromBuffer(message))
-            })
+            this.ws.on(
+                'message',
+                hae.listener((message: Buffer) => {
+                    std.log('websocket source received', {message})
+                    if (check.isUndefined(this.processor)) return std.log('no processor defined')
+                    this.processor(Message.fromBuffer(message))
+                }, 'problem while receiving websocket source message')
+            )
         })
 
         // Rejects if the server emits an error instead, e.g., since the port is in use
