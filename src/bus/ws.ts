@@ -12,6 +12,7 @@ export type WSBusOptions = {
 
 export default class WSBus extends Bus {
     server?: http.Server
+    wss?: WebSocketServer
     options: WSBusOptions
 
     constructor(options: WSBusOptions) {
@@ -26,6 +27,7 @@ export default class WSBus extends Bus {
         const wss = new WebSocketServer({
             server: this.server,
         })
+        this.wss = wss
 
         wss.on('connection', client => {
             std.log('websocket bus connected')
@@ -57,9 +59,28 @@ export default class WSBus extends Bus {
     async stop() {
         std.log('stopping websocket bus')
         await hae.try(async () => {
+            await this.stopWebSocketServer()
+        }, 'problem when stopping websocket bus server')
+
+        await hae.try(async () => {
             await this.stopServer()
         }, 'problem when stopping websocket bus http server')
         std.log('websocket bus stopped')
+    }
+
+    private async stopWebSocketServer() {
+        if (check.isUndefined(this.wss)) return std.log('websocket bus server not defined')
+        const wss = this.wss
+
+        // Otherwise, the http server waits for the open connections forever
+        for (const client of wss.clients) client.terminate()
+
+        return new Promise<void>((resolve, reject) => {
+            wss.close(error => {
+                if (check.isDefined(error)) return reject(error)
+                return resolve()
+            })
+        })
     }
 
     private async stopServer() {
