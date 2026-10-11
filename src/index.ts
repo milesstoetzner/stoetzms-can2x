@@ -2,9 +2,15 @@
 
 import actions from '#actions'
 import hae from '#utils/hae'
-import {Command, Option} from 'commander'
+import {Command, InvalidArgumentError, Option} from 'commander'
 
 export const program = new Command()
+
+function parseBoolean(value: string) {
+    if (value === 'true') return true
+    if (value === 'false') return false
+    throw new InvalidArgumentError('Allowed values are true and false.')
+}
 
 const can2x = program
     .name('can2x')
@@ -30,10 +36,10 @@ bridge
     .option('--source-name [string]', '', 'can2x')
     .option('--source-id [number]', '')
     .option('--source-data [numbers...]', '')
-    .option('--source-ext [boolean]', '', false)
-    .option('--source-rtr [boolean]', '', false)
-    .option('--source-file [boolean]', '')
-    .option('--source-bidirectional [boolean]', '', true)
+    .option('--source-ext [boolean]', '', parseBoolean, false)
+    .option('--source-rtr [boolean]', '', parseBoolean, false)
+    .option('--source-file [string]', '')
+    .option('--source-bidirectional [boolean]', '', parseBoolean, true)
     .addOption(
         new Option('--target [string]', '')
             .default('console')
@@ -44,7 +50,7 @@ bridge
     .option('--target-topic [string]', '', 'can2x')
     .option('--target-name [string]', '', 'can2x')
     .option('--target-file [string]', '')
-    .option('--target-bidirectional [boolean]', '', true)
+    .option('--target-bidirectional [boolean]', '', parseBoolean, true)
     .action(
         hae.exit(async options => {
             await actions.bridge.start(options)
