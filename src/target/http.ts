@@ -9,6 +9,7 @@ export type HTTPTargetOptions = {
 
 export class HTTPTarget extends Target {
     options: HTTPTargetOptions
+    private sending: Promise<void> = Promise.resolve()
 
     constructor(options: HTTPTargetOptions) {
         super()
@@ -16,6 +17,13 @@ export class HTTPTarget extends Target {
     }
 
     async send(message: Message) {
+        // Send one request after another, since concurrent requests may arrive out of order
+        const sending = this.sending.then(() => this.post(message))
+        this.sending = sending.catch(() => undefined)
+        return sending
+    }
+
+    private async post(message: Message) {
         std.log('http target sending', {message})
         await fetch(this.options.endpoint, {
             method: 'POST',
