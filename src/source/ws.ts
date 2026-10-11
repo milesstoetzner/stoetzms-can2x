@@ -17,7 +17,6 @@ export class WSSource extends Source {
     server?: http.Server
     wss?: WebSocketServer
     options: WSSourceOptions
-    ws?: WebSocket
 
     constructor(options: WSSourceOptions) {
         super()
@@ -41,13 +40,11 @@ export class WSSource extends Source {
         wss.on('connection', ws => {
             std.log('websocket source connected')
 
-            this.ws = ws
-
-            this.ws.on('error', error => {
+            ws.on('error', error => {
                 std.log('websocket source error', {error})
             })
 
-            this.ws.on(
+            ws.on(
                 'message',
                 hae.listener((message: Buffer) => {
                     std.log('websocket source received', {message})
@@ -77,13 +74,15 @@ export class WSSource extends Source {
     }
 
     async send(message: Message) {
-        std.log('sending can source')
+        std.log('sending websocket source')
         if (!this.options.bidirectional) return std.log('websocket source not bidirectional')
 
-        if (check.isUndefined(this.ws)) return std.log('websocket source not defined')
-        this.ws.send(message.toString())
+        if (check.isUndefined(this.wss)) return std.log('websocket source not defined')
+        for (const client of this.wss.clients) {
+            if (client.readyState === WebSocket.OPEN) client.send(message.toString())
+        }
 
-        std.log('can source sent')
+        std.log('websocket source sent')
     }
 
     private async stopWebSocketServer() {
