@@ -93,7 +93,7 @@
     },
     "scripts": {
         "prepack": "yarn build",
-        "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json && sed -i \"s/__VERSION__/$(git rev-parse HEAD)/\" build/index.js",
+        "build": "rm -rf dist && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json && sed -i.bak \"s/__VERSION__/$(git rev-parse HEAD)/\" dist/index.js && rm dist/index.js.bak",
         "lint:check": "eslint .",
         "lint:fix": "eslint . --fix",
         "style:check": "prettier --check --end-of-line auto \"./**/*.{ts,json,yaml,yml}\"",
